@@ -6,10 +6,16 @@
 Tags: ecommerce, woocommerce, one-column, custom-background, custom-colors, custom-logo, custom-menu, editor-style, featured-images, footer-widgets, full-width-template, rtl-language-support, sticky-post, theme-options, threaded-comments, translation-ready, block-styles, wide-blocks, accessibility-ready_
 
 **Version:** 1.0.2
+
 **Requires at least:** 5.0
+
 **Tested up to: **5.8
+
 **Requires PHP:** 7.0
+
 **Text Domain:** vmh-hub
+
+---
 
 ### **Releases**
 
