@@ -1,0 +1,17 @@
+{
+    "name": "ar.arif/vmhhub",
+    "description": "Custom made woocommerce theme for client project",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Arifur Rahman Arif",
+            "email": "dev.ar.arif@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "VmhHub\\Includes\\": "Includes/"
+        }
+    }
+}

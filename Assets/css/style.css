@@ -1,0 +1,3551 @@
+/*using fonts
+font-family: 'Baloo';
+
+*/
+/* Default CSS */
+html,
+body,
+div,
+span,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+abbr,
+address,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+samp,
+small,
+strong,
+sub,
+sup,
+var,
+b,
+i,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+summary,
+time,
+mark,
+audio,
+span,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    background: transparent;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+button {
+    outline: none !important;
+}
+input {
+    outline: none !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    margin: 0;
+    padding: 0;
+}
+input,
+button,
+textarea,
+select {
+    outline: none;
+}
+.btn.focus,
+.btn:focus {
+    outline: none;
+    box-shadow: none !important;
+}
+body {
+    font-family: "Open Sans", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    overflow: hidden;
+}
+html {
+    overflow-x: hidden !important;
+}
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+a {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: none;
+}
+h1 {
+    font-family: Baloo;
+    font-weight: normal;
+    font-size: 88px;
+    line-height: 65px;
+    text-transform: uppercase;
+    color: #141d1d;
+}
+h2 {
+    font-family: Baloo;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 48px;
+    line-height: 0px;
+    color: #141d1d;
+}
+h3 {
+    font-family: Baloo;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 36px;
+    line-height: 20px;
+    color: #141d1d;
+}
+h4 {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 192.3%;
+    text-transform: capitalize;
+    color: #141d1d;
+}
+h5 {
+    font-weight: bold;
+    font-size: 15px;
+    line-height: 20px;
+    color: #fff7ef;
+}
+h6 {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 15px;
+    color: #ffffff;
+}
+p {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 170%;
+    color: rgba(20, 29, 29, 0.5);
+}
+.section_heading p {
+    margin-top: 20px;
+}
+.section_heading {
+    text-align: center;
+}
+img {
+    height: auto;
+    width: 100%;
+    display: block;
+    -o-object-fit: cover;
+    object-fit: cover;
+}
+/*=======================================
+======== 1.header_main_area css =========
+========================================*/
+.header_main_area {
+    background: #141d1d;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    position: absolute;
+    width: 100%;
+    height: auto;
+    left: 0;
+    top: 0;
+    z-index: 9;
+}
+.logo_area a img {
+    max-width: 88px;
+    width: 100%;
+}
+.header_content_area {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    padding: 19px 0 16px 0;
+}
+.logo_area {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 20%;
+    flex: 0 0 20%;
+    padding: 10px 0;
+}
+.menu ul {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.top_shiping_box {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 6px 14px 4px;
+    border: 2px solid #fff7ef;
+    box-sizing: border-box;
+    border-radius: 60px;
+}
+.shiping_cart_area {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+}
+.menu ul li a {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 13px;
+    line-height: 18px;
+    color: #fff7ef;
+    margin-right: 20px;
+    display: inline-block;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+    text-transform: uppercase;
+}
+.menu ul li a:hover {
+    color: #8cdad9;
+}
+.menu_area {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 48%;
+    flex: 0 0 48%;
+}
+.top_shiping_box h5 {
+    margin-left: 43px;
+}
+.shiping_icon_area ul li a i,
+.shiping_icon_area ul li a svg {
+    font-size: 22px;
+    color: white;
+    margin-left: 15px;
+    display: inline-block;
+}
+.shiping_icon_area ul li a i {
+    transform: translateY(4px);
+}
+/*Start Humber Icon Design Css*/
+.mobile-menu-icon {
+    display: none;
+}
+.all-p-humber {
+    width: 30px;
+    height: 18px;
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: 0.5s ease-in-out;
+    transition: 0.5s ease-in-out;
+    cursor: pointer;
+    z-index: 99;
+}
+.all-p-humber span {
+    display: block;
+    position: absolute;
+    height: 2px;
+    width: 25px;
+    background: #fff;
+    border-radius: 0;
+    opacity: 1;
+    left: 0;
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: 0.25s ease-in-out;
+    transition: 0.25s ease-in-out;
+}
+.all-p-humber span:nth-child(1) {
+    top: 0px;
+}
+.all-p-humber span:nth-child(2),
+.all-p-humber span:nth-child(3) {
+    top: 8px;
+}
+.all-p-humber span:nth-child(4) {
+    top: 16px;
+}
+.all-p-humber.open span:nth-child(1) {
+    top: 18px;
+    width: 0%;
+    left: 50%;
+}
+.all-p-humber.open span:nth-child(2) {
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+.all-p-humber.open span:nth-child(3) {
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+.all-p-humber.open span:nth-child(4) {
+    top: 18px;
+    width: 0%;
+    left: 50%;
+}
+/*End Humber Icon Design Css*/
+/*=======================================
+======== 2.how_it_work_area css =========
+========================================*/
+.how_it_work_area {
+    padding-top: 150px;
+    background: -webkit-linear-gradient(top, #89d9d8 0%, #ffffff 100%);
+    background: linear-gradient(180deg, #89d9d8 0%, #ffffff 100%);
+}
+.work_details_area {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    padding-top: 82px;
+    padding-bottom: 120px;
+}
+.left_work_txt p {
+    max-width: 385px;
+    width: 100%;
+    margin-top: 10px;
+}
+.left_work_area {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 53%;
+    flex: 0 0 53%;
+}
+.left_work_txt h3 {
+    display: inline-block;
+    position: relative;
+}
+.left_work_txt h3:after {
+    content: "";
+    position: absolute;
+    width: 61px;
+    height: 100%;
+    right: 0;
+    top: -20px;
+    background: url(../images/sing_arrow.png) no-repeat scroll 0 0 / cover;
+    background-size: 61px;
+}
+.middle_work_area {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 7%;
+    flex: 0 0 7%;
+}
+.right_work_area {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 40%;
+    flex: 0 0 40%;
+    position: relative;
+}
+.right_work_img {
+    content: "";
+    position: absolute;
+    top: -220px;
+    width: 470px;
+    height: 342px;
+    right: -15px;
+}
+.middle_work_area ul {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+.middle_work_area ul li a {
+    position: relative;
+    display: inline-block;
+}
+.middle_work_area ul li:not(:last-child) {
+    width: 3px;
+    background: #324b4b;
+    height: 117px;
+}
+.middle_work_area ul li a:after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #324b4b;
+    left: -9px;
+    top: -12px;
+}
+.middle_work_area ul li a span {
+    position: absolute;
+    top: -20px;
+    right: 20px;
+    font-style: normal;
+    font-weight: 800;
+    font-size: 14px;
+    line-height: 100%;
+    color: #324b4b;
+    font-family: "Montserrat", sans-serif;
+}
+.middle_work_area ul li:nth-child(1) a span {
+    right: -65px;
+}
+.middle_work_area ul li:nth-child(3) a span {
+    right: -65px;
+}
+.middle_work_area ul li a:after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #324b4b;
+    left: -9px;
+    top: -21px;
+}
+/*main_recopies_area css*/
+.recopies_heading {
+    margin-bottom: 10px;
+}
+.single_recopies_items ul {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    padding-left: 10px;
+    margin-top: 24px;
+}
+.single_recopies_items ul li {
+    display: inline-block;
+    position: relative;
+    padding-left: 10px;
+    margin-bottom: 0px;
+}
+.single_recopies_items ul li:after {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 10px;
+    background: #ffd500;
+    border-radius: 8px;
+    left: 0;
+    top: 8px;
+}
+.single_recopies_items ul li:nth-child(2):after {
+    background: #dcef58;
+}
+.single_recopies_items ul li:nth-child(3):after {
+    background: #426bfd;
+}
+.single_recopies_items ul li:nth-child(4):after {
+    background: #dcdba9;
+}
+.single_recopies_items ul li span {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 60%;
+    color: #ffffff;
+}
+.single_recopies_items p {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 60%;
+    color: #ffffff;
+    margin-top: 9px;
+}
+.recopies_content_area {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+}
+.single_recopies_items {
+    background: #324b4b;
+    border-radius: 8px;
+    padding: 20px;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 calc((100% / 6) - 30px);
+    flex: 0 0 calc((100% / 6) - 30px);
+    margin-bottom: 10px;
+    margin-right: 30px;
+    width: 100%;
+}
+.pagiation_area .paginations {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    margin-right: 30px;
+}
+.paginations li a {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 192.3%;
+    color: #324b4b;
+}
+.paginations li .next {
+    margin-left: 10px;
+}
+.paginations li .prev {
+    margin-right: 10px;
+}
+.main_recopies_area {
+    margin-bottom: 120px;
+}
+/*=======================================
+======== 2.footer_main_area css =========
+========================================*/
+.footer_main_area {
+    background: #141d1d;
+}
+.footer_content_area {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    padding-top: 60px;
+    padding-bottom: 46px;
+}
+.footer_left_area {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 35%;
+    flex: 0 0 35%;
+}
+.footer_left_area a img {
+    max-width: 85px;
+    width: 100%;
+}
+.footer_left_area p,
+.footer_right_area p {
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 192.3%;
+    color: rgba(255, 247, 239, 0.6);
+    max-width: 275px;
+    width: 100%;
+    margin-top: 10px;
+}
+.footer_middle_area {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 25%;
+    flex: 0 0 25%;
+}
+.usefull_link h2,
+.footer_right_area h2 {
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 31px;
+    color: #fff7ef;
+    margin-top: 5px;
+}
+.usefull_link ul li a {
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 192.3%;
+    color: rgba(255, 247, 239, 0.6);
+    transition: 0.3s;
+}
+.usefull_link ul li a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+.footer_right_area {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 25%;
+    flex: 0 0 25%;
+}
+.subscribe_mail .form-control::-webkit-input-placeholder {
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 192.3%;
+    color: rgba(0, 0, 0, 0.4);
+    text-align: center;
+    font-family: "Open Sans", sans-serif;
+}
+.subscribe_mail .form-control::-moz-placeholder {
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 192.3%;
+    color: rgba(0, 0, 0, 0.4);
+    text-align: center;
+    font-family: "Open Sans", sans-serif;
+}
+.subscribe_mail .form-control:-ms-input-placeholder {
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 192.3%;
+    color: rgba(0, 0, 0, 0.4);
+    text-align: center;
+    font-family: "Open Sans", sans-serif;
+}
+.subscribe_mail .form-control::placeholder {
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 192.3%;
+    color: rgba(0, 0, 0, 0.4);
+    text-align: center;
+    font-family: "Open Sans", sans-serif;
+}
+.single_form .form-control {
+    background: #ffffff;
+    border-radius: 4px;
+    padding: 6px 15px;
+    border: none;
+    font-family: "Open Sans", sans-serif;
+}
+.footer_right_area p {
+    margin-bottom: 20px;
+}
+.submit_btn {
+    text-align: right;
+    margin-top: 24px;
+}
+.submit_btn button {
+    padding: 6px 28px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 157.3%;
+    color: #ffffff;
+    background: #324b4b;
+    border: 2px solid #fff7ef;
+    box-sizing: border-box;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+.submit_btn button:hover {
+    border-color: #324b4b;
+}
+.privacy_area ul li a {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 192.3%;
+    color: rgba(255, 247, 239, 0.8);
+    margin-left: 5px;
+    transition: 0.3s;
+}
+.privacy_area ul li a:hover {
+    color: #fff;
+}
+.copyright_txt p {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 192.3%;
+    color: rgba(255, 247, 239, 0.6);
+}
+.footer_btm_area {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    max-width: 45%;
+    width: 100%;
+    padding-bottom: 26px;
+}
+.privacy_area ul {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+/*===========================================
+======= END HOW TO WORK PAGES================
+=============================================*/
+
+/*===========================================
+=========== START HOME PAGE S================
+=============================================*/
+.banner_main_area {
+    background: url(../images/home/home_bg.png) no-repeat scroll 0 0 / cover;
+}
+.banner_content_area {
+    padding-top: 180px;
+}
+.banner_content_area h2 {
+    font-size: 60px;
+    line-height: 88px;
+    text-transform: uppercase;
+    color: rgba(20, 29, 29, 0.2);
+    position: relative;
+    display: inline-block;
+}
+.banner_content_area h2:after {
+    content: "";
+    position: absolute;
+    width: 61px;
+    height: 1px;
+    right: -90px;
+    bottom: 26px;
+    background: #324b4b;
+}
+.banner_content_area p {
+    max-width: 375px;
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 93px;
+}
+.comon_section_area {
+    margin-top: 78px;
+    margin-bottom: 60px;
+}
+.comon_section_area .main_recopies_area {
+    margin-bottom: 60px;
+}
+
+/*===========================================
+=========== END HOME PAGE   ================
+=============================================*/
+
+/*===========================================
+=========== START ABOUT US PAGE   ================
+=============================================*/
+.about_us_banner {
+    background: url(../images/about/about_bg.png) no-repeat scroll 0 0 / cover;
+    padding-top: 150px;
+}
+.about_banner_text {
+    margin-top: 70px;
+}
+.about_banner_btn {
+    margin-top: 30px;
+    margin-bottom: 94px;
+}
+.btn_style_1 {
+    display: inline-block;
+    padding: 7px 33px;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 192.3%;
+    color: #324b4b;
+    background: transparent;
+    border: 2px solid #324b4b;
+    box-sizing: border-box;
+    border-radius: 4px;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+}
+.btn_style_1:hover {
+    color: #fff8f0;
+    background: #324b4b;
+}
+.btn_style_1.active {
+    color: #fff8f0;
+    background: #324b4b;
+}
+.btn_style_1.active:hover {
+    background: transparent;
+    border-color: #324b4b;
+    color: #324b4b;
+}
+.about_banner_btn a:nth-child(1) {
+    margin-right: 10px;
+}
+/*control*/
+.control_main_content {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-top: 120px;
+    margin-bottom: 120px;
+}
+.single_control_items {
+    background: #324b4b;
+    border-radius: 4px;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 calc(33.33% - 30px);
+    flex: 0 0 calc(33.33% - 30px);
+    margin-right: auto;
+    padding: 41px 30px;
+    filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feGaussianBlur in="SourceAlpha" stdDeviation="24" /><feOffset dx="1" dy="5" result="offsetblur" /><feFlood flood-color="rgba(0,0,0,0.25)" /><feComposite in2="offsetblur" operator="in" /><feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge></filter></svg>#filter');
+    -webkit-filter: drop-shadow(0px 4px 24px rgba(0, 0, 0, 0.25));
+    filter: drop-shadow(0px 4px 24px rgba(0, 0, 0, 0.25));
+}
+.single_control_items h5 {
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 19px;
+    line-height: 100%;
+    color: #fff7ef;
+    margin-bottom: 10px;
+}
+.single_control_items a {
+    display: inline-block;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 174%;
+    color: #fff7ef;
+}
+.single_control_items p {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 170%;
+    color: rgba(255, 248, 240, 0.7);
+    margin-bottom: 14px;
+    max-width: 265px;
+    width: 100%;
+}
+.left_about_work_area .middle_work_area ul li a p {
+    position: absolute;
+    right: -270px;
+    width: 230px;
+    height: auto;
+    top: -10px;
+    content: "";
+}
+.about_work_main_area {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    margin-bottom: 212px;
+}
+.left_about_work_area {
+    padding-left: 230px;
+}
+.about_us .left_work_txt h3:after {
+    width: 80px;
+    background-size: 80px;
+}
+.left_about_work_area .middle_work_area ul li:nth-child(1) a span {
+    right: 20px;
+}
+.left_about_work_area .middle_work_area ul li a span {
+    right: -70px;
+}
+.left_about_work_area .middle_work_area ul li:nth-child(2) a p {
+    right: 20px;
+    top: 0px;
+}
+.left_about_work_area .middle_work_area ul li:nth-child(3) a span {
+    right: 30px;
+}
+.left_about_work_area .middle_work_area ul li:nth-child(4) a span {
+    right: 100px;
+}
+.left_about_work_area .middle_work_area ul li:nth-child(4) a:before {
+    width: 95px;
+    height: 3px;
+    position: absolute;
+    content: "";
+    right: -100%;
+    top: -12px;
+    background: #324b4b;
+}
+.left_about_work_area .middle_work_area ul li:nth-child(4) a p {
+    right: 20px;
+    top: 0;
+}
+/*our_promise_main_area*/
+.our_promise_main_area {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: end;
+    -ms-flex-align: end;
+    align-items: flex-end;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    margin-bottom: 110px;
+}
+.our_promise_images img {
+    max-width: 384px;
+    width: 100%;
+}
+.right_our_promise_area {
+    margin-bottom: 70px;
+}
+.left_winner_content .left_work_txt h3:after {
+    display: none;
+}
+.winner_monthe_main_area {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-bottom: 120px;
+    -webkit-box-align: end;
+    -ms-flex-align: end;
+    align-items: flex-end;
+}
+.left_winner_content {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 40%;
+    flex: 0 0 40%;
+}
+.right_winner_content {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 60%;
+    flex: 0 0 60%;
+    position: relative;
+}
+.winner_details_area {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    position: relative;
+    margin-bottom: 17px;
+}
+.winner_details_area:after {
+    width: 141%;
+    height: 100%;
+    position: absolute;
+    content: "";
+    right: -41%;
+    top: 0;
+    background: url(../images/about/winner.png) no-repeat scroll 0 0 / cover;
+    z-index: -1;
+}
+.winner_content_img img {
+    max-width: 337px;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.winner_txt h5 {
+    font-style: normal;
+    font-weight: 800;
+    font-size: 25px;
+    line-height: 115%;
+    color: #fff8f0;
+}
+.winner_txt h5 span {
+    display: block;
+}
+.winner_txt {
+    padding-top: 48px;
+    padding-left: 46px;
+}
+
+/*===============================================
+=========== END ABOUT US PAGE   ================
+===============================================*/
+
+/*==================================================
+=========== START CONTACT US PAGES ================
+=================================================*/
+.contact_us_banner {
+    padding-top: 144px;
+    background: -webkit-linear-gradient(top, #324b4b 0%, #89d9d8 100%);
+    background: linear-gradient(180deg, #324b4b 0%, #89d9d8 100%);
+}
+.contact_us_banner .about_banner_text {
+    margin-top: 210px;
+    margin-bottom: 65px;
+    position: relative;
+}
+.contact_us_banner .about_banner_text:after {
+    content: "";
+    position: absolute;
+    width: 520.38px;
+    height: 350.7px;
+    left: 44%;
+    top: -230px;
+    background: url(../images/contact/Circles.png) no-repeat scroll 0 0 / cover;
+}
+.contact_pages_form_data {
+    margin-bottom: 60px;
+}
+.ct_contact_main_area {
+    margin-top: 53px;
+}
+.single_form_ct_area .form-control {
+    max-width: 272px;
+    color: #324b4b;
+    font-size: 14px;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    background: #ffffff;
+    border: 1px solid #141d1d;
+    box-sizing: border-box;
+    border-radius: 4px;
+    width: 100%;
+    display: inline-block;
+    padding: 13px 20px 7px 20px;
+    margin-bottom: 15px;
+    height: 40px;
+    box-shadow: none !important;
+}
+.form-control::-webkit-input-placeholder,
+.single_form_ct_area textarea::-webkit-input-placeholder {
+    opacity: 1;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 20px;
+    color: rgba(20, 29, 29, 0.4);
+}
+.form-control::-moz-placeholder,
+.single_form_ct_area textarea::-moz-placeholder {
+    opacity: 1;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 20px;
+    color: rgba(20, 29, 29, 0.4);
+}
+.form-control:-ms-input-placeholder,
+.single_form_ct_area textarea:-ms-input-placeholder {
+    opacity: 1;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 20px;
+    color: rgba(20, 29, 29, 0.4);
+}
+.form-control::placeholder,
+.single_form_ct_area textarea::placeholder {
+    opacity: 1;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 20px;
+    color: rgba(20, 29, 29, 0.4);
+}
+.contact_pages_form_data {
+    margin-bottom: 60px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+.ct_left_pages_content {
+    background: #ffffff;
+    box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.25);
+    border-radius: 4px;
+    padding: 60px 50px;
+    margin-left: 90px;
+    max-width: 576px;
+    width: 100%;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 75%;
+    flex: 0 0 75%;
+}
+.single_form_ct_area textarea {
+    height: 266px;
+    width: 100%;
+    padding: 15px 19px;
+    font-size: 14px;
+    margin-top: 5px;
+    box-shadow: none !important;
+    color: #324b4b;
+    background: #ffffff;
+    border: 1px solid #141d1d;
+    box-sizing: border-box;
+    border-radius: 4px;
+    resize: none;
+}
+
+.single_btn_ct_area .submitbtn-holder {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+}
+.single_btn_ct_area input {
+    background: #324b4b;
+    border-radius: 4px;
+    display: inline-block;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 157.3%;
+    color: #ffffff;
+    padding: 7px 39px;
+    width: 114px;
+    outline: none !important;
+    border: 1px solid #324b4b;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+}
+.single_btn_ct_area input:hover {
+    background: transparent;
+    color: #324b4b;
+}
+.single_btn_ct_area {
+    text-align: right;
+    margin-top: 20px;
+}
+.ct_right_pages_content {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 25%;
+    flex: 0 0 25%;
+    padding-left: 29px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+.ct_main_location a span {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 13px;
+    line-height: 17px;
+    color: #141d1d;
+    margin-left: 8px;
+    max-width: 200px;
+    width: 100%;
+}
+.ct_main_location a svg {
+    display: inline-block;
+}
+.ct_main_location a {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.ct_follow_us h3 {
+    font-size: 23px;
+}
+.ct_follow_us ul li a {
+    background: #324b4b;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    color: #fff;
+}
+.ct_follow_us ul {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+.ct_follow_us ul li:nth-child(1) a {
+    margin-right: 8px;
+}
+.contact_maps_main_area .container-fluid {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/*===============================================
+=========== END CONTACT US PAGE   ================
+==============================================*/
+
+/*==================================================
+=========== START LOGIN PAGES  CSS ================
+==================================================*/
+.login_main > div {
+    padding: 166px 0px 120px 0px;
+    /*background: url(../images/personlisation-1/circle.png) no-repeat scroll 0 0 / cover;*/
+    position: relative;
+}
+.vmh_thankyoucontainer .woocommerce-order-details,
+.vmh_thankyoucontainer .woocommerce-customer-details,
+.vmh_thankyoucontainer > p {
+    display: none;
+}
+.login_background {
+    position: absolute;
+    top: 170px;
+    left: 18px;
+    width: 100%;
+    z-index: -1;
+}
+.sign_in_box {
+    padding: 80px 100px 157px 100px;
+    width: 776px;
+    background: #ffffff;
+    box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.25);
+    border-radius: 4px;
+    margin: auto;
+}
+.sing_in_header h3 {
+    margin-bottom: 15px;
+}
+.sing_in_header a {
+    font-family: Open Sans;
+    font-style: normal;
+    font-size: 13px;
+    line-height: 170.3%;
+    color: #324b4b;
+    font-weight: 600;
+    margin-bottom: 64px;
+    color: #849393;
+    display: inline-block;
+}
+.sing_in_header a span {
+    font-weight: 700;
+    color: #324b4b;
+}
+.login_input {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+.login_input_left {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+.login_input_left label {
+    margin-bottom: 10px;
+    color: #324b4b;
+    font-family: Open Sans;
+    font-weight: 700;
+    font-size: 13px;
+}
+.login_input_left input {
+    width: 272px;
+    height: 41px;
+    border: 1px solid #324b4b;
+    border-radius: 4px;
+    padding: 0px 10px;
+}
+.logon_input_btn {
+    text-align: right;
+    margin-top: 5px;
+}
+.logon_input_btn .vmh_checkout_next_btn,
+.vmh_checkout_btn {
+    height: 41px;
+    width: 101px;
+    border-radius: 4px;
+    background: #324b4b;
+    border: navajowhite;
+    color: #fff;
+    font-size: 13px;
+    border: 1px solid transparent;
+    transition: 0.3s;
+    font-weight: 700;
+}
+.logon_input_btn input:hover {
+    background: transparent;
+    border: 1px solid #324b4b;
+    color: #324b4b;
+}
+
+.login_social {
+    margin-top: 86px;
+}
+.login_down {
+    text-align: center;
+    margin-bottom: 7px;
+}
+.login_down h4 {
+    font-size: 20px;
+    color: #324b4b;
+}
+.login_social_icon {
+    margin-bottom: 20px;
+}
+.login_social_icon_mini img {
+    width: 20px;
+    margin-right: 10px;
+}
+.login_social_icon_mini i {
+    font-size: 20px;
+    color: #6f9e9e;
+    padding-right: 10px;
+}
+.login_social_icon a {
+    display: block;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    border: 1px solid #324b4b;
+    width: 272px;
+    padding: 10px 0px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    background: #324b4b;
+    color: #fff;
+    transition: 0.3s;
+}
+.login_social_icon a:hover {
+    background: transparent;
+    color: #324b4b;
+}
+.login_social_icon {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.login_social_icon_mini_text {
+    font-size: 13px;
+    font-family: Open Sans;
+    font-weight: 600;
+}
+.login_down_content p {
+    text-align: center;
+}
+.login_down_content_col {
+    font-weight: 700;
+    color: #324b4b;
+}
+/*==================================================
+=========== START LOGIN PAGES  Css ================
+==================================================*/
+
+/*==============================================================
+=========== START Create Account PAGES  Css ====================
+==============================================================*/
+.create_background {
+    position: absolute;
+    top: 240px;
+    left: 18px;
+    width: 100%;
+    z-index: -1;
+}
+.create_input_reletive {
+    position: relative;
+}
+.create_input_icon_absolute {
+    position: absolute;
+    top: 34px;
+    right: 20px;
+}
+.create_input_icon_absolute a i {
+    color: #324b4b;
+    font-size: 20px;
+}
+.login_input_left_country input {
+    width: 100%;
+}
+.logon_input_btn2 .vmh_checkout_next_btn,
+.vmh_checkout_btn {
+    width: 173px;
+    font-weight: 700;
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+/*Start check box*/
+.mu_icon_header_checkbox {
+    margin-right: 10px;
+}
+.mu-form-group {
+    display: block;
+    margin-right: 10px;
+}
+.mu-form-group input {
+    padding: 0;
+    height: initial;
+    width: initial;
+    margin-bottom: 0;
+    display: none;
+    cursor: pointer;
+}
+.mu-form-group label {
+    position: relative;
+    cursor: pointer;
+}
+.mu-form-group label:before {
+    content: "";
+    -webkit-appearance: none;
+    border: 2px solid #000;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+    padding: 6px;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    cursor: pointer;
+    border-radius: 0px;
+}
+.mu-form-group input:checked + label:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 8px;
+    left: 6px;
+    width: 5px;
+    height: 10px;
+    border: solid #000;
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+/*End check box*/
+
+.create_chekbox_item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+.create_chekbox_content p {
+    color: #324b4b;
+}
+.create_chekbox {
+    margin-top: 49px;
+}
+.create_chekbox_item {
+    margin-bottom: 20px;
+}
+.login_down_content2 {
+    margin-top: 31px;
+}
+/*==============================================================
+=========== END Create Account PAGES  Css ====================
+==============================================================*/
+
+/*==============================================================
+=========== START Personlisation PAGES 1 Css ==================
+==============================================================*/
+.person_background {
+    position: absolute;
+    top: 115px;
+    left: 140px;
+    width: 100%;
+    z-index: -1;
+}
+.person_background img {
+    width: 1075px;
+    height: auto;
+}
+
+.personlisation_1 {
+    padding: 80px 68px 80px 100px;
+}
+.logon_input_btn3 {
+    text-align: left;
+    padding-right: 27px;
+    margin-top: 0px;
+}
+.person_btn_skip {
+    margin-top: 75px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.person_skip a {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 170%;
+    color: rgba(20, 29, 29, 0.5);
+}
+.person_search_right a img {
+    width: 32px;
+    height: auto;
+}
+
+.person_cont_search {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    margin-top: 15px;
+}
+.person_content p {
+    color: #324b4b;
+    font-weight: 700;
+}
+.person_search_left input {
+    width: 292px;
+    height: 41px;
+    border: 2px solid #324b4b;
+    border-radius: 20px;
+    padding: 0px 15px 0px 50px;
+}
+.person_search_left input[placeholder] {
+    font-size: 13px;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 700;
+    color: #324b4b;
+}
+.person_search {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.person_search_left {
+    margin-right: 11px;
+}
+/*==============================================================
+=========== END Personlisation PAGES 1 Css ==================
+==============================================================*/
+
+/*==============================================================
+=========== START Personlisation PAGES 2 Css ==================
+==============================================================*/
+.person_search_box ul {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+.person_search_box ul li a {
+    display: inline-block;
+    border: 1px solid #c4c4c4;
+    color: #000000;
+    font-size: 13px;
+    margin: 0px 5px 10px 0px;
+    padding: 4px 19px;
+    border-radius: 4px;
+}
+.person_search_box {
+    margin-top: 47px;
+}
+.person_btn_skip2 {
+    margin-top: 52px;
+}
+/*==============================================================
+=========== END Personlisation PAGES 2 Css ==================
+==============================================================*/
+
+/*==============================================================
+===========    START Thank You PAGES  Css    ==================
+==============================================================*/
+.thank_you_mu {
+    text-align: center;
+    padding: 120px 0px 130px 0px;
+    position: relative;
+}
+.thank_hide_btn {
+    position: absolute;
+    top: 40px;
+    right: 42px;
+}
+.thank_hide_btn a img {
+    width: 20px;
+    height: auto;
+}
+
+.sing_in_header2 p {
+    font-weight: 700;
+    margin-bottom: 47px;
+}
+.logon_input_btn4 {
+    text-align: center;
+    padding-right: 0px;
+    margin-top: 0px;
+}
+.height_long {
+    height: 682px;
+}
+/*==============================================================
+===========    START Thank You PAGES  Css    ==================
+==============================================================*/
+
+/*==============================================================
+===========    START User Dashboard PAGES  Css    =============
+==============================================================*/
+.user_background {
+    position: absolute;
+    top: 242px;
+    left: 614px;
+    width: 100%;
+    z-index: -1;
+}
+.logon_input_btn7 input {
+    width: 150px;
+    height: 38px;
+}
+.user_background img {
+    width: 518px;
+    height: auto;
+}
+.user_dashboard_header_title_btn {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.user_dashboard_header_title h4 {
+    margin-right: 30px;
+    font-family: "Baloo";
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.thank_profile_img {
+    margin-right: 12px;
+}
+.thank_profile_img img {
+    width: 100px;
+    height: 100px;
+    -o-object-fit: cover;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.userdash_profile_title h4 {
+    font-family: "Baloo";
+    font-size: 20px;
+    font-weight: 400;
+}
+.userdash_profile_title p {
+    color: #141d1d;
+}
+.userdash_profile {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    margin: 72px 0px 30px -30px;
+}
+
+.dash_profile_content h4 {
+    font-size: 13px;
+    margin-right: 10px;
+}
+.dash_profile_content p {
+    color: #141d1d;
+    font-weight: 400;
+}
+.dash_profile_content {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.userdash_change_password_btn a {
+    color: #141d1d;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 10px 20px;
+    border: 2px solid #324b4b;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+/*.userdash_change_password_btn a:first-child:hover{
+  background: #324B4B;
+  color: #fff;
+}*/
+.userdash_change_password_btn {
+    margin: 40px 0px 80px 0px;
+}
+
+.userdash_your_address_header h4 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+.userdash_your_address_loca_text p {
+    color: #141d1d;
+    font-weight: 400;
+    margin-right: 72px;
+}
+.userdash_your_address_loca_text a {
+    font-size: 13px;
+    color: #141d1d;
+    font-weight: 700;
+}
+.userdash_your_address_loca_text {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.logon_input_btn5 {
+    padding: 40px 0px 111px 0px;
+}
+.user_dashboard {
+    padding-left: 80px;
+}
+/*==============================================================
+===========    END User Dashboard PAGES  Css    =============
+==============================================================*/
+
+/*==============================================================
+===========    START EXPLORE LOGIN PAGES  CSS    =============
+==============================================================*/
+.expolore_banner {
+    background: url(../images/explore/exp_bg.png) no-repeat scroll 0 0 / cover;
+}
+.explore_comon_section .main_recopies_area {
+    margin-bottom: 40px;
+}
+/*==============================================================
+===========     START MY FAVORITE PAGES  CSS      =============
+==============================================================*/
+.my_favorite_area {
+    position: relative;
+    padding-top: 60px;
+}
+.my_favorite_area:after {
+    content: "";
+    position: absolute;
+    width: 648px;
+    height: 547.74px;
+    left: 459px;
+    top: 0;
+    background: url(../images/favorite/shape.png) no-repeat scroll 0 0 / cover;
+    z-index: -1;
+}
+/*.my_favorite_close a {
+  text-align: right;
+  display: block;
+  padding-bottom: 5px;
+}*/
+.single_recopies_items a {
+    text-align: right;
+    display: inline-block;
+    padding-bottom: 5px;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+.my_favorite_close {
+    padding-top: 12px !important;
+}
+/*==============================================================
+===========     END MY FAVORITE PAGES  CSS      =============
+==============================================================*/
+
+/*==============================================================
+===========     START MY RECIPES PAGES  CSS      =============
+==============================================================*/
+.my_recipes_area {
+    padding-top: 60px;
+    position: relative;
+}
+.my_recipes_area:after {
+    content: "";
+    position: absolute;
+    width: 902px;
+    height: 902px;
+    left: 275px;
+    top: 295px;
+    background: url(../images/recipes/recep_bg.png) no-repeat scroll 0 0 / cover;
+    z-index: -1;
+}
+.my_recipes_area .main_recopies_area {
+    margin-bottom: 40px;
+}
+
+/*==============================================================
+===========     END MY RECIPES PAGES  CSS      =============
+==============================================================*/
+
+/*==============================================================
+===========     START Shipping Address  CSS      =============
+==============================================================*/
+.shipping_background {
+    position: absolute;
+    top: 157px;
+    left: 600px;
+    width: 100%;
+    z-index: -1;
+}
+.shipping_background img {
+    width: 600px;
+    height: auto;
+}
+.shipping_address_box {
+    padding: 54px 147px 68px 155px;
+}
+.shipping_address_header h4 {
+    font-family: "Baloo";
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 16px;
+}
+.shipping_address_left input[placeholder],
+.shipping_address_pla input[placeholder] {
+    font-size: 14px;
+    font-weight: 600;
+    color: #324b4b;
+}
+.shipping_address_left input {
+    width: 235px;
+    height: 40px;
+}
+.shipping_address_btn {
+    margin-top: 40px;
+}
+.shipping_address_btn {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.shipping_address_btn a {
+    font-family: "Baloo";
+    font-size: 14px;
+    color: #000000;
+}
+.shipping_address_btn a i {
+    margin-right: 5px;
+}
+
+.shipping_menu {
+    margin-bottom: 30px;
+    margin-top: -55px;
+}
+.shipping_menu ul {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+.shipping_menu ul li a {
+    color: rgba(20, 29, 29, 0.3);
+    font-size: 14px;
+    font-weight: 600;
+    margin-right: 10px;
+}
+.shipping_menu_active {
+    color: #141d1d !important;
+}
+/*==============================================================
+===========     END Shipping Address  CSS      =============
+==============================================================*/
+
+/*==============================================================
+===========     START Shipping Method  CSS      =============
+==============================================================*/
+.shipping_method_background {
+    position: absolute;
+    top: 163px;
+    left: 622px;
+    width: 100%;
+    z-index: -1;
+}
+.shipping_method_background img {
+    width: 518px;
+    height: auto;
+    opacity: 0.5;
+}
+.shipping_method {
+    width: 574px;
+    height: auto;
+    margin: auto;
+}
+.shipping_menu_method {
+    margin-right: 100px;
+}
+.shipping_method_first {
+    height: auto;
+    padding: 12px 24px;
+    background: #324b4b;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    border-radius: 4px 4px 0px 0px;
+}
+.shipping_method_second {
+    border-radius: 0px 0px 4px 4px;
+    background: #6c8080;
+}
+.shipping_method_first_left h4 {
+    font-weight: 700;
+    font-size: 14px;
+    color: #fff;
+    margin-right: 38px;
+}
+.shipping_method_first_left p {
+    font-weight: 600;
+    font-size: 13px;
+    color: #c4c4c4;
+}
+.shipping_method_first_left {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.shipping_method_first_right a {
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+}
+.shipping_method_first_right p {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+}
+.shipping_method_header {
+    margin-top: 15px;
+}
+.shipping_method_header h4 {
+    margin-bottom: 3px;
+}
+.shipping_meth_bold {
+    font-weight: 700;
+    color: #fff;
+    font-size: 13px;
+}
+.shipping_method_btn {
+    margin-top: 60px;
+    width: 474px;
+}
+/*Start custom input radio*/
+.custom-radio-buttons .radio-wrapper {
+    display: inline-block;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin-right: 6px;
+}
+.custom-radio-buttons .radio-wrapper input[name="custom-radio"] {
+    display: none;
+}
+.custom-radio-buttons .radio-wrapper input[name="custom-radio"] + label {
+    color: #292321;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+.custom-radio-buttons .radio-wrapper input[name="custom-radio"] + label > span.outer {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin: -1px 4px 0 0;
+    border: 2px solid #cccccc;
+    vertical-align: middle;
+    cursor: pointer;
+    position: relative;
+    border-radius: 50%;
+    background-color: transparent;
+}
+.custom-radio-buttons .radio-wrapper input[name="custom-radio"] + label span.inner {
+    display: block;
+    position: absolute;
+    display: none;
+    width: 8px;
+    height: 8px;
+    left: 0;
+    right: 0px;
+    top: 0px;
+    bottom: 0;
+    margin: auto;
+    cursor: pointer;
+    border-radius: 50%;
+    background-color: grey;
+}
+.custom-radio-buttons .radio-wrapper input[name="custom-radio"]:checked + label span.inner {
+    background-color: #fff;
+    display: block;
+}
+/*End custom input radio*/
+/*==============================================================
+===========     END Shipping Method  CSS      =============
+==============================================================*/
+
+/*==============================================================
+===========     START mixxer earning popup  CSS   =============
+==============================================================*/
+.mixxer_learning_popup_background {
+    position: absolute;
+    top: 94px;
+    left: 575px;
+    width: 100%;
+    z-index: -1;
+}
+.mixxer_learning_popup_background img {
+    width: 645px;
+    height: auto;
+    opacity: 0.5;
+}
+.mixxer_earning_popup {
+    padding: 47px 187px 86px 164px;
+    background: #324b4b;
+    width: 774px;
+    height: auto;
+    position: relative;
+    margin: auto;
+    margin-bottom: 44px;
+    overflow: hidden;
+}
+.mixxer_earning_popup_profile {
+    margin: 0px;
+}
+.mixxer_earning_popup_title h4 {
+    color: #fff;
+    font-weight: 400;
+}
+.mixxer_earning_popup_title a {
+    color: #fff !important;
+}
+.mixxer_earning_popup_content {
+    text-align: right;
+}
+.mixxer_earning_popup_content h4 {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+}
+.mixxer_earning_popup_content p {
+    font-weight: 400;
+    font-size: 14px;
+    color: #fff;
+}
+.mixxer_hide_icon a img {
+    width: 30px;
+    height: auto;
+}
+.mixxer_hide_icon {
+    position: absolute;
+    top: 18px;
+    right: 22px;
+}
+.mixxer_earning_popup_overly {
+    position: absolute;
+    top: 10px;
+    right: 68px;
+}
+.mixxer_earning_popup_overly img {
+    width: 562px;
+    height: auto;
+}
+
+.mixxer_height {
+    height: 625px;
+}
+/*==============================================================
+===========     END Mixer erning popup  CSS      =============
+==============================================================*/
+
+/*==============================================================
+===========     Start Thank You 2 Page  CSS      =============
+==============================================================*/
+.thank_you2 {
+    padding: 81px 0px 241px 0px;
+    text-align: center;
+    border-radius: 4px;
+}
+.thank_you2_main_background_img {
+    position: absolute;
+    top: 148px;
+    left: 622px;
+    width: 100%;
+    z-index: -1;
+}
+.thank_you2_main_background_img img {
+    width: 518px;
+    height: auto;
+}
+.thank_you2 h4 {
+    font-family: "Baloo";
+    font-weight: 400;
+    font-size: 28px;
+    color: #fff;
+    line-height: 25px;
+    margin-bottom: 4px;
+}
+.thank_you2 p {
+    font-size: 14px;
+    color: #fff;
+    font-weight: 400;
+}
+.thank_you2_content {
+    margin-left: 71px;
+}
+
+.mixxer_earning_popup .thank_you2 {
+    position: relative;
+}
+
+.thank_you2_overly_background {
+    position: absolute;
+    top: 46px;
+    right: 128px;
+}
+.thank_you2_overly_background img {
+    width: 495px;
+    height: auto;
+}
+
+.thank_you2_height {
+    height: 705px;
+}
+/*==============================================================
+===========     End Thank You 2 Page  CSS      =============
+==============================================================*/
+
+/*==============================================================
+===========       Start Recepes Page  CSS      =============
+==============================================================*/
+.recepes_title h4 {
+    font-family: "Baloo";
+    font-weight: 400;
+    color: #000000;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+.recepes_background_img {
+    position: absolute;
+    top: 239px;
+    left: 807px;
+    width: 100%;
+    z-index: -1;
+}
+.recepes_background_img img {
+    width: 450px;
+    height: auto;
+}
+.single_recopies_items.single_recopies_items.single_recopies_items ul {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    padding-left: 10px;
+    margin-top: 24px;
+}
+.single_recopies_items ul li {
+    display: inline-block;
+    position: relative;
+    padding-left: 10px;
+    margin-bottom: 0px;
+}
+.single_recopies_items ul li:after {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 10px;
+    background: #ffd500;
+    border-radius: 8px;
+    left: 0;
+    top: 8px;
+}
+.single_recopies_items ul li:nth-child(2):after {
+    background: #dcef58;
+}
+.single_recopies_items ul li:nth-child(3):after {
+    background: #426bfd;
+}
+.single_recopies_items ul li:nth-child(4):after {
+    background: #dcdba9;
+}
+.single_recopies_items ul li span {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 60%;
+    color: #ffffff;
+}
+.single_recopies_items p {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 60%;
+    color: #ffffff;
+    margin-top: 9px;
+}
+.recopies_content_area {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+}
+.single_recopies_items {
+    background: #324b4b;
+    border-radius: 8px;
+    padding: 20px;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 calc((100% / 6) - 30px);
+    flex: 0 0 calc((100% / 6) - 30px);
+    margin-bottom: 10px;
+    margin-right: 30px;
+    width: 100%;
+}
+.recepes_single_left_item {
+    width: 172px;
+    height: auto;
+}
+
+.recepes_right_title h2 {
+    font-family: "Baloo";
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 20px;
+}
+.recepes_right_icon a:first-child {
+    margin-right: 16px;
+}
+.recepes_right_icon a .vmh_heart {
+    font-size: 20px;
+    transition: 0.3s ease;
+    color: red;
+}
+.recepes_right_icon a .vmh_heart {
+    font-size: 20px;
+    transition: 0.3s ease;
+    color: red;
+}
+.recepes_right_icon a .vmh_heart_grey {
+    color: grey;
+}
+
+.recepes_right_icon a img {
+    width: 21px;
+    height: auto;
+}
+
+.recepes_right_icon {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+.recepes_right_title_icon {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+
+.recepes_main_content {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+.recepes_right {
+    width: 876px;
+    height: auto;
+    padding: 77px 100px 83px 103px;
+}
+.recepes_right_site_right_content h6 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #324b4b;
+    margin-bottom: 10px;
+}
+.recepes_right_site_right_content p {
+    color: rgba(20, 29, 29, 0.5);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 192%;
+}
+.recepes_right_site_right_content {
+    margin-top: 60px;
+}
+
+.recepes_right_mini {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+.recepes_right_site_left {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 58%;
+    flex: 0 0 58%;
+}
+.recepes_right_site_right {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 38%;
+    flex: 0 0 38%;
+}
+
+.recepes_right_left_content p {
+    font-size: 13px;
+    color: #324b4b;
+    font-weight: 400;
+    margin: 15px 0px 25px 0px;
+}
+
+.recepes_right_left_input_code_header h5 {
+    font-size: 14px;
+    color: #324b4b;
+    font-weight: 700;
+    margin-bottom: 9px;
+}
+.recepes_single_ingridient_item h5 {
+    color: rgba(50, 75, 75, 0.6);
+    font-weight: 700;
+    font-size: 14px;
+    margin-right: 10px;
+}
+.recepes_single_ingridient_item input {
+    border: none;
+    text-align: left;
+    color: #324b4b;
+    font-size: 14px;
+    font-weight: 400;
+    width: 100%;
+}
+.recepes_single_ingridient_item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border: 1px solid #141d1d;
+    border-radius: 4px;
+    padding: 5px 22px 5px 17px;
+    margin-bottom: 10px;
+}
+.recepes_profile {
+    margin: 0px 0px 34px 0px;
+}
+
+.recepes_single_choose_option_left h4 {
+    font-weight: 700;
+    font-size: 13px;
+    color: #324b4b;
+    margin-right: 10px;
+}
+.recepes_single_choose_option_left a i {
+    background: #324b4b;
+    font-size: 11px;
+    color: #fff;
+    padding: 5px 7px;
+    border-radius: 50%;
+}
+.recepes_single_choose_option_left {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.recepes_single_choose_option {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: center;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+/*Start Custom Select*/
+.custom-select {
+    position: relative;
+    font-family: Arial;
+}
+.custom-select select {
+    display: none; /*hide original SELECT element:*/
+}
+.select-selected {
+    background-color: DodgerBlue;
+}
+.select-selected:after {
+    position: absolute;
+    content: "";
+    right: 10px;
+    top: 50%;
+    transform: translateY(-20%);
+    width: 0;
+    height: 0;
+    border: 7px solid transparent;
+    border-color: #fff transparent transparent transparent;
+}
+.select-selected.select-arrow-active:after {
+    border-color: transparent transparent #fff transparent;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-90%);
+}
+.select-items div,
+.select-selected {
+    color: #ffffff;
+    padding: 2px 20px 2px 5px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 150px;
+    font-size: 12px;
+    font-weight: 700;
+    background: #324b4b;
+}
+.select-items {
+    position: absolute;
+    background-color: DodgerBlue;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    width: 71px;
+}
+.select-hide {
+    display: none;
+}
+.select-items div:hover,
+.same-as-selected {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+/*End Custom Select*/
+.recepes_choose_option {
+    margin-top: 35px;
+}
+.recepes_btn {
+    margin-top: 58px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+}
+.recepes_btn input {
+    font-size: 14px;
+    font-weight: 700;
+}
+.recepes_btn p {
+    margin-top: 6px;
+}
+.recepes_btn_content {
+    text-align: center;
+}
+
+/*==============================================================
+===========       END Recepes Page  CSS      =============
+==============================================================*/
+
+/*==============================================================
+===========       Start Recepes Order Page  CSS      =============
+==============================================================*/
+.recipes_order {
+    box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.25);
+    border-radius: 4px;
+    background: #fff;
+}
+.recipes_order_background_img {
+    position: absolute;
+    top: 242px;
+    left: 840px;
+    width: 100%;
+    z-index: -1;
+}
+.recipes_order_background_img img {
+    width: 450px;
+    height: auto;
+}
+.recipes_order_btn_content {
+    text-align: right;
+}
+.recipes_order_btn {
+    margin: 0px;
+}
+.recipes_order_tags {
+    margin-top: 40px;
+}
+.recipes_order_tags h6 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #324b4b;
+    margin-bottom: 16px;
+}
+.recipes_order_single_tag span {
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 23.8px;
+    color: #fff;
+    padding: 2px 13px;
+    background: #7aa637;
+    border-radius: 4px;
+    display: inline-block;
+    margin-right: 3px;
+}
+.recipes_order_single_tag a:first-child {
+    margin-right: 10px;
+}
+.recipes_order_single_tag {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin-bottom: 10px;
+}
+.recipes_order_single_tag_plus_img a img {
+    width: 25px;
+    height: auto;
+}
+.recipes_order_single_tag_plus_img {
+    margin-left: 28px;
+    position: relative;
+}
+.recipes_order_single_tag_plus {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+}
+
+/*==============================================================
+===========       END Recepes Order Page  CSS      =============
+==============================================================*/
+
+/*==============================================================
+===========  Start Recepes Advance Page  CSS      =============
+==============================================================*/
+.recipe_advance_background_img {
+    position: absolute;
+    top: 188px;
+    left: 722px;
+    width: 100%;
+    z-index: -1;
+}
+.recipe_advance_background_img img {
+    width: 600px;
+    height: auto;
+}
+.recips_advance_select_border span {
+    width: 71px;
+    height: 27px;
+    border: 2px solid #324b4b;
+    padding: 1px 34px;
+    border-radius: 4px;
+}
+/*==============================================================
+===========  END Recepes Advance Page  CSS      =============
+==============================================================*/
+
+/*==============================================================
+===========          Start Cart Page  CSS         =============
+==============================================================*/
+.cart_header h4 {
+    font-family: "Baloo";
+    font-weight: 400;
+    font-size: 20px;
+    color: #000000;
+}
+.cart_header {
+    margin-bottom: 10px;
+}
+.cart_single_item {
+    width: 202px;
+    height: auto;
+}
+.cart_single_item_flex_right a img {
+    width: 14px;
+    height: auto;
+}
+.cart_single_item_flex {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+.cart_single_item_content {
+    margin-top: 30px;
+}
+.cart_single_item_content p {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 10.2px;
+}
+.cart_single_boxs {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+}
+.cart_single_item {
+    width: 202px;
+    height: auto;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 18%;
+    flex: 0 0 18%;
+    margin-right: 10px;
+}
+.cart_header2 {
+    margin-top: 99px;
+}
+.cart_btn {
+    margin-top: 38px;
+}
+.cart_btn input {
+    font-size: 14px;
+}
+/*==============================================================
+===========          END Cart Page  CSS         =============
+==============================================================*/
+
+/*==============================================================
+===========      Start MY ORDER Page  CSS         =============
+==============================================================*/
+.my_order_background {
+    position: absolute;
+    top: 259px;
+    left: 106px;
+    width: 100%;
+    z-index: -1;
+}
+.my_order_background img {
+    width: 986px;
+    height: auto;
+}
+.my_order_header h4 {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 30.77px;
+    margin-bottom: 5px;
+}
+.my_order_header_content_left p {
+    font-size: 14px;
+    font-weight: 600;
+    margin-right: 165px;
+    color: #141d1d;
+}
+.my_order_header_content {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.my_order_header_content_right ul li a {
+    font-size: 14px;
+    font-weight: 600;
+    color: #324b4b;
+    margin-right: 30px;
+}
+.my_order_header_content_right ul {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+.my_order_header {
+    margin-bottom: 15px;
+}
+.my_order_single_item_middle img {
+    width: 85px;
+    height: auto;
+}
+.my_order_single_item_middle p {
+    font-size: 11px;
+    font-weight: 400;
+    color: #fff;
+}
+.my_order_single_item_middle {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: first baseline;
+    -ms-flex-align: first baseline;
+    align-items: first baseline;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+.cart_single_item_content {
+    margin-top: 24px;
+}
+.my_order_item_flex {
+    -webkit-box-align: inherit;
+    -ms-flex-align: inherit;
+    -ms-grid-row-align: inherit;
+    align-items: inherit;
+}
+
+.my_order_header2_content_left p {
+    margin-right: 25px;
+}
+.my_order_btn {
+    margin-top: 0px;
+}
+.my_order_btn input {
+    width: 122px;
+    height: 31px;
+}
+.my_cart_2nd_box {
+    margin-top: 80px;
+}
+
+.my_order_next_btn {
+    margin-top: 60px;
+}
+.my_order_next_btn ul li a img {
+    width: 14px;
+    height: auto;
+}
+.my_order_next_btn ul {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+}
+.my_order_next_btn ul li a {
+    font-weight: 700;
+    font-size: 12px;
+    color: #324b4b;
+}
+.my_order_next_btn ul li a img:first-child {
+    margin-right: 8px;
+}
+.my_order_next_btn ul li a img:last-child {
+    margin-left: 10px;
+}
+.userdash_profile_title a {
+    font-family: "Baloo";
+    font-size: 20px;
+    font-weight: 400;
+    color: #000000;
+}
+
+/*==============================================================
+===========      END MY ORDER Page  CSS         =============
+==============================================================*/
+
+/*==============================================================
+===========      Start Payment Page  CSS         =============
+==============================================================*/
+.single_box_radio {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border: 1px solid #141d1d;
+    border-radius: 4px;
+    padding: 0px 23px;
+}
+.single_box_radio input[type="radio"] {
+    opacity: 0;
+}
+.single_box_radio label {
+    padding-left: 6px;
+    cursor: pointer;
+}
+.single_box_radio label:before {
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    top: 16px;
+    left: 20px;
+    content: "";
+    display: inline-block;
+    border-radius: 50px;
+    border: 2px solid #141d1d;
+    background: #fff;
+}
+.single_box_radio input[type="radio"] {
+    margin: 0px;
+}
+.single_box_radio input[type="radio"]:disabled + label:before {
+    background-color: #141d1d;
+}
+.single_box_radio input[type="radio"]:checked + label:after {
+    content: "";
+    position: absolute;
+    top: 20px;
+    left: 24px;
+    display: inline-block;
+    font-size: 12px;
+    width: 10px;
+    height: 10px;
+    background-color: #141d1d;
+    border-radius: 50px;
+}
+.single_box_radio-default input[type="radio"]:checked + label:before {
+    border-color: #141d1d;
+}
+.single_box_radio-primary input[type="radio"]:checked + label:before {
+    border-color: #141d1d;
+}
+.single_box_radio-primary input[type="radio"]:checked + label:after {
+    background-color: #141d1d;
+}
+.single_box_radio label img {
+    max-width: 50px;
+    width: 100%;
+}
+.payments_top_area {
+    width: 100%;
+    margin: auto;
+}
+.single_box_radio2 {
+    border: none;
+    position: relative;
+}
+.single_box_radio_pos {
+    position: absolute;
+    top: 14px;
+    left: 45px;
+}
+.single_box_radio_pos p {
+    font-size: 12px;
+    font-weight: 400;
+    color: #141d1d;
+}
+.payment_main_content {
+    width: 575px;
+    height: auto;
+    margin: auto;
+}
+.payment_box_mt {
+    margin-top: 20px;
+}
+.recepes_single_ingridient_item_payment {
+    padding: 10px 22px 10px 17px;
+}
+.payment_btn {
+    text-align: center;
+    margin: auto;
+    width: 575px;
+    margin-top: 80px;
+}
+.recepes_single_ingridient_item_payment input:first-child {
+    text-align: left;
+}
+.recepes_single_ingridient_item_payment input {
+    background: transparent;
+}
+.payment_billing_addr_head p {
+    font-weight: 400;
+    font-size: 13px;
+    color: #000;
+}
+.payment_billing_addr_head {
+    margin-top: 60px;
+    margin-bottom: 15px;
+}
+.payment_box_full {
+    width: 100%;
+}
+.single_box_radio_pos2 p {
+    font-size: 13px;
+}
+.payment_billing_addr {
+    border: 1px solid #000;
+    padding-bottom: 16px;
+    border-radius: 4px;
+}
+.payment_login_box {
+    background: #fff;
+    padding: 40px 71px 40px 32px;
+    box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.25);
+    border-radius: 4px;
+    margin-top: 20px;
+}
+.single_box_radio3 {
+    border: none;
+    position: relative;
+    margin-top: -25px;
+    padding-bottom: 20px;
+    margin-left: -20px;
+}
+.radio_btn {
+    padding-top: 14px;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 170.3%;
+    color: #141d1d;
+}
+.radio_btn_2 {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 170.3%;
+    color: #141d1d;
+    padding-top: 13px;
+}
+/*==============================================================
+===========      END Payment Page  CSS         =============
+==============================================================*/
+
+/*============================= Start Update Css ===========================*/
+/*Start choose select list*/
+.select-items {
+    left: -78px;
+    width: 150px;
+    padding: 15px 8px 30px 8px;
+    z-index: 99;
+    background: #ffffff;
+    box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+}
+.select-items div {
+    background: #fff;
+    color: #324b4b;
+    border-bottom: none;
+    width: 100%;
+    padding: 5px 0px 5px 8px;
+}
+.select-items div:hover {
+    background: #324b4b;
+    color: #fff;
+}
+
+/*/////// End choose select list*/
+
+/*////// Start Subscribe Popup*/
+.subscribe_mail_popup {
+    width: 600px;
+    padding: 25px 0px 75px 0px;
+    background: #ffffff;
+    box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+}
+.subscribe_mail_popup_header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.subscribe_mail_popup_header img {
+    width: 53px;
+    height: auto;
+    margin-bottom: 20px;
+}
+.subscribe_mail_popup span {
+    font-size: 23px;
+    color: #324b4b;
+    font-weight: 400;
+    margin-bottom: 0px;
+    display: flex;
+    justify-content: center;
+}
+.subscribe_mail {
+    position: relative;
+}
+.subscribe_hide {
+    position: absolute;
+    top: -131px;
+    right: -217px;
+    display: none;
+}
+.subscribe_hide_icon {
+    position: absolute;
+    top: 24px;
+    right: 38px;
+}
+.subscribe_hide_icon a img {
+    width: 19px;
+    height: auto;
+}
+/*home page*/
+.home_page_subscribe_popup_parent {
+    position: relative;
+}
+.home_page_subscribe_popup {
+    position: absolute;
+    top: 24px;
+    right: 38px;
+}
+.home_page_subscribe_popup_parent {
+    display: none;
+}
+/*contact page rating popup*/
+.contact_rating_popup {
+    position: relative;
+}
+/*/////// End Subscribe Popup*/
+
+/*/////// Start save recieved Popup*/
+.recipes_order_btn_content {
+    position: relative;
+}
+.save_recieved_hde {
+    position: absolute;
+    top: -505px;
+    right: -166px;
+    display: none;
+    z-index: 9;
+}
+/*/////// End save recieved Popup*/
+
+/*/////// Start recepes tag type*/
+.recepes_tag_type_input {
+    background: #fff;
+    padding: 33px 33px 51px 33px;
+    box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+}
+.recepes_tag_type_input input[placeholder] {
+    border: 1px solid #141d1d;
+    font-size: 14px;
+    color: #324b4b;
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+.recipes_order_single_tag {
+    position: relative;
+}
+.recepes_tag_type_input {
+    position: absolute;
+    top: 39px;
+    right: -98px;
+    z-index: 88;
+}
+.recepes_tag1 {
+    display: none;
+}
+.recepes_tag_type_input.recepes_tag1.recepes_tag2 {
+    width: 280px;
+    top: 40px;
+    right: -40px;
+}
+/*/////// End recepes tag type*/
+
+/*/////// Start Send Popup (Contact page)*/
+.single_btn_ct_area {
+    position: relative;
+}
+.send_popup {
+    position: absolute;
+    top: -20px;
+    right: -261px;
+    display: none;
+}
+/*/////// End Send Popup (Contact page)*/
+
+/*/////// Start Edit Profile Popup ( user dashbaord page )*/
+.user_dashboard_header_btn {
+    position: relative;
+}
+.edit_profile_popup {
+    position: absolute;
+    top: 0;
+    right: -500px;
+    padding: 60px 85px 36px 104px;
+    width: 490px;
+}
+.edit_profile_btn_popup {
+    margin: auto;
+    margin-top: 42px;
+    width: 172px;
+}
+.recepes_tag_type_input input {
+    padding: 0px 10px;
+}
+.edit_profile_popup label {
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #324b4b;
+}
+.recepes_tag_type_input.edit_profile_popup.change_pass input {
+    border-radius: 4px;
+    border: 2px solid #324b4b;
+    padding: 5px 10px;
+}
+.edit_profile_popup input {
+    margin-bottom: 10px;
+    width: 272px;
+}
+.logon_input_btn.logon_input_btn2.logon_input_btn3.edit_profile_btn_popup input {
+    width: 100%;
+}
+.edit_profile_popup_hide {
+    display: none;
+}
+/*/////// End Edit Profile Popup ( user dashbaord page )*/
+
+/*/////// Start Change Password Popup ( user dashbaord page )*/
+.userdash_change_password_btn {
+    position: relative;
+}
+.change_pass {
+    position: absolute;
+    top: -113px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    display: none;
+}
+.userdash_change_password_btn a:last-child {
+    border: none;
+}
+/*/////// End Change Password Popup ( user dashbaord page )*/
+
+/*/////// Start Add Address Popup ( user dashbaord page )*/
+.add_address_popup_parent {
+    position: relative;
+}
+.add_address_popup {
+    position: absolute;
+    top: -377px;
+    left: -115px;
+    display: none;
+}
+.recepes_tag_type_input.edit_profile_popup.add_address_popup input {
+    background: none;
+    border: 1px solid #000;
+    color: #000;
+}
+.recepes_tag_type_input.edit_profile_popup.add_address_popup input:last-child {
+    background: #344242;
+    color: #fff;
+}
+/*/////// End Add Address Popup ( user dashbaord page )*/
+
+/*/////// Start Contact Page Rating */
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    font-size: 60px;
+    justify-content: space-around;
+    padding: 0 0.2em;
+    text-align: center;
+    width: 5em;
+    margin: auto;
+}
+.star-rating input {
+    display: none;
+}
+.star-rating label {
+    color: #ccc;
+    cursor: pointer;
+}
+.star-rating :checked ~ label {
+    color: #f90;
+}
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: #fc0;
+}
+article {
+    background-color: #ffe;
+    box-shadow: 0 0 1em 1px rgba(0, 0, 0, 0.25);
+    color: #006;
+    font-family: cursive;
+    font-style: italic;
+    margin: 4em;
+    max-width: 30em;
+    padding: 2em;
+}
+
+.contact_rating_popup {
+    padding: 80px 0px 88px 0px;
+}
+.contact_rating_popup h3 {
+    font-size: 30px;
+}
+.contact_rating_popup_heade {
+    margin-bottom: 0px;
+}
+.contact_popup_textarea {
+    text-align: center;
+    margin-top: 10px;
+}
+.contact_popup_textarea textarea {
+    width: 400px;
+    height: 160px;
+    border-radius: 4px;
+    border: 2px solid #324b4b;
+    padding: 10px;
+    resize: none;
+}
+
+.single_btn_ct_area {
+    position: relative;
+}
+.contact_page_rating {
+    position: absolute;
+    top: -120px;
+    right: -200px;
+    display: none;
+}
+/*/////// End Contact Page Rating */
+
+/*/////// Start index page overly */
+.single_recopies_items {
+    position: relative;
+    min-height: 150px;
+}
+.single_recopies_items_overly {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #324b4b;
+    opacity: 0;
+    visibility: hidden;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+.single_recopies_items:hover .single_recopies_items_overly {
+    visibility: visible;
+    opacity: 0.9;
+}
+.single_recopies_items_overly_item {
+    display: flex;
+    flex-direction: column;
+}
+.single_recopies_items_overly_item a {
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    background: #6f9e9e;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    padding: 3px 8px 3px 8px;
+}
+/*/////// End index page overly */
+
+/*/////// Start submit input button*/
+.logon_input_btn a:last-child input {
+    font-weight: 400;
+    font-size: 13px;
+}
+.recepes_btn_content a input {
+    font-weight: 700 !important;
+}
+/*rating_btn*/
+.logon_input_btn.shipping_address_btn.shipping_method_btn.payment_btn.rating_btn {
+    justify-content: flex-end;
+    margin-top: 30px;
+    width: 400px;
+}
+.rating_btn input {
+    height: 33px;
+    width: 101px;
+}
+/*/////// End submit input button*/
+
+/*/////// POPUP Overly*/
+.popup_overly {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #cccccc;
+    opacity: 0.9;
+    z-index: 1;
+}
+.submit_thanked {
+    display: none;
+    top: -290px;
+}
+/*/////// Main icon rating*/
+.shiping_icon_area {
+    position: relative;
+}
+.main_icon_ratine {
+    position: absolute;
+    top: 75px;
+    left: -321px;
+    display: none;
+}
+.login_create_btn {
+    position: relative;
+}
+.create_acc_pages {
+    display: none;
+    position: absolute;
+    top: -470px;
+    left: -100px;
+}
+.logon_input_btn4 a {
+    border-radius: 4px;
+    background: #324b4b;
+    color: #fff;
+    font-size: 13px;
+    border: 1px solid transparent;
+    transition: 0.3s;
+    font-weight: 700;
+    display: inline-block;
+    padding: 8px 20px;
+    transition: 0.3s;
+}
+.logon_input_btn4 a:hover {
+    background: transparent;
+    border-color: #324b4b;
+    color: #324b4b;
+}
+.person_search_right {
+    position: relative;
+}
+.login_down_content.login_down_content2 p a,
+.login_down_content p a {
+    color: rgba(20, 29, 29, 0.5);
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-block;
+}
+.login_down_content_col {
+    margin: 0px 3px;
+}
+.myorder_btn a {
+    border-radius: 4px;
+    background: #324b4b;
+    color: #fff;
+    font-size: 13px;
+    border: 1px solid transparent;
+    transition: 0.3s;
+    font-weight: 700;
+    display: inline-block;
+    padding: 3px 18px;
+}
+.myorder_btn a:hover {
+    color: #324b4b;
+    background: transparent;
+    border-color: #324b4b;
+}
+.personal_go_btn a {
+    padding: 7px 29px;
+}
+.recips_advance_select_border input {
+    width: 71px;
+    height: 27px;
+    border: 2px solid #324b4b;
+    border-radius: 4px;
+    display: inline-block;
+    color: #324b4b;
+    padding: 0 2px;
+}
+.recepes_single_choose_option_left a {
+    position: relative;
+}
+.devgroup_1,
+.devgroup_2,
+.devgroup_3,
+.devgroup_4 {
+    position: absolute;
+    content: "";
+    width: 400px;
+    height: 350px;
+    background: #fff;
+    top: -348px;
+    left: 20px;
+    box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.25);
+    z-index: 10;
+    border-radius: 10px;
+    padding: 62px;
+    transition: 0.3s;
+}
+.devgroup_1,
+.devgroup_2,
+.devgroup_3,
+.devgroup_4 {
+    display: none;
+}
+.devgroup_1.active {
+    display: block !important;
+}
+.devgroup_2.active {
+    display: block !important;
+}
+.devgroup_3.active {
+    display: block !important;
+}
+.devgroup_4.active {
+    display: block !important;
+}
+.another_popupdev p {
+    color: rgba(20, 29, 29, 0.5);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 192%;
+}
+/*============================= End Update Css ===========================*/

@@ -1,0 +1,1052 @@
+@media all and (max-width: 1399px) {
+    .single_control_items {
+        padding: 41px 20px;
+    }
+}
+@media all and (max-width: 1199px) {
+    .menu_area {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 42%;
+        flex: 0 0 42%;
+    }
+    .right_work_img {
+        width: 390px;
+    }
+    .middle_work_area ul li:not(:last-child) {
+        width: 3px;
+        height: 90px;
+    }
+    .single_recopies_items {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 calc((100% / 4) - 30px);
+        flex: 0 0 calc((100% / 4) - 30px);
+    }
+    /*about us pages css*/
+    .single_control_items {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 calc(50% - 30px);
+        flex: 0 0 calc(50% - 30px);
+        margin-bottom: 30px;
+        padding: 41px 40px;
+    }
+    .left_about_work_area {
+        padding-left: 0;
+        padding-bottom: 170px;
+    }
+    .about_work_main_area {
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        margin-bottom: 80px;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+    .winner_monthe_main_area {
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -ms-grid-row-align: center;
+        align-items: center;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+    .winner_details_area:after {
+        width: 100%;
+        right: 0%;
+    }
+    .right_winner_content {
+        width: 100%;
+    }
+    /*contact pages css*/
+    .ct_left_pages_content {
+        margin-left: 30px;
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 60%;
+        flex: 0 0 60%;
+    }
+    .ct_right_pages_content {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 30%;
+        flex: 0 0 30%;
+    }
+    /*user Dasboard design*/
+    .user_background {
+        left: 450px;
+    }
+    /*recepies pages css*/
+    .recipes_order_single_tag_plus {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+    .recipes_order_single_tag_plus_img {
+        margin-left: 79px;
+    }
+    .cart_single_boxs {
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    }
+    .my_order_header_content_left.my_order_header2_content_left p {
+        margin-right: 25px;
+    }
+}
+@media all and (min-width: 992px) {
+    .menu ul {
+        display: -webkit-box !important;
+        display: -ms-flexbox !important;
+        display: flex !important;
+    }
+}
+@media all and (max-width: 991px) {
+    .header_content_area {
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+    }
+    .logo_area {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 30%;
+        flex: 0 0 30%;
+        -webkit-box-ordinal-group: -1;
+        -ms-flex-order: -2;
+        order: -2;
+    }
+    .menu_area {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 5%;
+        flex: 0 0 5%;
+    }
+    .shiping_cart_area {
+        -webkit-box-ordinal-group: 0;
+        -ms-flex-order: -1;
+        order: -1;
+    }
+    .menu ul {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        position: absolute;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        background: #324b4b;
+        width: 100%;
+        height: auto;
+        left: 0;
+        top: 74px;
+        z-index: 999;
+    }
+    .mobile-menu-icon {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: end;
+        -ms-flex-pack: end;
+        justify-content: flex-end;
+    }
+    .menu ul li a {
+        padding: 10px 0;
+        margin: 0;
+    }
+    .menu ul {
+        display: none;
+        text-align: center;
+    }
+    .work_details_area {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+    }
+    .left_work_txt {
+        text-align: center;
+    }
+    .middle_work_area {
+        margin-top: 25px;
+        margin-bottom: 25px;
+    }
+    .right_work_img {
+        width: 100%;
+        position: initial;
+        max-width: 450px;
+    }
+    .single_recopies_items {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 calc((100% / 3) - 30px);
+        flex: 0 0 calc((100% / 3) - 30px);
+    }
+    .footer_content_area {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+    .footer_left_area,
+    .footer_middle_area {
+        margin-bottom: 20px;
+    }
+    .subscribe_mail {
+        max-width: 275px;
+        width: 100%;
+    }
+    .footer_btm_area {
+        max-width: 100%;
+    }
+    /*about us pages css*/
+    .about_banner_text .left_work_txt p {
+        margin: auto;
+        margin-top: 10px;
+    }
+    .about_banner_text {
+        text-align: center;
+    }
+    .single_control_items {
+        margin: auto;
+        margin-bottom: 30px;
+        max-width: 380px;
+        width: 100%;
+    }
+    .control_main_content {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -ms-grid-row-align: center;
+        align-items: center;
+    }
+    .our_promise_main_area {
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -ms-grid-row-align: center;
+        align-items: center;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+    .right_our_promise_area {
+        -webkit-box-ordinal-group: 0;
+        -ms-flex-order: -1;
+        order: -1;
+    }
+    /*contact pages css*/
+    .contact_us_banner .about_banner_text:after {
+        width: 316.38px;
+        height: 231.7px;
+        left: 29%;
+        top: -230px;
+        background-size: 315px;
+    }
+    .contact_pages_form_data {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+    .ct_right_pages_content {
+        margin-top: 40px;
+    }
+    .ct_follow_us {
+        margin-top: 20px;
+    }
+    .ct_left_pages_content {
+        margin-left: 0;
+    }
+    /*login singup pages css*/
+    .sign_in_box {
+        width: 680px;
+    }
+    .login_input_left input {
+        width: 230px;
+    }
+    #log_in_2 {
+        width: 100%;
+    }
+    .person_search_left input {
+        width: 260px;
+    }
+    .person_cont_search {
+        margin-top: 25px;
+    }
+    .logon_input_btn5 {
+        padding: 40px 0px 85px 0px;
+    }
+    /*my favorite pages css*/
+    .my_favorite_area:after {
+        width: 615px;
+        height: 510px;
+        left: 120px;
+    }
+    /*recepes and other pages*/
+    .mixxer_earning_popup {
+        width: 685px;
+    }
+    .mixxer_earning_popup {
+        padding: 47px 100px 86px 100px;
+    }
+    .thank_you2 {
+        padding: 81px 0px 241px 0px;
+    }
+    .login_input {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+    .login_input_left input {
+        width: 100%;
+    }
+    .recepes_right_mini {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+    .recepes_right_site_right {
+        margin-top: 50px;
+    }
+    .recipes_order_single_tag_plus {
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+    }
+    .recipes_order_single_tag_plus_img {
+        margin-left: 28px;
+    }
+    .my_order_header_content_left p {
+        margin-right: 100px;
+    }
+    .submit_thanked {
+        width: 500px;
+        right: -22px;
+    }
+    .save_recieved_hde {
+        right: -88px;
+    }
+    .devgroup_1,
+    .devgroup_2,
+    .devgroup_3,
+    .devgroup_4 {
+        left: -140px;
+    }
+}
+@media all and (max-width: 767px) {
+    .single_recopies_items {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 calc((100% / 2) - 30px);
+        flex: 0 0 calc((100% / 2) - 30px);
+    }
+    .top_shiping_box h5 {
+        margin-left: 30px;
+    }
+    .logo_area {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 20%;
+        flex: 0 0 20%;
+        -webkit-box-ordinal-group: -1;
+        -ms-flex-order: -2;
+        order: -2;
+    }
+    /*about us pages css*/
+    .about_banner_btn {
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+    .winner_details_area {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -ms-grid-row-align: center;
+        align-items: center;
+    }
+    .winner_txt {
+        padding-left: 0;
+        margin-bottom: 30px;
+    }
+    /*start login  sing up pages css*/
+    .sign_in_box {
+        width: 500px;
+    }
+    .login_input {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+    .login_input_left input {
+        width: 100%;
+    }
+    .sign_in_box {
+        padding: 45px 50px 90px 50px;
+    }
+    .sing_in_header p {
+        margin-bottom: 40px;
+    }
+    .login_social {
+        margin-top: 46px;
+    }
+    .login_main {
+        padding: 166px 0px 85px 0px;
+    }
+    .person_cont_search {
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -ms-grid-row-align: center;
+        align-items: center;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+    .person_content p {
+        margin-bottom: 6px;
+    }
+    .sing_in_header.personlisation_1_headser {
+        text-align: center;
+    }
+    .person_btn_skip {
+        margin-top: 45px;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+    }
+    .person_search_box {
+        margin-top: 35px;
+    }
+    .person_search_left input {
+        padding: 0px 15px 0px 40px;
+    }
+    .thank_hide_btn {
+        top: 20px;
+        right: 25px;
+    }
+    .height_long {
+        height: 524px;
+    }
+    .userdash_profile {
+        margin: 35px 0px 25px -30px;
+    }
+    .userdash_change_password_btn {
+        margin: 35px 0px 60px 0px;
+    }
+    .logon_input_btn5 {
+        padding: 40px 0px 20px 0px;
+    }
+    .userdash_your_address_loca_text p {
+        margin-right: 37px;
+    }
+    .thank_profile_img img {
+        width: 70px;
+        height: 70px;
+    }
+    /*recepes and other pages css*/
+    .mixxer_earning_popup {
+        width: 500px;
+    }
+    .mixxer_earning_popup {
+        padding: 10px 70px 60px 70px;
+    }
+    .mixxer_height {
+        height: 557px;
+    }
+    .mixxer_earning_popup.thank_you2 {
+        padding: 50px 0px 160px 0px;
+    }
+    .thank_you2_overly_background img {
+        width: 363px;
+    }
+    .thank_you2_overly_background {
+        right: 77px;
+    }
+    .thank_you2_content {
+        margin-left: 0px;
+    }
+    .shipping_method {
+        width: 475px;
+    }
+    .shipping_menu_method {
+        margin-right: 0px;
+    }
+    .recepes_main_content {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+    .userdash_profile.mixxer_earning_popup_profile.recepes_profile {
+        margin-left: 0px;
+    }
+    .recepes_left {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+    }
+    .single_recopies_items {
+        margin-right: 0px;
+        margin-bottom: 20px;
+    }
+    .recepes_right {
+        width: 100%;
+        padding: 50px 80px 60px 80px;
+    }
+    .recepes_right_site_right_content {
+        margin-top: 40px;
+    }
+    .userdash_profile {
+        margin: -30px 0px 25px -30px;
+    }
+    .recepes_right.recepes_right_no_paddi {
+        padding: 30px 0px 60px 0px;
+    }
+    .single_recopies_items.cart_single_item {
+        margin-right: 20px;
+    }
+    .my_order_header_content {
+        -webkit-box-align: start;
+        -ms-flex-align: start;
+        -ms-grid-row-align: flex-start;
+        align-items: flex-start;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+    .my_order_header_content_left p {
+        margin-right: 0px;
+        margin-bottom: 20px;
+    }
+    .logon_input_btn2 input {
+        width: 202px;
+    }
+    .payment_main_content {
+        width: 500px;
+    }
+    .payment_login_box {
+        padding: 40px 32px 40px 32px;
+    }
+    .logon_input_btn.logon_input_btn2.shipping_address_btn.shipping_method_btn.payment_btn {
+        width: 100%;
+    }
+    .submit_thanked {
+        width: 430px;
+    }
+    .create_acc_pages {
+        left: -50px;
+    }
+    .main_icon_ratine {
+        left: -240px;
+        width: 490px;
+    }
+    .contact_popup_textarea {
+        width: 85%;
+        margin: auto;
+        margin-top: 10px;
+    }
+    .contact_popup_textarea textarea {
+        width: 100%;
+    }
+    .save_recieved_hde {
+        right: -35px;
+    }
+}
+@media all and (max-width: 575px) {
+    h3 {
+        font-size: 32px;
+    }
+    .shiping_cart_area {
+        -webkit-box-ordinal-group: -2;
+        -ms-flex-order: -3;
+        order: -3;
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+    .logo_area {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 50%;
+        flex: 0 0 50%;
+        -webkit-box-ordinal-group: -1;
+        -ms-flex-order: -2;
+        order: -2;
+    }
+    .menu_area {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 50%;
+        flex: 0 0 50%;
+    }
+    .menu ul {
+        top: 118px;
+    }
+    /*Home pages css*/
+    .banner_content_area h2 {
+        font-size: 48px;
+    }
+    .banner_content_area h1 {
+        font-size: 65px;
+    }
+    /*about us pages css*/
+    .left_about_work_area .middle_work_area ul li a p {
+        right: -218px;
+        width: 186px;
+        top: -45px;
+    }
+    .left_about_work_area .middle_work_area ul li:nth-child(2) a p {
+        right: 15px;
+        top: -50px;
+    }
+    .left_about_work_area .middle_work_area ul li:nth-child(4) a p {
+        right: 15px;
+        top: 0;
+    }
+    .about_us_banner {
+        padding-top: 200px;
+    }
+    /*contact pages css*/
+    .contact_us_banner {
+        padding-top: 180px;
+    }
+    .contact_us_banner .about_banner_text:after {
+        display: none;
+    }
+    .contact_us_banner .about_banner_text {
+        margin-top: 120px;
+    }
+    .ct_left_pages_content {
+        padding: 30px 20px;
+    }
+    /*start sing up login pages css*/
+    .sign_in_box {
+        width: 400px;
+    }
+    .sign_in_box {
+        padding: 35px 35px 60px 35px;
+    }
+    .login_social {
+        margin-top: 30px;
+    }
+    .sing_in_header p {
+        margin-bottom: 30px;
+    }
+    .logon_input_btn input {
+        height: 35px;
+        width: 90px;
+    }
+    .login_social_icon a {
+        padding: 7px 0px;
+    }
+    .logon_input_btn2 input {
+        width: 173px;
+    }
+    .create_chekbox {
+        margin-top: 30px;
+    }
+    .login_input_left input {
+        height: 35px;
+    }
+    .person_search_left input {
+        padding: 0px 15px 0px 30px;
+    }
+    .thank_hide_btn {
+        top: 15px;
+        right: 20px;
+    }
+    .height_long {
+        height: 468px;
+    }
+    .user_dashboard {
+        padding-left: 0px;
+    }
+    .userdash_profile {
+        margin: 35px 0px 25px 0px;
+    }
+    .logon_input_btn7 input {
+        width: 135px;
+        height: 35px;
+    }
+    .user_dashboard_header_title h4 {
+        margin-right: 20px;
+    }
+    /*recepes and other pages css*/
+    .mixxer_earning_popup {
+        padding: 1px 50px 40px 50px;
+    }
+    .mixxer_earning_popup {
+        width: 395px;
+    }
+    .mixxer_earning_popup {
+        margin-bottom: 0px;
+    }
+    .mixxer_height {
+        height: 508px;
+    }
+    .mixxer_height {
+        height: 452px;
+    }
+    .login_main.create_account.shopping_method_main_padd {
+        margin-top: 40px;
+    }
+    .shipping_method {
+        width: 410px;
+    }
+    .shipping_method_first {
+        width: 100%;
+    }
+    .shipping_method_btn {
+        margin-top: 50px;
+        width: 410px;
+    }
+    .userdash_profile {
+        margin: 0px 0px 25px -30px;
+    }
+    .recepes_right {
+        padding: 40px 50px 50px 50px;
+    }
+    .recepes_right_site_right {
+        margin-top: 40px;
+    }
+    .single_recopies_items.cart_single_item {
+        margin-right: 0px;
+    }
+    .cart_single_boxs {
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+    }
+    .cart_header2 {
+        margin-top: 50px;
+    }
+    .cart_btn {
+        margin-top: 20px;
+    }
+    .my_cart_2nd_box {
+        margin-top: 40px;
+    }
+    .logon_input_btn2 input {
+        width: 202px;
+    }
+    .payment_main_content {
+        width: 100%;
+    }
+    .create_acc_pages {
+        left: -35px;
+    }
+    .main_icon_ratine {
+        left: -150px;
+        width: 390px;
+        top: 100px;
+    }
+    .logon_input_btn.shipping_address_btn.shipping_method_btn.payment_btn.rating_btn {
+        width: 100%;
+        padding-right: 30px;
+    }
+}
+@media all and (max-width: 450px) {
+    h2 {
+        font-size: 36px;
+    }
+    h3 {
+        font-size: 26px;
+    }
+    .main_recopies_area {
+        width: 90%;
+        margin: auto;
+        margin-bottom: 100px;
+    }
+    .footer_btm_area {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+    .single_recopies_items {
+        margin-right: 0px;
+    }
+    .pagiation_area .paginations {
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        margin-right: 0;
+    }
+    .recopies_content_area {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+    .top_shiping_box h5 {
+        margin-left: 15px;
+    }
+    .shiping_icon_area ul li a svg {
+        margin-left: 10px;
+        display: inline-block;
+    }
+    /*Home pages css*/
+    .banner_content_area h2 {
+        font-size: 38px;
+        line-height: 50px;
+    }
+    .banner_content_area h1 {
+        font-size: 50px;
+    }
+    /*about us pages css*/
+    .left_about_work_area .middle_work_area ul li a p {
+        display: none;
+    }
+    .left_about_work_area .middle_work_area ul li:nth-child(4) a span {
+        right: 85px;
+    }
+    .left_about_work_area .middle_work_area ul li:nth-child(4) a:before {
+        width: 80px;
+    }
+    .control_main_content {
+        margin-top: 80px;
+        margin-bottom: 80px;
+    }
+    .single_control_items {
+        padding: 35px 20px;
+    }
+    .about_banner_btn a:nth-child(1) {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    .about_banner_btn {
+        text-align: center;
+    }
+    .winner_txt h5 {
+        font-size: 20px;
+    }
+    /*contact us pages css*/
+    .contact_us_banner .about_banner_text {
+        margin-top: 70px;
+    }
+    .contact_pages_form_data {
+        margin-bottom: 30px;
+    }
+    /*start login singup pages css*/
+    .sign_in_box {
+        width: 285px;
+    }
+    .sign_in_box {
+        padding: 20px 10px 40px 10px;
+    }
+    .login_main {
+        padding: 166px 0px 60px 0px;
+    }
+    .logon_input_btn2 {
+        text-align: left;
+    }
+    .person_search_left input {
+        width: 200px;
+        height: 35px;
+    }
+    .person_btn_skip {
+        margin-top: 35px;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+    }
+    .person_search_left input {
+        padding: 0px 15px 0px 20px;
+    }
+    .logon_input_btn4 {
+        text-align: center;
+    }
+    .thank_hide_btn {
+        top: 6px;
+        right: 8px;
+    }
+    .height_long {
+        height: 408px;
+    }
+    .logon_input_btn3 {
+        padding-right: 0px;
+    }
+    .userdash_profile {
+        margin: 30px 0px 25px 0px;
+    }
+    .userdash_change_password_btn {
+        margin: 35px 0px 50px 0px;
+    }
+    .logon_input_btn5 {
+        padding: 20px 0px 0px 0px;
+    }
+    .userdash_change_password_btn a {
+        padding: 6px 17px;
+    }
+    /*recepes and other pages css*/
+    .mixxer_earning_popup {
+        width: 287px;
+    }
+    .mixxer_earning_popup_profile {
+        margin: 20px 0px 20px 0px;
+    }
+    .mixxer_earning_popup_title a {
+        color: #fff !important;
+        font-size: 17px;
+    }
+    .mixxer_earning_popup_content {
+        text-align: left;
+    }
+    .mixxer_earning_popup_content h4 {
+        font-size: 17px;
+    }
+    .mixxer_earning_popup_content p {
+        font-size: 11px;
+    }
+    .mixxer_height {
+        height: 447px;
+    }
+    .thank_you2 h4 {
+        margin-bottom: 10px;
+    }
+    .thank_you2_overly_background {
+        right: 17px;
+        top: 68px;
+    }
+    .thank_you2_overly_background img {
+        width: 257px;
+    }
+    .mixxer_height {
+        height: 458px;
+    }
+    .shipping_method {
+        width: 287px;
+    }
+    .shipping_method_low_flex {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+    .shipping_method_first_left h4 {
+        margin-right: 0px;
+    }
+    .shipping_method_first {
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -ms-grid-row-align: center;
+        align-items: center;
+    }
+    .shipping_method_btn {
+        width: 287px;
+    }
+    .shipping_address_btn a {
+        text-align: center;
+        margin-right: 35px;
+    }
+    .userdash_profile {
+        margin: 0px 0px 25px -30px;
+    }
+    .single_recopies_items.recepes_single_left_item {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+    }
+    .recepes_right {
+        width: 100%;
+        padding: 30px 20px 40px 20px;
+    }
+    .recepes_right_title h2 {
+        font-size: 30px;
+    }
+    .recepes_right_site_right_content {
+        margin-top: 30px;
+    }
+    .recipes_order_single_tag_plus {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+    .recipes_order_single_tag_plus_img {
+        margin-left: 79px;
+    }
+    .recepes_single_choose_option_left {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: inherit;
+        -ms-flex-align: inherit;
+        align-items: inherit;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+    .single_recopies_items.cart_single_item {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+    }
+    .single_recopies_items.cart_single_item {
+        width: 100%;
+    }
+    .recepes_tag_type_input.recepes_tag1.recepes_tag2 {
+        width: 280px;
+        top: 40px;
+        right: -162px;
+    }
+    .submit_thanked {
+        width: 280px;
+        right: -16px;
+        text-align: center;
+    }
+    .create_acc_pages {
+        left: -10px;
+    }
+    .recepes_tag_type_input.recepes_tag1.recepes_tag2.personal_search_tag {
+        right: -18px;
+    }
+    .skip_btn_area {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+    .skip_btn_area .person_skip {
+        margin-top: 10px;
+    }
+    .main_icon_ratine {
+        left: -122px;
+        width: 295px;
+        top: 100px;
+    }
+    .save_recieved_hde {
+        right: -18px;
+        width: 285px;
+    }
+    .devgroup_1,
+    .devgroup_2,
+    .devgroup_3,
+    .devgroup_4 {
+        width: 250px;
+        left: 0px;
+        padding: 20px;
+    }
+}
