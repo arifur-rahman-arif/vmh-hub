@@ -9,7 +9,7 @@ Tags: ecommerce, woocommerce, one-column, custom-background, custom-colors, cust
 
 **Requires at least:** 5.0
 
-**Tested up to: **5.8
+**Tested up to:** 5.8
 
 **Requires PHP:** 7.0
 
