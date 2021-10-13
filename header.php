@@ -40,7 +40,7 @@
                         <div class="shiping_cart_area">
                             <?php if (is_user_logged_in()) {?>
                             <a class="top_shiping_box" href="<?php echo site_url('/earnings') ?>">
-                                <img src="<?php echo VMH_URL . 'Assets/images/sack-doller.jpeg' ?>" alt="earnings"
+                                <img src="<?php echo VMH_URL . 'Assets/images/sack-doller.png' ?>" alt="earnings"
                                     class="vmh_user_earning" />
                                 <!-- <span class="vmh_cart_quantity"><?php echo getTotalCartQuantity() ?></span> -->
                                 <!-- <h5><?php echo get_woocommerce_currency_symbol() ?>

@@ -325,13 +325,20 @@ class CallbackFunctions {
             return;
         }
         $items = $order->get_items();
+
         if (!$items) {
             return;
         }
+
         foreach ($items as $item) {
             $productID = $item->get_product_id();
             $total = $item->get_total();
             $product = wc_get_product($productID);
+
+            if (!$product) {
+                return;
+            }
+
             if ($product->get_type() == 'simple') {
                 $userID = get_post($productID)->post_author;
                 $user = get_userdata($userID);
