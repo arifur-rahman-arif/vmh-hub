@@ -244,3 +244,22 @@ body > .wp-dark-mode-switcher {
         width: 95%;
     }
 }
+
+.vmh_search_modal_close {
+    margin-top: 10px;
+}
+.vmh_serach_close {
+    position: relative;
+    left: -50%;
+    margin-left: 50px;
+}
+
+.modal-content {
+    background-color: #365d5d;
+}
+.dgwt-wcas-preloader {
+    right: 95px !important;
+}
+.dgwt-wcas-sp {
+    white-space: nowrap;
+}

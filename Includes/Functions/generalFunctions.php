@@ -58,3 +58,11 @@ function createUser($userData) {
         'message'  => vmhEscapeTranslate('Something went wrong')
     ];
 }
+
+// This function will show the search bar if FiboSearch – Ajax Search for WooCommerce plugin is active https://wordpress.org/plugins/ajax-search-for-woocommerce/
+function getSearchBar() {
+    if (shortcode_exists('fibosearch')) {
+        return do_shortcode('[fibosearch]');
+    }
+    return '';
+}

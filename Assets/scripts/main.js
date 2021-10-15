@@ -448,6 +448,10 @@ jQuery(document).ready(function ($) {
         return optionsValue;
     }
 
+    function hideModal() {
+        $("#vmh_search_modal").modal("hide");
+    }
+
     const events = () => {
         darkModeSwitch.on("click", toogleDarkMode);
         vmhLoginForm.on("submit", loginHandler);
@@ -463,6 +467,7 @@ jQuery(document).ready(function ($) {
         favoriteBtn.on("click", toggleFavorite);
         createRecipeBtn.on("click", createRecipe);
         tagInput.on("input", changeTagName);
+        $(document).on("click", ".js-dgwt-wcas-enable-mobile-form", hideModal);
     };
 
     events();

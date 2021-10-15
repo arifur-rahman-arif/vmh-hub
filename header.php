@@ -24,6 +24,7 @@
                         <div class="menu_area">
                             <div class="menu">
                                 <?php getHeaderMenu()?>
+                                <!-- <?php echo getSearchBar() ?> -->
                             </div>
 
                             <!-- start mobile menu icon -->
@@ -70,6 +71,11 @@
                                                 </div>
 
                                                 <i class="fas fa-sun"></i>
+                                            </a>
+
+                                            <a href="#" class="vmh-serach-box" data-toggle="modal"
+                                                data-target="#vmh_search_modal">
+                                                <i class="fas fa-search-plus"></i>
                                             </a>
 
                                             <!-- <a href="#" class="main_icon_rating_link">
@@ -161,6 +167,7 @@
                                                 alt="images"></a>
                                     </div>
                                 </div>
+
                                 <!-- End Rating Popup -->
                             </div>
                         </div>
@@ -170,3 +177,20 @@
         </div>
     </header>
     <!--End Header Area-->
+
+
+    <!-- search Modal -->
+    <div class="modal fade" id="vmh_search_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <button type="button" class="close vmh_search_modal_close" data-dismiss="modal" aria-label="Close">
+                    <!-- <span class="vmh_serach_close" aria-hidden="true"><i class="fas fa-times-circle"></i></span> -->
+                    <span class="vmh_serach_close" aria-hidden="true"><i class="fas fa-times-circle"></i></span>
+                </button>
+                <div class="modal-body">
+                    <?php echo getSearchBar() ?>
+                </div>
+            </div>
+        </div>
+    </div>
