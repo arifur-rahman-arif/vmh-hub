@@ -496,17 +496,4 @@ trait AjaxCallbacks {
         wp_die();
 
     }
-
-    // // Create woocommerce product attributes
-    // public function createProuductAttributes()
-    // {
-    //     $output = [];
-
-    //     if (sanitize_text_field($_POST['action']) !== 'vmh_options_save') {
-    //         $output['response'] = 'invalid';
-    //         $output['message'] = vmhEscapeTranslate('Action is not valid');
-    //         echo json_encode($output);
-    //         wp_die();
-    //     }
-    // }
 }

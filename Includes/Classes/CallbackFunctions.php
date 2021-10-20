@@ -69,8 +69,8 @@ class CallbackFunctions {
 
     public static function registerMenus() {
         register_nav_menus(array(
-            'headerMenu' => __('Header Menu')
-            // 'footerMenu' => __('Footer Menu')
+            'headerMenu' => __('Header Menu'),
+            'footerMenu' => __('Footer Menu')
         ));
     }
 
@@ -224,30 +224,34 @@ class CallbackFunctions {
      * @return null
      */
     public function setProductAttributes() {
-        $attributes = wc_get_attribute_taxonomies();
 
-        $settingsKey = $this->vmhProductAttributes();
+        if (isset($_GET['page']) && $_GET['page'] == 'vmh-product-options') {
 
-        $slugs = wp_list_pluck($attributes, 'attribute_name');
+            $attributes = wc_get_attribute_taxonomies();
 
-        if (!$settingsKey) {
-            return;
-        }
+            $settingsKey = $this->vmhProductAttributes();
 
-        foreach ($settingsKey as $key => $setting) {
+            $slugs = wp_list_pluck($attributes, 'attribute_name');
 
-            // if current attribute array is not in saved attributes than create a new one
-            if (!in_array($key, $slugs)) {
+            if (!$settingsKey) {
+                return;
+            }
 
-                $args = array(
-                    'slug'         => $key,
-                    'name'         => __($setting, 'vmh-hub'),
-                    'type'         => 'select',
-                    'orderby'      => 'menu_order',
-                    'has_archives' => false
-                );
+            foreach ($settingsKey as $key => $setting) {
 
-                wc_create_attribute($args);
+                // if current attribute array is not in saved attributes than create a new one
+                if (!in_array($key, $slugs)) {
+
+                    $args = array(
+                        'slug'         => $key,
+                        'name'         => __($setting, 'vmh-hub'),
+                        'type'         => 'select',
+                        'orderby'      => 'menu_order',
+                        'has_archives' => false
+                    );
+
+                    wc_create_attribute($args);
+                }
             }
         }
     }
@@ -258,16 +262,19 @@ class CallbackFunctions {
      */
     public function generateCustomTaxonomy() {
 
-        $settingsKey = $this->vmhProductAttributes();
+        if (isset($_GET['page']) && $_GET['page'] == 'vmh-product-options') {
 
-        if (!$settingsKey) {
-            return;
-        }
+            $settingsKey = $this->vmhProductAttributes();
 
-        foreach ($settingsKey as $key => $setting) {
-            $settingsValues = get_option($key);
-            if ($settingsValues) {
-                $this->saveTaxonomyValues($settingsValues, $key);
+            if (!$settingsKey) {
+                return;
+            }
+
+            foreach ($settingsKey as $key => $setting) {
+                $settingsValues = get_option($key);
+                if ($settingsValues) {
+                    $this->saveTaxonomyValues($settingsValues, $key);
+                }
             }
         }
 

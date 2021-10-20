@@ -273,10 +273,14 @@ img {
     display: inline-block;
     -webkit-transition: 0.3s;
     transition: 0.3s;
-    text-transform: uppercase;
+    opacity: 0.7;
 }
 .menu ul li a:hover {
     color: #8cdad9;
+    opacity: 1;
+}
+.menu ul .current-menu-item a {
+    opacity: 1;
 }
 .menu_area {
     -webkit-box-flex: 0;

@@ -13,6 +13,7 @@ class Hooks extends CallbackFunctions {
         $this->initHooks();
         $this->ajaxHooks();
         $this->removeHookedFunctions();
+        // $this->createProductAtributeOptions();
     }
 
     // Load all required hooks in this method
@@ -72,9 +73,11 @@ class Hooks extends CallbackFunctions {
         /* Create a simple product upon user request */
         add_action('wp_ajax_vmh_create_product', [$this, 'createProduct']);
         add_action('wp_ajax_nopriv_vmh_create_product', [$this, 'createProduct']);
-        // /* Save vmh options that will create woocommerce proudct attribute */
-        // add_action('wp_ajax_vmh_options_save', [$this, 'createProuductAttributes']);
-        // add_action('wp_ajax_nopriv_vmh_options_save', [$this, 'createProuductAttributes']);
+
+        // /* Create a simple product upon user request */
+        // add_action('wp_ajax_vmh_create_product_attribute', [$this, 'setProductAttributes']);
+        // add_action('wp_ajax_nopriv_vmh_create_product_attribute', [$this, 'setProductAttributes']);
+
     }
 
     // Remove functions that are hooked with functions
@@ -89,5 +92,31 @@ class Hooks extends CallbackFunctions {
         remove_action('woocommerce_single_product_summary', 'woocommerce_template_single_rating', 10);
         // Remove woocommerce_template_single_excerpt function from hook
         remove_action('woocommerce_single_product_summary', 'woocommerce_template_single_excerpt', 20);
+    }
+
+    /**
+     * @return null
+     */
+    public function createProductAtributeOptions() {
+
+        $productAttributes = $this->vmhProductAttributes();
+
+        if (!$productAttributes) {
+            return;
+        }
+
+        // add_action('added_option_vmh_nicotine_amount', [$this, 'setProductAttributes']);
+        add_action('update_option_vmh_nicotine_amount', [$this, 'setProductAttributes']);
+        add_action('update_option_vmh_nicotine_amount', [$this, 'generateCustomTaxonomy']);
+
+        // foreach ($productAttributes as $key => $attribute) {
+        //     // Set vmh product attributes
+        //     add_action('added_option_' . $key . '', [$this, 'setProductAttributes']);
+        //     add_action('update_option_' . $key . '', [$this, 'setProductAttributes']);
+
+        //     // Register Custom Taxonomy
+        //     add_action('added_option_' . $key . '', [$this, 'generateCustomTaxonomy'], 0);
+        //     add_action('update_option_' . $key . '', [$this, 'generateCustomTaxonomy'], 0);
+        // }
     }
 }

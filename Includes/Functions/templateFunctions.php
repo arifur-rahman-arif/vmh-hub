@@ -2,15 +2,17 @@
 
 function getHeaderMenu() {
     wp_nav_menu([
-        'menu'      => 'headerMenus',
-        'container' => ''
+        'theme_location' => 'headerMenu',
+        'container'      => '',
+        'fallback_cb'    => false
     ]);
 }
 
 function getFooterMenu() {
     wp_nav_menu([
-        'menu'      => 'footerMenu',
-        'container' => ''
+        'theme_location' => 'footerMenu',
+        'container'      => '',
+        'fallback_cb'    => false
     ]);
 }
 
