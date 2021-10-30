@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) {
 }
 
 if (!defined('VMH_VERSION')) {
-    define('VMH_VERSION', '1.2.1');
+    define('VMH_VERSION', '1.3.0');
     // define('VMH_VERSION', time());
 }
 
@@ -26,3 +26,4 @@ require_once VMH_PATH . 'Includes/Functions/templateFunctions.php';
 require_once VMH_PATH . 'Includes/Functions/generalFunctions.php';
 
 new \VmhHub\Includes\Classes\Hooks();
+new \VmhHub\Includes\Classes\Filters();

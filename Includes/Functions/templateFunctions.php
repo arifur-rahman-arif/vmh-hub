@@ -216,12 +216,18 @@ function getUserFavoriteProducts() {
     if (is_array($favoriteProductsID) && count($favoriteProductsID) > 0) {
 
         foreach ($favoriteProductsID as $key => $productID) {
-            load_template(VMH_PATH . 'Includes/Templates/fav-product.php', false, [
-                'postTitle'   => get_the_title($productID),
-                'postAuthor'  => get_the_author_meta('display_name', get_post($productID)->post_author),
-                'productID'   => $productID,
-                'productType' => wc_get_product($productID)->get_type()
-            ]);
+
+            // If product exists and status is publish than load the favourite product template
+            if (get_post($productID) && get_post_status($productID) == 'publish') {
+
+                load_template(VMH_PATH . 'Includes/Templates/fav-product.php', false, [
+                    'postTitle'   => get_the_title($productID),
+                    'postAuthor'  => get_the_author_meta('display_name', get_post($productID)->post_author),
+                    'productID'   => $productID,
+                    'productType' => wc_get_product($productID)->get_type()
+                ]);
+
+            }
         }
 
     } else {

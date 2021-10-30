@@ -3,9 +3,9 @@
 namespace VmhHub\Includes\Classes;
 
 use VmhHub\Includes\Classes\AjaxCallbacks;
-use VmhHub\Includes\Classes\CallbackFunctions;
+use VmhHub\Includes\Classes\HookCallbacks;
 
-class Hooks extends CallbackFunctions {
+class Hooks extends HookCallbacks {
 
     use AjaxCallbacks;
 
@@ -13,17 +13,19 @@ class Hooks extends CallbackFunctions {
         $this->initHooks();
         $this->ajaxHooks();
         $this->removeHookedFunctions();
-        // $this->createProductAtributeOptions();
     }
 
     // Load all required hooks in this method
     public function initHooks() {
         add_action('wp_enqueue_scripts', [$this, 'enqueueAssetFiles']);
+
+        add_action('admin_enqueue_scripts', [$this, 'loadAdminFiles']);
+
         add_action('after_setup_theme', [$this, 'themeInitCallbacks']);
+
         // add_action('wp_logout', [$this, 'redirectLoginPage']);
         add_action('init', [$this, 'redirectWpLogin']);
-        add_filter('woocommerce_billing_fields', [$this, 'customizeBillingFields']);
-        add_filter('woocommerce_checkout_fields', [$this, 'customizeCheckoutFields']);
+
         // Add admin menu to control product fields
         add_action('admin_menu', [$this, 'adminMenus']);
         add_action('admin_init', [$this, 'addOptionSettings']);
@@ -33,9 +35,6 @@ class Hooks extends CallbackFunctions {
 
         // Register Custom Taxonomy
         add_action('admin_init', [$this, 'generateCustomTaxonomy'], 0);
-
-        // change the deafult choose option text
-        add_filter('woocommerce_dropdown_variation_attribute_options_args', [$this, 'changeVariableProductChooseOption'], 10, 1);
 
         // add user commsion on purchase of simple product
         add_action('woocommerce_thankyou', [$this, 'addCommisionToUser']);
@@ -47,6 +46,15 @@ class Hooks extends CallbackFunctions {
         add_action('save_post', [$this, 'sendMailOnProductApprove'], 10, 2);
 
         add_action('init', [$this, 'sessionStart']);
+
+        // Intitialize custom post type for ingredients
+        add_action('init', [$this, 'ingredientsPostType']);
+
+        // Add meta box to control the map zoom option
+        add_action('add_meta_boxes_ingredient', [$this, 'registerMetaBox']);
+
+        // Save the post meta on saving the post
+        add_action('save_post_ingredient', [$this, 'saveMetaValue'], 10, 2);
     }
 
     public function sessionStart() {
@@ -74,9 +82,8 @@ class Hooks extends CallbackFunctions {
         add_action('wp_ajax_vmh_create_product', [$this, 'createProduct']);
         add_action('wp_ajax_nopriv_vmh_create_product', [$this, 'createProduct']);
 
-        // /* Create a simple product upon user request */
-        // add_action('wp_ajax_vmh_create_product_attribute', [$this, 'setProductAttributes']);
-        // add_action('wp_ajax_nopriv_vmh_create_product_attribute', [$this, 'setProductAttributes']);
+        /* Create a simple product upon user request */
+        add_action('wp_ajax_vmh_upload_ingredients', [$this, 'uploadIngredients']);
 
     }
 
@@ -92,31 +99,5 @@ class Hooks extends CallbackFunctions {
         remove_action('woocommerce_single_product_summary', 'woocommerce_template_single_rating', 10);
         // Remove woocommerce_template_single_excerpt function from hook
         remove_action('woocommerce_single_product_summary', 'woocommerce_template_single_excerpt', 20);
-    }
-
-    /**
-     * @return null
-     */
-    public function createProductAtributeOptions() {
-
-        $productAttributes = $this->vmhProductAttributes();
-
-        if (!$productAttributes) {
-            return;
-        }
-
-        // add_action('added_option_vmh_nicotine_amount', [$this, 'setProductAttributes']);
-        add_action('update_option_vmh_nicotine_amount', [$this, 'setProductAttributes']);
-        add_action('update_option_vmh_nicotine_amount', [$this, 'generateCustomTaxonomy']);
-
-        // foreach ($productAttributes as $key => $attribute) {
-        //     // Set vmh product attributes
-        //     add_action('added_option_' . $key . '', [$this, 'setProductAttributes']);
-        //     add_action('update_option_' . $key . '', [$this, 'setProductAttributes']);
-
-        //     // Register Custom Taxonomy
-        //     add_action('added_option_' . $key . '', [$this, 'generateCustomTaxonomy'], 0);
-        //     add_action('update_option_' . $key . '', [$this, 'generateCustomTaxonomy'], 0);
-        // }
     }
 }

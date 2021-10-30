@@ -2,7 +2,7 @@
 
 namespace VmhHub\Includes\Classes;
 
-class CallbackFunctions {
+class HookCallbacks {
 
     public function enqueueAssetFiles() {
         $this->loadStyles();
@@ -37,11 +37,25 @@ class CallbackFunctions {
     public function localizeFile() {
         wp_localize_script('vmh-main', 'vmhLocal', [
             'ajaxUrl'              => admin_url('admin-ajax.php'),
-            'siteUrl'              => site_url('/'),
             'vmhProductAttributes' => $this->vmhProductAttributes(),
             'currencySymbol'       => get_woocommerce_currency_symbol(),
             'siteUrl'              => site_url('/')
         ]);
+    }
+
+    // Load admin asset files
+    public function loadAdminFiles() {
+        $this->loadAdminScripts();
+    }
+
+    public function loadAdminScripts() {
+        if (isset($_GET['post_type']) && $_GET['post_type'] == 'ingredient') {
+            wp_enqueue_script('vmh-admin', VMH_URL . 'Assets/scripts/admin.js', ['jquery'], VMH_VERSION, true);
+            wp_localize_script('vmh-admin', 'vmhLocal', [
+                'ajaxUrl' => admin_url('admin-ajax.php'),
+                'siteUrl' => site_url('/')
+            ]);
+        }
     }
 
     // These are the callback functions after theme initialization
@@ -97,42 +111,6 @@ class CallbackFunctions {
             wp_redirect(site_url('/'));
             exit;
         }
-    }
-
-    /**
-     * Customize the woocommerce billing fields according to custom vmhhub theme
-     * @param $billingFields
-     */
-    public function customizeBillingFields($billingFields) {
-        $billingFields['billing_first_name']['class'][] = 'login_input_left shipping_address_left';
-        $billingFields['billing_last_name']['class'][] = 'login_input_left shipping_address_left';
-        $billingFields['billing_company']['class'][] = 'login_input_left';
-        $billingFields['billing_country']['class'][] = 'login_input_left';
-        $billingFields['billing_address_1']['class'][] = 'login_input_left';
-        $billingFields['billing_address_2']['class'][] = 'login_input_left';
-        $billingFields['billing_city']['class'][] = 'login_input_left';
-        $billingFields['billing_state']['class'][] = 'login_input_left';
-        $billingFields['billing_postcode']['class'][] = 'login_input_left';
-        $billingFields['billing_phone']['class'][] = 'login_input_left';
-        $billingFields['billing_email']['class'][] = 'login_input_left';
-        return $billingFields;
-    }
-
-    /**
-     * Customize the woocommerce billing fields according to custom vmhhub theme
-     * @param $billingFields
-     */
-    public function customizeCheckoutFields($checkoutFields) {
-        $checkoutFields['shipping']['shipping_first_name']['class'][] = 'login_input_left shipping_address_left';
-        $checkoutFields['shipping']['shipping_last_name']['class'][] = 'login_input_left shipping_address_left';
-        $checkoutFields['shipping']['shipping_company']['class'][] = 'login_input_left';
-        $checkoutFields['shipping']['shipping_country']['class'][] = 'login_input_left';
-        $checkoutFields['shipping']['shipping_address_1']['class'][] = 'login_input_left';
-        $checkoutFields['shipping']['shipping_address_2']['class'][] = 'login_input_left';
-        $checkoutFields['shipping']['shipping_city']['class'][] = 'login_input_left';
-        $checkoutFields['shipping']['shipping_state']['class'][] = 'login_input_left';
-        $checkoutFields['shipping']['shipping_postcode']['class'][] = 'login_input_left';
-        return $checkoutFields;
     }
 
     // Registering admin menus to control product options
@@ -309,20 +287,6 @@ class CallbackFunctions {
     }
 
     /**
-     * Chagne default text of woocommerce variable product choose options default text
-     * @return mixed
-     */
-    public function changeVariableProductChooseOption($array) {
-
-        // Find the name of the attribute for the slug we passed in to the function
-        $attribute_name = wc_attribute_label($array['attribute']);
-
-        // Create a string for our select
-        $array['show_option_none'] = __('Choose', 'woocommerce');
-        return $array;
-    }
-
-    /**
      * Add commission to user profile
      * @param $orderID
      */
@@ -405,6 +369,131 @@ class CallbackFunctions {
                     wp_mail($to, $subject, $message, $headers);
                 }
             }
+        }
+    }
+
+    // Register custom post type for ingredients
+    public function ingredientsPostType() {
+        $labels = array(
+            'name'                  => _x('Ingredients', 'Post Type General Name', 'vmh'),
+            'singular_name'         => _x('Ingredient', 'Post Type Singular Name', 'vmh'),
+            'menu_name'             => _x('Ingredients', 'Admin Menu text', 'vmh'),
+            'name_admin_bar'        => _x('Ingredient', 'Add New on Toolbar', 'vmh'),
+            'archives'              => __('Ingredient Archives', 'vmh'),
+            'attributes'            => __('Ingredient Attributes', 'vmh'),
+            'parent_item_colon'     => __('Parent Ingredient:', 'vmh'),
+            'all_items'             => __('All Ingredients', 'vmh'),
+            'add_new_item'          => __('Add New Ingredient', 'vmh'),
+            'add_new'               => __('Add New', 'vmh'),
+            'new_item'              => __('New Ingredient', 'vmh'),
+            'edit_item'             => __('Edit Ingredient', 'vmh'),
+            'update_item'           => __('Update Ingredient', 'vmh'),
+            'view_item'             => __('View Ingredient', 'vmh'),
+            'view_items'            => __('View Ingredients', 'vmh'),
+            'search_items'          => __('Search Ingredient', 'vmh'),
+            'not_found'             => __('Not found', 'vmh'),
+            'not_found_in_trash'    => __('Not found in Trash', 'vmh'),
+            'featured_image'        => __('Featured Image', 'vmh'),
+            'set_featured_image'    => __('Set featured image', 'vmh'),
+            'remove_featured_image' => __('Remove featured image', 'vmh'),
+            'use_featured_image'    => __('Use as featured image', 'vmh'),
+            'insert_into_item'      => __('Insert into Ingredient', 'vmh'),
+            'uploaded_to_this_item' => __('Uploaded to this Ingredient', 'vmh'),
+            'items_list'            => __('Ingredients list', 'vmh'),
+            'items_list_navigation' => __('Ingredients list navigation', 'vmh'),
+            'filter_items_list'     => __('Filter Ingredients list', 'vmh')
+        );
+        $args = array(
+            'label'               => __('Ingredient', 'vmh'),
+            'description'         => __('', 'vmh'),
+            'labels'              => $labels,
+            'menu_icon'           => 'dashicons-archive',
+            'supports'            => array('title', 'custom-fields'),
+            'taxonomies'          => array(),
+            'public'              => true,
+            'show_ui'             => true,
+            'show_in_menu'        => true,
+            'menu_position'       => 5,
+            'show_in_admin_bar'   => true,
+            'show_in_nav_menus'   => true,
+            'can_export'          => true,
+            'has_archive'         => true,
+            'hierarchical'        => false,
+            'exclude_from_search' => false,
+            'show_in_rest'        => true,
+            'publicly_queryable'  => true,
+            'capability_type'     => 'post'
+        );
+        register_post_type('ingredient', $args);
+    }
+
+    public function registerMetaBox() {
+        add_meta_box(
+            'ingredients_stock',
+            'Ingredients Stock Quantity',
+            [$this, 'metaBoxHTML'],
+            ['ingredient'],
+            'normal',
+            'high'
+        );
+    }
+
+    /**
+     * @param $post
+     */
+    public function metaBoxHTML($post) {
+        wp_nonce_field('vmh_ingredients_stock_action', 'vmh_ingredients_nonce');
+        $metaValue = get_post_meta($post->ID, 'ingredients_stock', true);
+
+        $metaValue = $metaValue ? $metaValue : "";
+
+        echo '
+            <div>
+                <strong>
+                    <label for="ingredients_stock">Stock Quantity :</label>
+                    <br/>
+                </strong>
+                <br />
+                <input type="number" name="ingredients_stock" min="0" id="ingredients_stock" value="' . $metaValue . '"/>
+            </div>
+       ';
+    }
+
+    /**
+     * @param  int     $postID
+     * @param  object  $postObject
+     * @return mixed
+     */
+    public function saveMetaValue(int $postID, object $postObject) {
+        if (!isset($_POST['vmh_ingredients_nonce']) || !wp_verify_nonce($_POST['vmh_ingredients_nonce'], 'vmh_ingredients_stock_action')) {
+            return $postID;
+        }
+
+        /* Does current user have capabitlity to edit post */
+        $postType = get_post_type_object($postObject->post_type);
+
+        if (!current_user_can($postType->cap->edit_post, $postID)) {
+            return $postID;
+        }
+
+        /* Get the posted data and check it for uses. */
+        $new_meta_value = (isset($_POST['ingredients_stock']) ? $_POST['ingredients_stock'] : "");
+
+        /* Get the meta key. */
+        $meta_key = 'ingredients_stock';
+
+        /* Get the meta value of the custom field key. */
+        $meta_value = get_post_meta($postID, $meta_key, true);
+
+        if ($new_meta_value && "" == $meta_value) {
+            /* If a new meta value was added and there was no previous value, add it. */
+            add_post_meta($postID, $meta_key, $new_meta_value);
+        } elseif ($new_meta_value && $new_meta_value != $meta_value) {
+            /* If the new meta value does not match the old value, update it. */
+            update_post_meta($postID, $meta_key, $new_meta_value);
+        } elseif ("" == $new_meta_value && $meta_value) {
+            /* If there is no new meta value but an old value exists, delete it. */
+            delete_post_meta($postID, $meta_key, $meta_value);
         }
     }
 }

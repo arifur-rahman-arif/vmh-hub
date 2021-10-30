@@ -293,10 +293,12 @@ jQuery(document).ready(function ($) {
                         if (response.status == "added") {
                             heartBtn.removeClass("vmh_heart_grey");
                             target.attr("data-action", "unfavorite");
+                            productAlert("Product added to favorite list");
                         }
                         if (response.status == "removed") {
                             heartBtn.addClass("vmh_heart_grey");
                             target.attr("data-action", "favorite");
+                            productAlert("Product removed to favorite list");
                         }
                     } else {
                         target.parents(".single_recopies_items").fadeOut(500).delay(400).remove();

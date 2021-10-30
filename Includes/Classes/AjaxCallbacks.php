@@ -496,4 +496,126 @@ trait AjaxCallbacks {
         wp_die();
 
     }
+
+    // Create new post for ingredient post type
+    public function uploadIngredients() {
+        $output = [];
+
+        if (sanitize_text_field($_POST['action']) !== 'vmh_upload_ingredients') {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Action is not valid');
+            echo json_encode($output);
+            wp_die();
+        }
+
+        if (!isset($_POST['attachmentURL']) || !esc_url($_POST['attachmentURL'])) {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Attachment URL is not found');
+            echo json_encode($output);
+            wp_die();
+        }
+
+        $args = [
+            'attachmentURL' => esc_url($_POST['attachmentURL'])
+        ];
+
+        $csvResponse = $this->getCsvData($args);
+        $csvArray = $this->convertCsvToArray($csvResponse);
+
+        if (!$csvArray) {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Ingredients is empty');
+            echo json_encode($output);
+            wp_die();
+        }
+
+        $response = $this->createIngredientsPost($csvArray);
+
+        echo json_encode($response);
+        wp_die();
+    }
+
+    /**
+     * @param  $args
+     * @return mixed
+     */
+    public function getCsvData($args) {
+        if (!isset($args['attachmentURL']) || !$args['attachmentURL']) {
+            trigger_error('Csv file is not found', E_USER_ERROR);
+        }
+
+        try {
+            $csvResponse = wp_remote_get($args['attachmentURL']);
+
+            if ($csvResponse['response']['code'] == 200) {
+                return $csvResponse['body'];
+            } else {
+                return [];
+            }
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    /**
+     * @param $csvResponse
+     */
+    public function convertCsvToArray($csvResponse) {
+        $stream = fopen('php://memory', 'r+');
+
+        $csvArray = [];
+
+        fwrite($stream, $csvResponse);
+        rewind($stream);
+
+        while (($line = fgetcsv($stream)) !== FALSE) {
+            array_push($csvArray, $line);
+        }
+
+        fclose($stream);
+
+        return $csvArray;
+    }
+
+    /**
+     * @param  array   $ingredients
+     * @return mixed
+     */
+    public function createIngredientsPost(array $ingredients) {
+        $output = [];
+
+        if (!$ingredients) {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Ingredients is empty');
+        }
+
+        for ($i = 1; $i < count($ingredients); $i++) {
+
+            $ingredient = $ingredients[$i];
+
+            $args = [
+                'post_title'  => esc_html($ingredient[0]),
+                'post_type'   => 'ingredient',
+                'post_status' => 'publish'
+            ];
+
+            $ingredientPost = wp_insert_post($args);
+
+            if (!is_wp_error($ingredientPost)) {
+                $stockQuantity = $ingredient[1];
+
+                if (update_post_meta($ingredientPost, 'ingredients_stock', $stockQuantity)) {
+                    $output['response'] = 'success';
+                    $output['message'] = vmhEscapeTranslate('All ingredients created successfully');
+                }
+
+            } else {
+                $output['response'] = 'invalid';
+                $output['message'] = vmhEscapeTranslate('' . $ingredient[0] . ' ingredient is failed to create');
+            }
+        }
+
+        return $output;
+    }
 }
