@@ -564,7 +564,9 @@ class HookCallbacks {
         $options = '';
 
         foreach ($ingredients as $key => $ingredient) {
-            $options .= '<option ' . $this->echo_select($metaValues, esc_attr($ingredient->ID)) . ' value="' . esc_attr($ingredient->ID) . '" >' . esc_html($ingredient->post_title) . '</option>';
+            $options .= '<option ' . $this->echo_select($metaValues, esc_attr($ingredient->ID)) . ' value="' . esc_attr($ingredient->ID) . '" >
+                            ' . esc_html($ingredient->post_title) . ' (' . get_post_meta($ingredient->ID, 'ingredients_stock', true) . ')
+                        </option>';
         }
 
         return $options;
