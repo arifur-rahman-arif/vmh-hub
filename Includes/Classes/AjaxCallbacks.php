@@ -515,6 +515,15 @@ trait AjaxCallbacks {
             wp_die();
         }
 
+        $extension = pathinfo(esc_url($_POST['attachmentURL']), PATHINFO_EXTENSION);
+
+        if (!$extension || $extension != 'csv') {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Attachment is not a csv type');
+            echo json_encode($output);
+            wp_die();
+        }
+
         $args = [
             'attachmentURL' => esc_url($_POST['attachmentURL'])
         ];

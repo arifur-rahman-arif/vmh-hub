@@ -85,7 +85,7 @@
 
                                             <a href="#" class="vmh-serach-box" data-toggle="modal"
                                                 data-target="#vmh_search_modal">
-                                                <i class="fas fa-search-plus"></i>
+                                                <i class="fas fa-search"></i>
                                             </a>
 
                                             <!-- <a href="#" class="main_icon_rating_link">

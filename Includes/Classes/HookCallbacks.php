@@ -46,16 +46,21 @@ class HookCallbacks {
     // Load admin asset files
     public function loadAdminFiles() {
         $this->loadAdminScripts();
+        $this->loadAdminStyles();
     }
 
     public function loadAdminScripts() {
-        if (isset($_GET['post_type']) && $_GET['post_type'] == 'ingredient') {
-            wp_enqueue_script('vmh-admin', VMH_URL . 'Assets/scripts/admin.js', ['jquery'], VMH_VERSION, true);
-            wp_localize_script('vmh-admin', 'vmhLocal', [
-                'ajaxUrl' => admin_url('admin-ajax.php'),
-                'siteUrl' => site_url('/')
-            ]);
-        }
+        wp_enqueue_script('vmh-admin-select', VMH_URL . 'Assets/scripts/slimselect.min.js', ['jquery'], VMH_VERSION, true);
+        wp_enqueue_script('vmh-admin', VMH_URL . 'Assets/scripts/admin.js', ['jquery', 'vmh-admin-select'], VMH_VERSION, true);
+        wp_localize_script('vmh-admin', 'vmhLocal', [
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'siteUrl' => site_url('/')
+        ]);
+    }
+
+    public function loadAdminStyles() {
+        wp_enqueue_style('vmh-select', VMH_URL . 'Assets/css/slimselect.min.css', [], VMH_VERSION, 'all');
+        wp_enqueue_style('vmh-admin', VMH_URL . 'Assets/css/admin.css', [], VMH_VERSION, 'all');
     }
 
     // These are the callback functions after theme initialization
@@ -481,6 +486,129 @@ class HookCallbacks {
 
         /* Get the meta key. */
         $meta_key = 'ingredients_stock';
+
+        /* Get the meta value of the custom field key. */
+        $meta_value = get_post_meta($postID, $meta_key, true);
+
+        if ($new_meta_value && "" == $meta_value) {
+            /* If a new meta value was added and there was no previous value, add it. */
+            add_post_meta($postID, $meta_key, $new_meta_value);
+        } elseif ($new_meta_value && $new_meta_value != $meta_value) {
+            /* If the new meta value does not match the old value, update it. */
+            update_post_meta($postID, $meta_key, $new_meta_value);
+        } elseif ("" == $new_meta_value && $meta_value) {
+            /* If there is no new meta value but an old value exists, delete it. */
+            delete_post_meta($postID, $meta_key, $meta_value);
+        }
+    }
+
+    // Register a dropdown meta field for product post type
+    /**
+     * @param $postType
+     * @param $post
+     */
+    public function registerIngredientsMeta($post) {
+        if ($post->ID != get_option('vmh_create_product_option')) {
+            add_meta_box(
+                'product_ingredients',
+                'Product Ingredients',
+                [$this, 'productIngredientsHTML'],
+                ['product'],
+                'normal',
+                'high'
+            );
+        }
+    }
+
+    // The html of product ingredeints
+    /**
+     * @param $post
+     */
+    public function productIngredientsHTML($post) {
+        wp_nonce_field('vmh_product_ingredients_action', 'vmh_product_ingredients_nonce');
+        $metaValue = get_post_meta($post->ID, 'product_ingredients', true);
+
+        $metaValue = $metaValue ? $metaValue : "";
+
+        echo '
+            <div>
+                <strong>
+                    <label for="product_ingredients">Select Ingredients :</label>
+                    <br/>
+                </strong>
+                <br />
+                <select name="product_ingredients[]" multiple="multiple" style="width: 300px" id="product_ingredients" name="product_ingredients" class="product_ingredients">
+                    ' . $this->getIngredients($metaValue) . '
+                </select>
+            </div>
+       ';
+    }
+
+    /**
+     * @param $metaValues
+     */
+    public function getIngredients($metaValues) {
+
+        $args = [
+            'post_type'      => 'ingredient',
+            'posts_per_page' => -1,
+            'post_status'    => 'publish'
+        ];
+
+        $ingredients = get_posts($args);
+
+        if (!$ingredients) {
+            return '';
+        }
+
+        $options = '';
+
+        foreach ($ingredients as $key => $ingredient) {
+            $options .= '<option ' . $this->echo_select($metaValues, esc_attr($ingredient->ID)) . ' value="' . esc_attr($ingredient->ID) . '" >' . esc_html($ingredient->post_title) . '</option>';
+        }
+
+        return $options;
+    }
+
+    /**
+     * @param  $metaValues
+     * @param  $ingredient
+     * @return null
+     */
+    public function echo_select($metaValues, $ingredient) {
+        if (!is_array($metaValues)) {
+            return;
+        }
+        if (in_array($ingredient, $metaValues)) {
+            return 'selected';
+        } else {
+            return '';
+        }
+    }
+
+    /**
+     * @param  int     $postID
+     * @param  object  $postObject
+     * @return mixed
+     */
+    public function saveIngredientsMetaValue(int $postID, object $postObject) {
+
+        if (!isset($_POST['vmh_product_ingredients_nonce']) || !wp_verify_nonce($_POST['vmh_product_ingredients_nonce'], 'vmh_product_ingredients_action')) {
+            return $postID;
+        }
+
+        /* Does current user have capabitlity to edit post */
+        $post_type = get_post_type_object($postObject->post_type);
+
+        if (!current_user_can($post_type->cap->edit_post, $postID)) {
+            return $postID;
+        }
+
+        /* Get the posted data and check it for uses. */
+        $new_meta_value = (isset($_POST['product_ingredients']) ? $_POST['product_ingredients'] : "");
+
+        /* Get the meta key. */
+        $meta_key = 'product_ingredients';
 
         /* Get the meta value of the custom field key. */
         $meta_value = get_post_meta($postID, $meta_key, true);

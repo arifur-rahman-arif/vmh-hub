@@ -6,8 +6,11 @@ var $ = jQuery.noConflict();
     events();
 
     function events() {
-        insertUploadButton();
-        $(document).on("click", ".vmh_upload_ingredients", openMediaUploader);
+        if (getSlugParameter("post_type") == "ingredient") {
+            insertUploadButton();
+            $(document).on("click", ".vmh_upload_ingredients", openMediaUploader);
+        }
+        initializeSelectBox();
     }
 
     // insert upload button after the add new post button
@@ -19,6 +22,18 @@ var $ = jQuery.noConflict();
             );
     }
 
+    function getSlugParameter(slug) {
+        let url = new URL(window.location);
+        let params = new URLSearchParams(url.search);
+        let retrieve_param = params.get(slug);
+        if (retrieve_param) {
+            return retrieve_param;
+        } else {
+            return false;
+        }
+    }
+
+    // Initialize wordpres media uploader to upload products
     function openMediaUploader(e) {
         e.preventDefault();
 
@@ -68,6 +83,13 @@ var $ = jQuery.noConflict();
                     alert(res.response);
                 }
             },
+        });
+    }
+
+    // Initialize the dropdown select in product post type
+    function initializeSelectBox() {
+        new SlimSelect({
+            select: ".product_ingredients",
         });
     }
 })();

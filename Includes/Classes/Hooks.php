@@ -52,9 +52,13 @@ class Hooks extends HookCallbacks {
 
         // Add meta box to control the map zoom option
         add_action('add_meta_boxes_ingredient', [$this, 'registerMetaBox']);
-
         // Save the post meta on saving the post
         add_action('save_post_ingredient', [$this, 'saveMetaValue'], 10, 2);
+
+        // Add meta box to control the map zoom option
+        add_action('add_meta_boxes_product', [$this, 'registerIngredientsMeta'], 10, 1);
+        // Save the post meta on saving the post
+        add_action('save_post_product', [$this, 'saveIngredientsMetaValue'], 10, 2);
     }
 
     public function sessionStart() {

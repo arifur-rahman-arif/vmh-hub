@@ -61,18 +61,22 @@ function getProductsByCategory(array $taxonomyArgs) {
 function getProductIngrediants($productID, $includePTage = false) {
     $ingredients = get_post_meta($productID, 'product_ingredients', true);
 
-    $ingredientsArray = explode("|", $ingredients);
+    if (!$ingredients) {
+        return '';
+    }
 
-    if ($ingredientsArray[0]) {
-        $ingredientsHTML = $includePTage ? '<p>' : '<ul>';
-        foreach ($ingredientsArray as $key => $singleIngredient) {
-            $ingredientsHTML .= '
+    if (!is_array($ingredients)) {
+        return '';
+    }
+
+    $ingredientsHTML = $includePTage ? '<p>' : '<ul>';
+    foreach ($ingredients as $key => $singleIngredient) {
+        $ingredientsHTML .= '
                                     ' . productIngredientsHTML($singleIngredient, $includePTage) . '
                                 ';
-        }
-        return $ingredientsHTML;
-        $ingredientsHTML .= $includePTage ? '<p>' : '</ul>';
     }
+    return $ingredientsHTML;
+    $ingredientsHTML .= $includePTage ? '<p>' : '</ul>';
 
     return '';
 
@@ -87,9 +91,9 @@ function getProductIngrediants($productID, $includePTage = false) {
  */
 function productIngredientsHTML($singleIngredient, $includePTage) {
     if ($includePTage) {
-        return '<p>' . trim($singleIngredient) . '</p>';
+        return '<p>' . trim(get_the_title($singleIngredient)) . '</p>';
     } else {
-        return '<li><span>' . trim($singleIngredient) . '</span></li>';
+        return '<li><span>' . trim(get_the_title($singleIngredient)) . '</span></li>';
     }
 }
 
@@ -151,24 +155,28 @@ function getCartItems() {
 function singleProductIngredientsHTML(int $productID) {
     $ingredients = get_post_meta($productID, 'product_ingredients', true);
 
-    $ingredientsArray = explode("|", $ingredients);
-
-    if ($ingredientsArray[0]) {
-        $ingredientsHTML = '';
-        foreach ($ingredientsArray as $key => $singleIngredient) {
-            // Start Single ingredient item
-            $ingredientsHTML .= '
-            <div class="recepes_single_ingridient_item">
-                <h5>Ingredient:</h5>
-                <span>' . trim($singleIngredient) . '</span>
-            </div>
-            ';
-            // End Single ingredient item
-        }
-        return $ingredientsHTML;
+    if (!$ingredients) {
+        return '';
     }
 
-    return '';
+    if (!is_array($ingredients)) {
+        return '';
+    }
+
+    $ingredientsHTML = '';
+
+    foreach ($ingredients as $key => $singleIngredient) {
+        // Start Single ingredient item
+        $ingredientsHTML .= '
+            <div class="recepes_single_ingridient_item">
+                <h5>Ingredient:</h5>
+                <span>' . trim(get_the_title($singleIngredient)) . '</span>
+            </div>
+            ';
+        // End Single ingredient item
+    }
+
+    return $ingredientsHTML;
 
 }
 
@@ -369,7 +377,7 @@ function simpleProductOptions() {
     $optionsHTML = '';
     $productOptions = get_post_meta($productID, 'product_options', true);
 
-    $callbackClass = new VmhHub\Includes\Classes\CallbackFunctions();
+    $callbackClass = new \VmhHub\Includes\Classes\HookCallbacks();
 
     $productAttributes = $callbackClass->vmhProductAttributes();
 
