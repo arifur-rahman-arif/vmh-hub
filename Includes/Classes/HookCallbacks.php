@@ -17,6 +17,7 @@ class HookCallbacks {
         wp_enqueue_style('vmh-normalize', VMH_URL . 'Assets/css/normalize.css', [], VMH_VERSION, 'all');
         wp_enqueue_style('vmh-bootstrap', VMH_URL . 'Assets/css/bootstrap.min.css', [], VMH_VERSION, 'all');
         wp_enqueue_style('vmh-fontawesome', '//pro.fontawesome.com/releases/v5.10.0/css/all.css');
+        wp_enqueue_style('vmh-slim-select', VMH_URL . 'Assets/css/slimselect.min.css', [], VMH_VERSION, 'all');
         wp_enqueue_style('vmh-style', VMH_URL . 'Assets/css/style.css', [], VMH_VERSION, 'all');
         wp_enqueue_style('vmh-responsive', VMH_URL . 'Assets/css/responsive.css', [], VMH_VERSION, 'all');
         wp_enqueue_style('vmh-custom', VMH_URL . 'Assets/css/custom.css', [], VMH_VERSION, 'all');
@@ -27,6 +28,7 @@ class HookCallbacks {
     public function loadScripts() {
         wp_enqueue_script('jquery');
         wp_enqueue_script('vmh-modernizr', VMH_URL . 'Assets/scripts/modernizr-3.11.2.min.js', [], VMH_VERSION, true);
+        wp_enqueue_script('vmh-slim-select', VMH_URL . 'Assets/scripts/slimselect.min.js', ['jquery'], VMH_VERSION, false);
         wp_enqueue_script('vmh-popper', VMH_URL . 'Assets/scripts/popper.min.js', [], VMH_VERSION, true);
         wp_enqueue_script('vmh-bootstrap', VMH_URL . 'Assets/scripts/bootstrap.min.js', [], VMH_VERSION, true);
         wp_enqueue_script('vmh-custom', VMH_URL . 'Assets/scripts/custom.js', ['jquery'], VMH_VERSION, true);
@@ -537,7 +539,7 @@ class HookCallbacks {
                     <br/>
                 </strong>
                 <br />
-                <select name="product_ingredients[]" multiple="multiple" style="width: 300px" id="product_ingredients" name="product_ingredients" class="product_ingredients">
+                <select name="product_ingredients[]" multiple="multiple" style="width: 300px" id="product_ingredients" class="product_ingredients">
                     ' . $this->getIngredients($metaValue) . '
                 </select>
             </div>

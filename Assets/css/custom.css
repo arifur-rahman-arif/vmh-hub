@@ -263,3 +263,37 @@ body > .wp-dark-mode-switcher {
 .dgwt-wcas-sp {
     white-space: nowrap;
 }
+
+.ingredients_wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.ingredients_wrapper .cut_selectbox {
+    margin-right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.ingredients_wrapper .product_ingredients {
+    margin-right: 10px;
+}
+
+.ingredients_wrapper .add_ingredients_icon {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+.ingredients_wrapper .ss-value {
+    background-color: #324b4b !important;
+    color: white !important;
+    font-weight: bold !important;
+}
+
+.ss-content .ss-list .ss-option.ss-highlighted,
+.ss-content .ss-list .ss-option:hover {
+    color: #fff;
+    background-color: #324b4b !important;
+}

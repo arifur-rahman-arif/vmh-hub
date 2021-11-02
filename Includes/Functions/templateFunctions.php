@@ -576,3 +576,55 @@ function getRecommendedProducts($postPerPage) {
     }
 
 }
+
+/**
+ * Get all the ingredients post type for showing into select box
+ * @return mixed
+ */
+function getAllIngredients() {
+    $args = [
+        'post_type'      => 'ingredient',
+        'posts_per_page' => -1,
+        'post_status'    => 'publish'
+    ];
+
+    $ingredients = get_posts($args);
+
+    if (!$ingredients) {
+        return '';
+    }
+
+    $options = '<option data-placeholder="true"></option>';
+
+    foreach ($ingredients as $key => $ingredient) {
+        $options .= '<option ' . addDisableAttr($ingredient->ID) . ' value="' . esc_attr($ingredient->ID) . '" >
+                        ' . esc_html($ingredient->post_title) . ' (' . ingredientInStock($ingredient->ID) . ')
+                    </option>';
+    }
+
+    return $options;
+}
+
+/**
+ * @param $postID
+ */
+function ingredientInStock($postID) {
+    $ingredientStock = get_post_meta($postID, 'ingredients_stock', true);
+    if ($ingredientStock > 0) {
+        return 'In Stock';
+    } else {
+        return 'Out of stock';
+    }
+}
+
+/**
+ * @param $postID
+ */
+function addDisableAttr($postID) {
+    $ingredientStock = get_post_meta($postID, 'ingredients_stock', true);
+    if ($ingredientStock > 0) {
+        return '';
+    } else {
+        return 'disabled';
+    }
+}

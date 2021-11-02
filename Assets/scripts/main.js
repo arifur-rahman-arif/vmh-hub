@@ -9,13 +9,36 @@ jQuery(document).ready(function ($) {
     let createRecipeBtn = $(".vmh_save_recipe_btn");
     let tagInput = $(".vmh_tag_input");
 
+    events();
+
+    function events() {
+        darkModeSwitch.on("click", toogleDarkMode);
+        vmhLoginForm.on("submit", loginHandler);
+        userCreateForm.on("submit", handleUserCreate);
+        addToCartBtn.on("click", addProductToCart);
+        cartRemoveBtn.on("click", removeProductFromCart);
+        $(document).on(
+            "click",
+            ".vmh_previous_btn, .vmh_checkout_next_btn",
+            moveAroundCheckoutForm
+        );
+        clearParameter();
+        favoriteBtn.on("click", toggleFavorite);
+        createRecipeBtn.on("click", createRecipe);
+        tagInput.on("input", changeTagName);
+        $(document).on("click", ".js-dgwt-wcas-enable-mobile-form", hideModal);
+        initiateSelectBox();
+        $(document).on("click", ".add_ingredients_icon", duplicateSelectBox);
+        $(document).on("click", ".cut_selectbox", deleteSelectBox);
+    }
+
     // Toggle the dark mode in webstie frontend
-    const toogleDarkMode = (e) => {
+    function toogleDarkMode(e) {
         e.preventDefault();
-    };
+    }
 
     // Handle login process
-    const loginHandler = (e) => {
+    function loginHandler(e) {
         e.preventDefault();
         let formData = $(e.currentTarget).serialize();
         $.ajax({
@@ -43,7 +66,7 @@ jQuery(document).ready(function ($) {
                 $(".reg-btn").attr("disabled", false);
             },
         });
-    };
+    }
 
     // Handle the user creation form
     function handleUserCreate(e) {
@@ -406,6 +429,26 @@ jQuery(document).ready(function ($) {
             $("body").addClass("popup_overly");
             return false;
         }
+
+        let ingredients = $("select.product_ingredients");
+
+        if (!ingredients.val() || ingredients.val() == "") {
+            recipePopup.find(".vmh_alert_text").text("Please select 1 or more ingredients");
+
+            $(".save_recieved_hde").show();
+            $("body").addClass("popup_overly");
+            return false;
+        }
+
+        let stockAvailablity = $(".woocommerce-variation-availability");
+
+        if (stockAvailablity.find(".out-of-stock")) {
+            recipePopup.find(".vmh_alert_text").text("Product is out of stock");
+
+            $(".save_recieved_hde").show();
+            $("body").addClass("popup_overly");
+            return false;
+        }
     }
 
     // Get the ingredients value from create recipe
@@ -454,23 +497,64 @@ jQuery(document).ready(function ($) {
         $("#vmh_search_modal").modal("hide");
     }
 
-    const events = () => {
-        darkModeSwitch.on("click", toogleDarkMode);
-        vmhLoginForm.on("submit", loginHandler);
-        userCreateForm.on("submit", handleUserCreate);
-        addToCartBtn.on("click", addProductToCart);
-        cartRemoveBtn.on("click", removeProductFromCart);
-        $(document).on(
-            "click",
-            ".vmh_previous_btn, .vmh_checkout_next_btn",
-            moveAroundCheckoutForm
-        );
-        clearParameter();
-        favoriteBtn.on("click", toggleFavorite);
-        createRecipeBtn.on("click", createRecipe);
-        tagInput.on("input", changeTagName);
-        $(document).on("click", ".js-dgwt-wcas-enable-mobile-form", hideModal);
-    };
+    // Initiate the select box in create product option
+    function initiateSelectBox() {
+        let selector = new SlimSelect({
+            select: "#product_ingredients_1",
+            placeholder: "Select Ingredients",
+            allowDeselectOption: true,
+            valuesUseText: false,
+            hideSelectedOption: true,
+            searchText: "Sorry ingredients not found.",
+            // addable: function (value) {
+            //     // Optional - Return a valid data object. See methods/setData for list of valid options
+            //     return {
+            //         text: value,
+            //         value: value.toLowerCase(),
+            //     };
+            // },
+        });
+    }
 
-    events();
+    // Duplicate the ingredients select box
+    function duplicateSelectBox(e) {
+        let target = $(e.currentTarget);
+
+        let selectorElement = $("#ingredients_wrapper_0");
+
+        let uniqueId = Date.now();
+
+        let copy = selectorElement.clone(true);
+
+        let parantID = "ingredients_wrapper_" + uniqueId;
+
+        let selectorID = "product_ingredients_" + uniqueId;
+
+        copy.attr("id", parantID);
+
+        copy.css({
+            display: "flex",
+        });
+
+        copy.find(".product_ingredients").attr("id", selectorID);
+
+        $(".ingredients_container").append(copy);
+
+        new SlimSelect({
+            select: $(`#${selectorID}`)[0],
+            placeholder: "Select Ingredients",
+            allowDeselectOption: true,
+            valuesUseText: false,
+            hideSelectedOption: true,
+            searchText: "Sorry ingredients not found.",
+        });
+    }
+
+    function deleteSelectBox(e) {
+        let target = $(e.currentTarget);
+
+        let wrapperElements = target.parents(".ingredients_wrapper");
+
+        wrapperElements.remove();
+    }
 });

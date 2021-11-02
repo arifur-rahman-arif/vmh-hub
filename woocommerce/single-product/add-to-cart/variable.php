@@ -43,7 +43,7 @@ if ($product->get_id() != get_option('vmh_create_product_option')) {
         <form class="variations_form cart"
             action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product->get_permalink())); ?>"
             method="post" enctype='multipart/form-data' data-product_id="<?php echo absint($product->get_id()); ?>"
-            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                     ?>">
+            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                            ?>">
             <?php do_action('woocommerce_before_variations_form');?>
 
             <?php if (empty($available_variations) && false !== $available_variations): ?>
@@ -135,43 +135,56 @@ $attribute_keys = array_keys($attributes);
     <div class="recepes_right_left_input_code_header">
         <h5>Ingredients</h5>
     </div>
-    <!-- Start Single ingredient item -->
-    <div class="recepes_single_ingridient_item">
-        <h5>Ingredient</h5>
-        <input type="text" placeholder="Enter Your Ingredient" class="vmh_create_recipe_ingredients" />
+
+
+    <div class="ingredients_container">
+
+        <!-- ==================== -->
+        <!-- root element for copy -->
+        <!-- ==================== -->
+
+        <!-- Start Single ingredient item -->
+        <div class="ingredients_wrapper" id="ingredients_wrapper_0" style="display: none;">
+
+            <i class="fas fa-times cut_selectbox"></i>
+
+            <select name="product_ingredients" style="width: 300px" class="product_ingredients"
+                id="product_ingredients_0">
+                <?php echo getAllIngredients() ?>
+            </select>
+
+            <img class="add_ingredients_icon"
+                src="<?php echo esc_url(VMH_URL . 'Assets/images/recipes_order/plus.png') ?>" width="50px" height="50px"
+                alt="images" />
+        </div>
+        <!-- End Single ingredient item -->
+
+
+
+        <!-- Start Single ingredient item -->
+        <div class="ingredients_wrapper" id="ingredients_wrapper_1">
+
+            <select name="product_ingredients" style="width: 300px" class="product_ingredients"
+                id="product_ingredients_1">
+                <?php echo getAllIngredients() ?>
+            </select>
+
+            <img class="add_ingredients_icon"
+                src="<?php echo esc_url(VMH_URL . 'Assets/images/recipes_order/plus.png') ?>" width="50px" height="50px"
+                alt="images" />
+        </div>
+        <!-- End Single ingredient item -->
     </div>
-    <!-- End Single ingredient item -->
-    <!-- Start Single ingredient item -->
-    <div class="recepes_single_ingridient_item">
-        <h5>Ingredient</h5>
-        <input type="text" placeholder="Enter Your Ingredient" class="vmh_create_recipe_ingredients" />
-    </div>
-    <!-- End Single ingredient item -->
-    <!-- Start Single ingredient item -->
-    <div class="recepes_single_ingridient_item">
-        <h5>Ingredient</h5>
-        <input type="text" placeholder="Enter Your Ingredient" class="vmh_create_recipe_ingredients" />
-    </div>
-    <!-- End Single ingredient item -->
-    <!-- Start Single ingredient item -->
-    <div class="recepes_single_ingridient_item">
-        <h5>Ingredient</h5>
-        <input type="text" placeholder="Enter Your Ingredient" class="vmh_create_recipe_ingredients" />
-    </div>
-    <!-- End Single ingredient item -->
-    <!-- Start Single ingredient item -->
-    <div class="recepes_single_ingridient_item">
-        <h5>Ingredient</h5>
-        <input type="text" placeholder="Enter Your Ingredient" class="vmh_create_recipe_ingredients" />
-    </div>
-    <!-- End Single ingredient item -->
+
+
+
 
     <div class="recepes_choose_option">
 
         <form class="variations_form cart"
             action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product->get_permalink())); ?>"
             method="post" enctype='multipart/form-data' data-product_id="<?php echo absint($product->get_id()); ?>"
-            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                     ?>">
+            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                            ?>">
             <?php do_action('woocommerce_before_variations_form');?>
 
             <?php if (empty($available_variations) && false !== $available_variations): ?>
