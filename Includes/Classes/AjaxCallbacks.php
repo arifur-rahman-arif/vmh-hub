@@ -475,8 +475,7 @@ trait AjaxCallbacks {
 
             // add product ingredients
             if ($productIngredients) {
-                $joinedValue = implode(" | ", $productIngredients);
-                update_post_meta($postID, 'product_ingredients', $joinedValue);
+                update_post_meta($postID, 'product_ingredients', $productIngredients);
             }
 
             // add product tags

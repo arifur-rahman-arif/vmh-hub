@@ -430,7 +430,7 @@ jQuery(document).ready(function ($) {
             return false;
         }
 
-        let ingredients = $("select.product_ingredients");
+        let ingredients = $("select.product_ingredients:not(#product_ingredients_0)");
 
         if (!ingredients.val() || ingredients.val() == "") {
             recipePopup.find(".vmh_alert_text").text("Please select 1 or more ingredients");
@@ -442,7 +442,7 @@ jQuery(document).ready(function ($) {
 
         let stockAvailablity = $(".woocommerce-variation-availability");
 
-        if (stockAvailablity.find(".out-of-stock")) {
+        if (stockAvailablity.find(".out-of-stock").length > 0) {
             recipePopup.find(".vmh_alert_text").text("Product is out of stock");
 
             $(".save_recieved_hde").show();
@@ -455,7 +455,7 @@ jQuery(document).ready(function ($) {
     function getIngredientsValues() {
         let ingredientsValues = [];
 
-        $.each($(".vmh_create_recipe_ingredients"), function (indexInArray, valueOfElement) {
+        $.each($(".product_ingredients"), function (indexInArray, valueOfElement) {
             if ($(valueOfElement).val()) {
                 ingredientsValues.push($(valueOfElement).val());
             }
@@ -525,6 +525,8 @@ jQuery(document).ready(function ($) {
         let uniqueId = Date.now();
 
         let copy = selectorElement.clone(true);
+
+        copy.find(".add_ingredients_icon").remove();
 
         let parantID = "ingredients_wrapper_" + uniqueId;
 

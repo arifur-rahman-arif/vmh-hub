@@ -381,7 +381,7 @@ function simpleProductOptions() {
 
     $productAttributes = $callbackClass->vmhProductAttributes();
 
-    if ($productOptions) {
+    if (is_array($productOptions)) {
         foreach ($productOptions as $key => $option) {
             $optionKeys = array_keys($option)[0];
             $optionsHTML .= '
