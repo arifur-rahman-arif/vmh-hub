@@ -37,10 +37,12 @@ class Hooks extends HookCallbacks {
         add_action('admin_init', [$this, 'generateCustomTaxonomy'], 0);
 
         // add user commsion on purchase of simple product
-        add_action('woocommerce_thankyou', [$this, 'addCommisionToUser']);
+        add_action('woocommerce_order_status_completed', [$this, 'addCommisionToUser']);
+
+        add_action('woocommerce_order_status_completed', [$this, 'reduceIngredientsStock']);
 
         // update post on order status update
-        add_action('save_post', [$this, 'addCommisionToUser'], 10, 1);
+        // add_action('save_post', [$this, 'addCommisionToUser'], 10, 1);
 
         // update post on order status update
         add_action('save_post', [$this, 'sendMailOnProductApprove'], 10, 2);
@@ -59,6 +61,11 @@ class Hooks extends HookCallbacks {
         add_action('add_meta_boxes_product', [$this, 'registerIngredientsMeta'], 10, 1);
         // Save the post meta on saving the post
         add_action('save_post_product', [$this, 'saveIngredientsMetaValue'], 10, 2);
+
+        // Add meta box to control the map zoom option
+        add_action('add_meta_boxes_product', [$this, 'registerIngredientsPercentage'], 10, 1);
+        // Save the post meta on saving the post
+        // add_action('save_post_product', [$this, 'saveIngredientsPercentage'], 10, 2);
     }
 
     public function sessionStart() {

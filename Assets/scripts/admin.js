@@ -91,5 +91,10 @@ var $ = jQuery.noConflict();
         new SlimSelect({
             select: ".product_ingredients",
         });
+        new SlimSelect({
+            select: ".ingredients_percentage_values",
+            showSearch: false,
+            hideSelectedOption: true,
+        });
     }
 })();

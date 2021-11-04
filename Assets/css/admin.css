@@ -7,3 +7,10 @@
 #select2-product_ingredients-results > li {
     padding: 10px 10px !important;
 } */
+
+.ingredients_percentage_values .ss-value-delete {
+    display: none !important;
+}
+.ingredients_percentage_values .ss-value-text {
+    font-size: 14px;
+}

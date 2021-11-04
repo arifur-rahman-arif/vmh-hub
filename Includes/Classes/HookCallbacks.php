@@ -298,6 +298,7 @@ class HookCallbacks {
      * @param $orderID
      */
     public function addCommisionToUser($orderID) {
+
         $order = wc_get_order($orderID);
         if (!$order) {
             return;
@@ -334,6 +335,44 @@ class HookCallbacks {
                 }
             }
         }
+    }
+
+    /**
+     * Reduce the ingredients stock on successfull purchase
+     * @param  $orderID
+     * @return null
+     */
+    public function reduceIngredientsStock($orderID) {
+
+        $order = wc_get_order($orderID);
+
+        if (!$order) {
+            return;
+        }
+        $items = $order->get_items();
+
+        if (!$items) {
+            return;
+        }
+
+        foreach ($items as $item) {
+            $productID = $item->get_product_id();
+
+            $productIngredients = get_post_meta($productID, 'product_ingredients', true);
+
+            if (!$productIngredients) {
+                return;
+            }
+
+            foreach ($productIngredients as $key => $ingredientID) {
+                $ingredientStock = get_post_meta($ingredientID, 'ingredients_stock', true);
+
+                $newStock = $ingredientStock - 1;
+
+                update_post_meta($ingredientID, 'ingredients_stock', $newStock);
+            }
+        }
+
     }
 
     /**
@@ -452,7 +491,9 @@ class HookCallbacks {
         wp_nonce_field('vmh_ingredients_stock_action', 'vmh_ingredients_nonce');
         $metaValue = get_post_meta($post->ID, 'ingredients_stock', true);
 
-        $metaValue = $metaValue ? $metaValue : "";
+        if ($metaValue == 0) {
+            $metaValue = '0';
+        }
 
         echo '
             <div>
@@ -490,18 +531,10 @@ class HookCallbacks {
         $meta_key = 'ingredients_stock';
 
         /* Get the meta value of the custom field key. */
-        $meta_value = get_post_meta($postID, $meta_key, true);
+        // $meta_value = get_post_meta($postID, $meta_key, true);
 
-        if ($new_meta_value && "" == $meta_value) {
-            /* If a new meta value was added and there was no previous value, add it. */
-            add_post_meta($postID, $meta_key, $new_meta_value);
-        } elseif ($new_meta_value && $new_meta_value != $meta_value) {
-            /* If the new meta value does not match the old value, update it. */
-            update_post_meta($postID, $meta_key, $new_meta_value);
-        } elseif ("" == $new_meta_value && $meta_value) {
-            /* If there is no new meta value but an old value exists, delete it. */
-            delete_post_meta($postID, $meta_key, $meta_value);
-        }
+        update_post_meta($postID, $meta_key, $new_meta_value);
+
     }
 
     // Register a dropdown meta field for product post type
@@ -515,6 +548,31 @@ class HookCallbacks {
                 'product_ingredients',
                 'Product Ingredients',
                 [$this, 'productIngredientsHTML'],
+                ['product'],
+                'normal',
+                'high'
+            );
+        }
+    }
+
+    // Register a dropdown meta field for product post type for ingredients percentage
+    /**
+     * @param $postType
+     * @param $post
+     */
+    public function registerIngredientsPercentage($post) {
+        if ($post->ID != get_option('vmh_create_product_option')) {
+
+            $metaValue = get_post_meta($post->ID, 'ingredients_percentage_values', true);
+
+            if (!$metaValue) {
+                return;
+            }
+
+            add_meta_box(
+                'product_ingredients_percentage',
+                'Product Ingredients Percentage',
+                [$this, 'productIngredientsPercentageHTML'],
                 ['product'],
                 'normal',
                 'high'
@@ -539,11 +597,31 @@ class HookCallbacks {
                     <br/>
                 </strong>
                 <br />
-                <select name="product_ingredients[]" multiple="multiple" style="width: 300px" id="product_ingredients" class="product_ingredients">
+                <select name="product_ingredients[]" multiple="multiple" style="min-width: 300px" id="product_ingredients" class="product_ingredients">
                     ' . $this->getIngredients($metaValue) . '
                 </select>
             </div>
        ';
+    }
+
+    /**
+     * The html of product ingredeints
+     * @param $post
+     */
+    public function productIngredientsPercentageHTML($post) {
+        // wp_nonce_field('vmh_product_ingredients_action', 'vmh_product_ingredients_nonce');
+        $metaValue = get_post_meta($post->ID, 'ingredients_percentage_values', true);
+
+        $metaValue = $metaValue ? $metaValue : "";
+
+        echo '
+                <div>
+                    <br />
+                    <select name="ingredients_percentage_values[]" multiple="multiple" style="min-width: 300px" id="ingredients_percentage_values" class="ingredients_percentage_values">
+                        ' . $this->getIngredientsPercentage($metaValue, $post->ID) . '
+                    </select>
+                </div>
+           ';
     }
 
     /**
@@ -569,6 +647,31 @@ class HookCallbacks {
             $options .= '<option ' . $this->echo_select($metaValues, esc_attr($ingredient->ID)) . ' value="' . esc_attr($ingredient->ID) . '" >
                             ' . esc_html($ingredient->post_title) . ' (' . get_post_meta($ingredient->ID, 'ingredients_stock', true) . ')
                         </option>';
+        }
+
+        return $options;
+    }
+
+    /**
+     * Get the percentage of ingredients
+     * @param $ingredientsPercentage
+     */
+    public function getIngredientsPercentage($ingredientsPercentage, $postID) {
+        if (!$ingredientsPercentage) {
+            return '';
+        }
+
+        $ingredients = get_post_meta($postID, 'product_ingredients', true);
+
+        $options = '';
+
+        foreach ($ingredientsPercentage as $key => $ingredientPercentage) {
+
+            if (isset($ingredients[$key]) && $ingredients[$key]) {
+                $options .= '<option selected value="' . esc_attr($ingredientPercentage) . '" >
+                                ' . get_the_title($ingredients[$key]) . ' ' . $ingredientPercentage . '%
+                            </option>';
+            }
         }
 
         return $options;

@@ -459,6 +459,7 @@ trait AjaxCallbacks {
 
             $productOptions = $sanitizedData['optionsValue'];
             $productIngredients = $sanitizedData['ingredientsValues'];
+            $ingredientsPercentageValues = $sanitizedData['ingredientsPercentageValues'];
             $productTags = $sanitizedData['tagValues'];
 
             // add the product options to meta value
@@ -476,6 +477,11 @@ trait AjaxCallbacks {
             // add product ingredients
             if ($productIngredients) {
                 update_post_meta($postID, 'product_ingredients', $productIngredients);
+            }
+
+            // add product ingredients
+            if ($ingredientsPercentageValues) {
+                add_post_meta($postID, 'ingredients_percentage_values', $ingredientsPercentageValues);
             }
 
             // add product tags

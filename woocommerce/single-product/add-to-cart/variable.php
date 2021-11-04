@@ -43,7 +43,7 @@ if ($product->get_id() != get_option('vmh_create_product_option')) {
         <form class="variations_form cart"
             action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product->get_permalink())); ?>"
             method="post" enctype='multipart/form-data' data-product_id="<?php echo absint($product->get_id()); ?>"
-            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                            ?>">
+            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                                    ?>">
             <?php do_action('woocommerce_before_variations_form');?>
 
             <?php if (empty($available_variations) && false !== $available_variations): ?>
@@ -153,6 +153,8 @@ $attribute_keys = array_keys($attributes);
                 <?php echo getAllIngredients() ?>
             </select>
 
+            <input type="number" min="0" max="30" name="ingredient_percentage" class="ingredient_percentage">
+
             <img class="add_ingredients_icon"
                 src="<?php echo esc_url(VMH_URL . 'Assets/images/recipes_order/plus.png') ?>" width="50px" height="50px"
                 alt="images" />
@@ -169,6 +171,9 @@ $attribute_keys = array_keys($attributes);
                 <?php echo getAllIngredients() ?>
             </select>
 
+            <input type="number" min="0" max="30" name="ingredient_percentage" class="ingredient_percentage"
+                placeholder="5%">
+
             <img class="add_ingredients_icon"
                 src="<?php echo esc_url(VMH_URL . 'Assets/images/recipes_order/plus.png') ?>" width="50px" height="50px"
                 alt="images" />
@@ -184,7 +189,7 @@ $attribute_keys = array_keys($attributes);
         <form class="variations_form cart"
             action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product->get_permalink())); ?>"
             method="post" enctype='multipart/form-data' data-product_id="<?php echo absint($product->get_id()); ?>"
-            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                            ?>">
+            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                                    ?>">
             <?php do_action('woocommerce_before_variations_form');?>
 
             <?php if (empty($available_variations) && false !== $available_variations): ?>

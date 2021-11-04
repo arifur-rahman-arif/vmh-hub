@@ -169,8 +169,8 @@ function singleProductIngredientsHTML(int $productID) {
         // Start Single ingredient item
         $ingredientsHTML .= '
             <div class="recepes_single_ingridient_item">
-                <h5>Ingredient:</h5>
                 <span>' . trim(get_the_title($singleIngredient)) . '</span>
+                ' . ingredientsPecentage($key) . '
             </div>
             ';
         // End Single ingredient item
@@ -178,6 +178,23 @@ function singleProductIngredientsHTML(int $productID) {
 
     return $ingredientsHTML;
 
+}
+
+/**
+ * @param $key
+ */
+function ingredientsPecentage($key) {
+    $ingredientsPercentage = get_post_meta(get_the_ID(), 'ingredients_percentage_values', true);
+
+    if (!$ingredientsPercentage) {
+        return '';
+    }
+
+    if (!isset($ingredientsPercentage[$key]) || $ingredientsPercentage[$key] == '') {
+        return '';
+    }
+
+    return '<b>' . $ingredientsPercentage[$key] . '%</b>';
 }
 
 // Get the use description from user database
@@ -597,7 +614,7 @@ function getAllIngredients() {
     $options = '<option data-placeholder="true"></option>';
 
     foreach ($ingredients as $key => $ingredient) {
-        $options .= '<option ' . addDisableAttr($ingredient->ID) . ' value="' . esc_attr($ingredient->ID) . '" >
+        $options .= '<option class="' . addDisableAttr($ingredient->ID) . '" ' . addDisableAttr($ingredient->ID) . ' value="' . esc_attr($ingredient->ID) . '" >
                         ' . esc_html($ingredient->post_title) . ' (' . ingredientInStock($ingredient->ID) . ')
                     </option>';
     }

@@ -280,6 +280,13 @@ body > .wp-dark-mode-switcher {
 .ingredients_wrapper .product_ingredients {
     margin-right: 10px;
 }
+.ingredients_wrapper .ingredient_percentage {
+    margin-right: 10px;
+    padding-left: 10px;
+}
+.ingredients_wrapper .disabled {
+    color: red;
+}
 
 .ingredients_wrapper .add_ingredients_icon {
     width: 30px;

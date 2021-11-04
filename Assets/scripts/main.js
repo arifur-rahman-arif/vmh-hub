@@ -344,6 +344,7 @@ jQuery(document).ready(function ($) {
         let secondTagValue = $("input[name=vmh_second_tag]").val();
         let tagValues = [firstTagValue, secondTagValue];
         let optionsValue = getOptionsValue();
+        let ingredientsPercentageValues = getIngredientsPercentageValues();
 
         let requiredFields = showAlertOnRequiredFields(productName, optionsValue);
         if (requiredFields === false) {
@@ -359,6 +360,7 @@ jQuery(document).ready(function ($) {
             data: {
                 productName,
                 ingredientsValues,
+                ingredientsPercentageValues,
                 recipeNote,
                 tagValues,
                 optionsValue,
@@ -440,6 +442,17 @@ jQuery(document).ready(function ($) {
             return false;
         }
 
+        let totalPercentage = calculatePercentage();
+
+        if (totalPercentage >= 30) {
+            recipePopup
+                .find(".vmh_alert_text")
+                .text("Ingredients amount is exceeded. Please keep it in 30%");
+            $(".save_recieved_hde").show();
+            $("body").addClass("popup_overly");
+            return false;
+        }
+
         let stockAvailablity = $(".woocommerce-variation-availability");
 
         if (stockAvailablity.find(".out-of-stock").length > 0) {
@@ -462,6 +475,23 @@ jQuery(document).ready(function ($) {
         });
 
         return ingredientsValues;
+    }
+
+    // Get the ingredients percentage value from create recipe
+    function getIngredientsPercentageValues() {
+        let ingredientsPercentageValues = [];
+
+        $.each($(".ingredient_percentage"), function (indexInArray, valueOfElement) {
+            // if both select box value and
+            if (
+                $(valueOfElement).parent().find(".product_ingredients").val() &&
+                $(valueOfElement).val()
+            ) {
+                ingredientsPercentageValues.push(Number($(valueOfElement).val()));
+            }
+        });
+
+        return ingredientsPercentageValues;
     }
 
     // Change the tag name on typing of tag name
@@ -504,7 +534,7 @@ jQuery(document).ready(function ($) {
             placeholder: "Select Ingredients",
             allowDeselectOption: true,
             valuesUseText: false,
-            hideSelectedOption: true,
+            hideSelectedOption: false,
             searchText: "Sorry ingredients not found.",
             // addable: function (value) {
             //     // Optional - Return a valid data object. See methods/setData for list of valid options
@@ -518,7 +548,18 @@ jQuery(document).ready(function ($) {
 
     // Duplicate the ingredients select box
     function duplicateSelectBox(e) {
-        let target = $(e.currentTarget);
+        let totalPercentage = calculatePercentage();
+
+        if (totalPercentage >= 30) {
+            productAlert("Ingredients amount is limited to 30%");
+            setTimeout(() => {
+                $(".vmh_alert").slideUp(500);
+            }, 3000);
+
+            return;
+        }
+
+        $(".vmh_alert").slideUp(500);
 
         let selectorElement = $("#ingredients_wrapper_0");
 
@@ -547,7 +588,7 @@ jQuery(document).ready(function ($) {
             placeholder: "Select Ingredients",
             allowDeselectOption: true,
             valuesUseText: false,
-            hideSelectedOption: true,
+            hideSelectedOption: false,
             searchText: "Sorry ingredients not found.",
         });
     }
@@ -558,5 +599,26 @@ jQuery(document).ready(function ($) {
         let wrapperElements = target.parents(".ingredients_wrapper");
 
         wrapperElements.remove();
+    }
+
+    // Calculate the percentage value of ingredients
+    function calculatePercentage() {
+        let targets = $(".ingredient_percentage");
+
+        if (!targets.length) return;
+
+        let ingredientsPercentage = [];
+
+        $.each(targets, function (indexInArray, valueOfElement) {
+            let value = Number($(valueOfElement).val());
+
+            ingredientsPercentage.push(value);
+        });
+
+        let total = ingredientsPercentage.reduce(
+            (prevValue, currentValue) => prevValue + currentValue
+        );
+
+        return total;
     }
 });

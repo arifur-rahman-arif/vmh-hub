@@ -43,11 +43,6 @@ if ($product->is_in_stock()): ?>
     <div class="recepes_choose_option">
 
 
-        <!-- <div class="recepes_single_choose_option">
-            <h4>PG:VG :</h4>
-            <span class="vmh_simple_option_value">asdlf asdlfj</span>
-        </div> -->
-
         <?php echo simpleProductOptions() ?>
 
         <form class="cart"
