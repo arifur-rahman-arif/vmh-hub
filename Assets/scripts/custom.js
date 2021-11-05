@@ -197,6 +197,7 @@ jQuery(document).ready(function ($) {
     // Save Recieved Btn(recepes order page)
     $(".recipes_order_single_tag_plus_img a, .person_search_right a").click(function () {
         $(".recepes_tag1").toggle();
+        $(".recepes_tag1").toggleClass("active");
 
         return false;
     });

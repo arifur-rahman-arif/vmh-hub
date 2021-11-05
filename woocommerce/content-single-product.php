@@ -145,23 +145,46 @@ do_action('woocommerce_single_product_summary');
 
                                     <div class="recipes_order_single_tag_plus">
                                         <div class="recipes_order_single_tag">
-                                            <span id="vmh_first_tag">Tag Name</span>
-                                            <input type="hidden" name="vmh_first_tag">
-                                            <span id="vmh_second_tag">Tag Name</span>
-                                            <input type="hidden" name="vmh_second_tag">
                                             <!-- Start Tag name type -->
                                             <div class="recepes_tag_type_input recepes_tag1">
-                                                <input type="text" placeholder="Type Tag Name" class="vmh_tag_input"
-                                                    data-target="vmh_first_tag">
-                                                <input type="text" placeholder="Type Tag Name" class="vmh_tag_input"
-                                                    data-target="vmh_second_tag">
+
+                                                <div class="tags_popup_container">
+                                                    <img class="add_tag_name"
+                                                        src="<?php echo esc_url(VMH_URL . 'Assets/images/recipes_order/plus.png') ?>"
+                                                        alt="images" />
+
+                                                    <div class="input_container">
+
+                                                        <div class="tag_input duplicate_tag" style="display: none;">
+                                                            <i class="fas fa-times cut_tag"></i>
+                                                            <input type="text" placeholder="Type Tag Name"
+                                                                class="vmh_tag_input">
+                                                        </div>
+
+                                                        <div class="tag_input">
+                                                            <input type="text" placeholder="Type Tag Name"
+                                                                class="vmh_tag_input">
+                                                        </div>
+
+                                                        <div class="tag_input">
+                                                            <input type="text" placeholder="Type Tag Name"
+                                                                class="vmh_tag_input">
+                                                        </div>
+
+                                                    </div>
+
+
+                                                </div>
+
                                             </div>
                                             <!-- End Tag name type -->
                                         </div>
                                         <div class="recipes_order_single_tag_plus_img">
-                                            <a href="#"><img
-                                                    src="<?php echo esc_url(VMH_URL . 'Assets/images/recipes_order/plus.png') ?>"
-                                                    alt="images" /></a>
+
+                                            <a href="">
+                                                <i class="fas fa-edit tag_edit_icon"></i>
+                                            </a>
+
                                         </div>
                                     </div>
                                 </div>

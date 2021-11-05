@@ -13,11 +13,14 @@
 
 if (isset($_GET['key']) && $_GET['key']) {
     $key = sanitize_text_field($_GET['key']);
-    if (array_key_exists($key, $_SESSION)) {
-        $userData = $_SESSION[$key];
+
+    $userData = get_transient($key);
+
+    if ($userData) {
         if (is_array($userData)) {
             $createUser = createUser($userData);
             if ($createUser['response'] == 'success') {
+                delete_transient($key);
                 echo '
                     <div class="card border-success">
                         <div class="card-body">
@@ -40,7 +43,7 @@ if (isset($_GET['key']) && $_GET['key']) {
         echo '
             <div class="card border-danger">
                 <div class="card-body">
-                    Key is not found in session.
+                    User data not found or invalid.
                 </div>
             </div>
         ';

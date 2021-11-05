@@ -7,7 +7,7 @@ jQuery(document).ready(function ($) {
     let cartRemoveBtn = $(".cart_remove1");
     let favoriteBtn = $(".vmh_favorite");
     let createRecipeBtn = $(".vmh_save_recipe_btn");
-    let tagInput = $(".vmh_tag_input");
+    let addTagName = $(".add_tag_name");
 
     events();
 
@@ -25,11 +25,35 @@ jQuery(document).ready(function ($) {
         clearParameter();
         favoriteBtn.on("click", toggleFavorite);
         createRecipeBtn.on("click", createRecipe);
-        tagInput.on("input", changeTagName);
         $(document).on("click", ".js-dgwt-wcas-enable-mobile-form", hideModal);
         initiateSelectBox();
         $(document).on("click", ".add_ingredients_icon", duplicateSelectBox);
         $(document).on("click", ".cut_selectbox", deleteSelectBox);
+        $(addTagName).on("click", duplicateTagInput);
+
+        $(document).on("click", ".cut_tag", deleteInputTag);
+        $(".recipes_order_single_tag_plus_img a").click(toggleTagIcon);
+    }
+
+    // Hide the tag input box on clicking of body document
+    function hideTagInputBox() {
+        if ($(".recepes_tag_type_input.recepes_tag1").hasClass("active")) {
+            $(".recepes_tag_type_input.recepes_tag1").hide();
+        }
+    }
+
+    function toggleTagIcon(e) {
+        let target = $(e.currentTarget);
+
+        let popup = $(".recepes_tag_type_input.recepes_tag1");
+
+        if (popup.hasClass("active")) {
+            target.find("i").removeClass("fa-edit");
+            target.find("i").addClass("fa-times");
+        } else {
+            target.find("i").removeClass("fa-times");
+            target.find("i").addClass("fa-edit");
+        }
     }
 
     // Toggle the dark mode in webstie frontend
@@ -110,6 +134,9 @@ jQuery(document).ready(function ($) {
                 if (response.response == "success") {
                     makeAlert("Thank you", response.message);
                     $(".vmh-login-btn").hide();
+                    setTimeout(() => {
+                        window.location.href = vmhLocal.siteUrl + "login";
+                    }, 2000);
                 }
 
                 $("#vmh-user-create-submit").attr("disabled", false);
@@ -340,13 +367,12 @@ jQuery(document).ready(function ($) {
         let productName = $("#vmh_recipe_name").val();
         let ingredientsValues = getIngredientsValues();
         let recipeNote = $(".vmh_recipe_create_note").val();
-        let firstTagValue = $("input[name=vmh_first_tag]").val();
-        let secondTagValue = $("input[name=vmh_second_tag]").val();
-        let tagValues = [firstTagValue, secondTagValue];
+        let tagValues = getTagValues();
         let optionsValue = getOptionsValue();
         let ingredientsPercentageValues = getIngredientsPercentageValues();
 
         let requiredFields = showAlertOnRequiredFields(productName, optionsValue);
+
         if (requiredFields === false) {
             return false;
         }
@@ -382,7 +408,11 @@ jQuery(document).ready(function ($) {
                     let recipePopup = $(".vmh_create_recipe_popup");
 
                     recipePopup.find(".vmh_checkbox_image").css({
-                        visibility: "visible",
+                        display: "block",
+                    });
+
+                    recipePopup.find(".vmh_checkbox_image_warning").css({
+                        display: "none",
                     });
 
                     recipePopup
@@ -394,7 +424,7 @@ jQuery(document).ready(function ($) {
 
                     setTimeout(() => {
                         window.location.href = vmhLocal.siteUrl;
-                    }, 3000);
+                    }, 2000);
                 }
             },
             error: (err) => {
@@ -411,7 +441,10 @@ jQuery(document).ready(function ($) {
         let recipePopup = $(".vmh_create_recipe_popup");
         if (!productName) {
             recipePopup.find(".vmh_checkbox_image").css({
-                visibility: "hidden",
+                display: "none",
+            });
+            recipePopup.find(".vmh_checkbox_image_warning").css({
+                display: "block",
             });
 
             recipePopup.find(".vmh_alert_text").text("Product name is required");
@@ -422,7 +455,10 @@ jQuery(document).ready(function ($) {
         }
         if (optionsValue.length !== attributesLength) {
             recipePopup.find(".vmh_checkbox_image").css({
-                visibility: "hidden",
+                display: "none",
+            });
+            recipePopup.find(".vmh_checkbox_image_warning").css({
+                display: "block",
             });
 
             recipePopup.find(".vmh_alert_text").text("All options needs to filled.");
@@ -435,6 +471,13 @@ jQuery(document).ready(function ($) {
         let ingredients = $("select.product_ingredients:not(#product_ingredients_0)");
 
         if (!ingredients.val() || ingredients.val() == "") {
+            recipePopup.find(".vmh_checkbox_image").css({
+                display: "none",
+            });
+            recipePopup.find(".vmh_checkbox_image_warning").css({
+                display: "block",
+            });
+
             recipePopup.find(".vmh_alert_text").text("Please select 1 or more ingredients");
 
             $(".save_recieved_hde").show();
@@ -445,9 +488,17 @@ jQuery(document).ready(function ($) {
         let totalPercentage = calculatePercentage();
 
         if (totalPercentage >= 30) {
+            recipePopup.find(".vmh_checkbox_image").css({
+                display: "none",
+            });
+            recipePopup.find(".vmh_checkbox_image_warning").css({
+                display: "block",
+            });
+
             recipePopup
                 .find(".vmh_alert_text")
                 .text("Ingredients amount is exceeded. Please keep it in 30%");
+
             $(".save_recieved_hde").show();
             $("body").addClass("popup_overly");
             return false;
@@ -456,6 +507,13 @@ jQuery(document).ready(function ($) {
         let stockAvailablity = $(".woocommerce-variation-availability");
 
         if (stockAvailablity.find(".out-of-stock").length > 0) {
+            recipePopup.find(".vmh_checkbox_image").css({
+                display: "none",
+            });
+            recipePopup.find(".vmh_checkbox_image_warning").css({
+                display: "block",
+            });
+
             recipePopup.find(".vmh_alert_text").text("Product is out of stock");
 
             $(".save_recieved_hde").show();
@@ -477,6 +535,22 @@ jQuery(document).ready(function ($) {
         return ingredientsValues;
     }
 
+    // Get all the tag values
+    function getTagValues() {
+        let tags = $(".input_container .vmh_tag_input");
+
+        if (tags.length < 1) return [];
+
+        let tagValues = [];
+
+        $.each(tags, function (indexInArray, tag) {
+            let tagValue = $(tag).val();
+            tagValues.push(tagValue);
+        });
+
+        return tagValues;
+    }
+
     // Get the ingredients percentage value from create recipe
     function getIngredientsPercentageValues() {
         let ingredientsPercentageValues = [];
@@ -492,15 +566,6 @@ jQuery(document).ready(function ($) {
         });
 
         return ingredientsPercentageValues;
-    }
-
-    // Change the tag name on typing of tag name
-    function changeTagName(e) {
-        let target = $(e.currentTarget);
-        let input = $(`input[name=${target.attr("data-target")}]`);
-        let spanTag = $(`#${target.attr("data-target")}`);
-        input.val(target.val());
-        spanTag.text(target.val());
     }
 
     // Get options value from selectbox
@@ -593,10 +658,34 @@ jQuery(document).ready(function ($) {
         });
     }
 
+    // Duplicate the tag input box
+    function duplicateTagInput() {
+        let selectorElement = $(".input_container .duplicate_tag");
+
+        let copy = selectorElement.clone(true);
+
+        copy.removeClass("duplicate_tag");
+
+        copy.css({
+            display: "flex",
+        });
+
+        $(".tags_popup_container .input_container").append(copy);
+    }
+
     function deleteSelectBox(e) {
         let target = $(e.currentTarget);
 
         let wrapperElements = target.parents(".ingredients_wrapper");
+
+        wrapperElements.remove();
+    }
+
+    // Delete the input tag on clicking of delete button
+    function deleteInputTag(e) {
+        let target = $(e.currentTarget);
+
+        let wrapperElements = target.parents(".tag_input");
 
         wrapperElements.remove();
     }

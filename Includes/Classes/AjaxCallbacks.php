@@ -180,26 +180,26 @@ trait AjaxCallbacks {
 
         $hashString = md5(time());
 
-        $_SESSION[$hashString] = $userData;
+        if (set_transient($hashString, $userData, (60 * 60 * 24))) {
+            $to = $userData['email'];
+            $displayName = ($userData['fname'] . ' ' . $userData['lname']);
+            $subject = 'Verify your account';
+            $message = '
+                Hello ' . $displayName . ' please verify your account by clicking here <a href="' . site_url('/verify?key=' . $hashString . '') . '">Verify Account</a>
+            ';
+            $headers = ['Content-Type: text/html; charset=UTF-8'];
 
-        $to = $userData['email'];
-        $displayName = ($userData['fname'] . ' ' . $userData['lname']);
-        $subject = 'Verify your account';
-        $message = '
-            Hello ' . $displayName . ' please verify your account by clicking here <a href="' . site_url('/verify?key=' . $hashString . '') . '">Verify Account</a>
-        ';
-        $headers = ['Content-Type: text/html; charset=UTF-8'];
-
-        if (wp_mail($to, $subject, $message, $headers)) {
-            return [
-                'response' => 'success',
-                'message'  => vmhEscapeTranslate('Verify your email to confirm your account. Check inbox')
-            ];
-        } else {
-            return [
-                'response' => 'invalid',
-                'message'  => vmhEscapeTranslate('Mail can not be sent to user email')
-            ];
+            if (wp_mail($to, $subject, $message, $headers)) {
+                return [
+                    'response' => 'success',
+                    'message'  => vmhEscapeTranslate('Verify your email to confirm your account. Check inbox')
+                ];
+            } else {
+                return [
+                    'response' => 'invalid',
+                    'message'  => vmhEscapeTranslate('Mail can not be sent to user email')
+                ];
+            }
         }
 
     }
