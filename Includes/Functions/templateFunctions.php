@@ -386,7 +386,7 @@ function displayBottleSizeOptions() {
 }
 
 /**
- * Get simple product options created by user
+ * Get simple product options created by user from a variable product
  * @return mixed
  */
 function simpleProductOptions() {
@@ -394,19 +394,26 @@ function simpleProductOptions() {
     $optionsHTML = '';
     $productOptions = get_post_meta($productID, 'product_options', true);
 
+    // wp_console_log($productOptions);
+
     $callbackClass = new \VmhHub\Includes\Classes\HookCallbacks();
 
     $productAttributes = $callbackClass->vmhProductAttributes();
 
+    wp_console_log($productAttributes);
+
+    // wp_console_log($productAttributes);
+
     if (is_array($productOptions)) {
         foreach ($productOptions as $key => $option) {
             $optionKeys = array_keys($option)[0];
-            $optionsHTML .= '
-            <div class="recepes_single_choose_option">
-                <h4>' . esc_html($productAttributes[$optionKeys]) . ' :</h4>
-                <span class="vmh_simple_option_value">' . esc_html($option[$optionKeys]) . '</span>
-            </div>
-           ';
+
+            //     $optionsHTML .= '
+            //     <div class="recepes_single_choose_option">
+            //         <h4>' . esc_html($productAttributes[$optionKeys]) . ' :</h4>
+            //         <span class="vmh_simple_option_value">' . esc_html($option[$optionKeys]) . '</span>
+            //     </div>
+            //    ';
         }
         return $optionsHTML;
     } else {
@@ -598,14 +605,14 @@ function getRecommendedProducts($postPerPage) {
  * Get all the ingredients post type for showing into select box
  * @return mixed
  */
-function getAllIngredients() {
-    $args = [
+function getAllIngredients($args = []) {
+    $postArgs = [
         'post_type'      => 'ingredient',
         'posts_per_page' => -1,
         'post_status'    => 'publish'
     ];
 
-    $ingredients = get_posts($args);
+    $ingredients = get_posts($postArgs);
 
     if (!$ingredients) {
         return '';
@@ -643,5 +650,118 @@ function addDisableAttr($postID) {
         return '';
     } else {
         return 'disabled';
+    }
+}
+
+// Get the prodcut ingredients for edit product feature if edit_product found parameter is found
+/**
+ * @return mixed
+ */
+function getIngredientsOnProductEdit() {
+    if (!isset($_GET['edit_product']) || !$_GET['edit_product']) {
+        return null;
+    }
+
+    $productIngredients = get_post_meta($_GET['edit_product'], 'product_ingredients', true);
+
+    $ingredientsPercentage = get_post_meta($_GET['edit_product'], 'ingredients_percentage_values', true);
+
+    if (!$productIngredients) {
+        return '
+        <div class="ingredients_wrapper" id="ingredients_wrapper_1">
+            <select name="product_ingredients" style="width: 300px" class="product_ingredients"
+                id="product_ingredients_1">
+                ' . getAllIngredients() . '
+            </select>
+
+            <input type="number" min="0" max="30" name="ingredient_percentage" class="ingredient_percentage"
+                placeholder="5%">
+
+            <img class="add_ingredients_icon"
+                src="' . esc_url(VMH_URL . 'Assets/images/recipes_order/plus.png') . '" width="50px" height="50px"
+                alt="images" />
+        </div>
+        ';
+    }
+
+    $ingredientsHTML = '';
+
+    $ingredientOptions = getAllIngredients();
+
+    foreach ($productIngredients as $key => $ingredient) {
+
+        $ingredientsHTML .= '
+                <div class="ingredients_wrapper create_ingredients_wrapper" id="create_ingredients_select' . $key . '">
+
+                    ' . showDeleteIcon($key) . '
+
+                    <select data-seleted_val="' . esc_attr($ingredient) . '" name="product_ingredients" style="width: 300px" class="product_ingredients"
+                        <option data-placeholder="true"></option>
+
+                        ' . $ingredientOptions . '
+                    </select>
+
+                    <input type="number" min="0" max="30" name="ingredient_percentage" class="ingredient_percentage" value="' . showIngredientsPercentageValues($key, $ingredientsPercentage) . '" >
+
+                   ' . showCreateIcon($key) . '
+
+                </div>
+        ';
+
+    }
+
+    return $ingredientsHTML;
+
+}
+
+// Show the plus create icon for only the first element
+/**
+ * @param $i
+ */
+function showCreateIcon($i) {
+    if ($i == 0) {
+        return '<img class="add_ingredients_icon"
+        src="' . esc_url(VMH_URL . 'Assets/images/recipes_order/plus.png') . '" width="50px" height="50px"
+        alt="images" />';
+    } else {
+        return null;
+    }
+}
+
+/**
+ * @param $i
+ */
+function showDeleteIcon($i) {
+    if ($i != 0) {
+        return '<i class="fas fa-times cut_selectbox"></i>';
+    } else {
+        return null;
+    }
+}
+
+/**
+ * Show the percentage values if this product is created by user from frontend
+ * @param  $key
+ * @param  $ingredientsPercentage
+ * @return mixed
+ */
+function showIngredientsPercentageValues($key, $ingredientsPercentage) {
+    if (isset($ingredientsPercentage[$key]) && $ingredientsPercentage[$key]) {
+        return esc_attr($ingredientsPercentage[$key]);
+    } else {
+        return null;
+    }
+}
+
+function convertSingleProductOptionsToString() {
+    $productOptions = get_post_meta(get_the_ID(), 'product_options', true);
+
+    if (is_array($productOptions)) {
+
+        $productOptions = call_user_func_array('array_merge', $productOptions);
+
+        return '&product_options=' . implode(",", $productOptions) . '';
+    } else {
+        return null;
     }
 }

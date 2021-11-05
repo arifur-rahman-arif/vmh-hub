@@ -1,0 +1,82 @@
+=>	Array
+(
+    [vmh_nicotine_amount] => Nicotine Amount
+    [vmh_nicotine_type] => Nicotine Type
+    [vmh_pg_vg] => PG:VG
+    [vmh_bottle_size] => Bottle size
+)
+
+	Occured in E:\laragon\www\vmh-hub\wp-content\themes\vmhhub\Includes\Functions\templateFunctions.php
+	on line 403
+	at 05-Nov-2021 | 04:19:45 PM 
+
+
+=>	10ml
+	Occured in E:\laragon\www\vmh-hub\wp-content\themes\vmhhub\Includes\Functions\templateFunctions.php
+	on line 408
+	at 05-Nov-2021 | 04:15:38 PM 
+
+
+=>	30pg-70vg
+	Occured in E:\laragon\www\vmh-hub\wp-content\themes\vmhhub\Includes\Functions\templateFunctions.php
+	on line 408
+	at 05-Nov-2021 | 04:15:38 PM 
+
+
+=>	freebase-nicotine
+	Occured in E:\laragon\www\vmh-hub\wp-content\themes\vmhhub\Includes\Functions\templateFunctions.php
+	on line 408
+	at 05-Nov-2021 | 04:15:38 PM 
+
+
+=>	1ml
+	Occured in E:\laragon\www\vmh-hub\wp-content\themes\vmhhub\Includes\Functions\templateFunctions.php
+	on line 408
+	at 05-Nov-2021 | 04:15:38 PM 
+
+
+=>	Array
+(
+    [0] => Array
+        (
+            [1ml] => Array
+                (
+                    [0] => vmh_nicotine_amount | 1ml
+                )
+
+        )
+
+    [1] => Array
+        (
+            [freebase-nicotine] => Array
+                (
+                    [0] => vmh_nicotine_type | Freebase Nicotine
+                )
+
+        )
+
+    [2] => Array
+        (
+            [30pg-70vg] => Array
+                (
+                    [0] => vmh_pg_vg | 30PG, 70VG
+                )
+
+        )
+
+    [3] => Array
+        (
+            [10ml] => Array
+                (
+                    [0] => vmh_bottle_size | 10ml
+                )
+
+        )
+
+)
+
+	Occured in E:\laragon\www\vmh-hub\wp-content\themes\vmhhub\Includes\Functions\templateFunctions.php
+	on line 397
+	at 05-Nov-2021 | 04:12:47 PM 
+
+

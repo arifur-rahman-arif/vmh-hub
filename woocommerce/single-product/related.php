@@ -36,19 +36,30 @@ if ($count == 4) {
 
 setup_postdata($GLOBALS['post'] = &$post_object); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited, Squiz.PHP.DisallowMultipleAssignments.Found
 ?>
+
+<?php if ($related_product->get_id() != get_option('vmh_create_product_option')) {?>
 <div class="single_recopies_items recepes_single_left_item">
+
     <h6><?php echo vmhEscapeTranslate($post_object->post_title) ?></h6>
+
     <p>By <?php echo get_the_author_meta('display_name', $post_object->post_author); ?></p>
+
     <?php echo getProductIngrediants($post_object->ID) ?>
+
     <div class="single_recopies_items_overly">
+
         <div class="single_recopies_items_overly_item">
             <?php if (wc_get_product($related_product)->get_type() !== 'variable') {?>
             <a href="#" class="vmh_add_to_cart_btn" data-id="<?php echo $post_object->ID ?>">Add To Cart</a>
             <?php }?>
             <a href="<?php echo esc_url(get_permalink($post_object->ID)) ?>">View Recepie</a>
         </div>
+
     </div>
+
 </div>
+
+<?php }?>
 
 <?php
 $count++

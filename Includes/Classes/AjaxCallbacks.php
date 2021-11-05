@@ -464,14 +464,14 @@ trait AjaxCallbacks {
 
             // add the product options to meta value
             if ($productOptions) {
-                $organizedOptions = [];
-                foreach ($productOptions as $key => $value) {
-                    $option = explode("|", $value[0]);
-                    array_push($organizedOptions, [
-                        trim($option[0]) => trim($option[1])
-                    ]);
-                }
-                add_post_meta($postID, 'product_options', $organizedOptions);
+                // $organizedOptions = [];
+                // foreach ($productOptions as $key => $value) {
+                //     $option = explode("|", $value[0]);
+                //     array_push($organizedOptions, [
+                //         trim($option[0]) => trim($option[1])
+                //     ]);
+                // }
+                add_post_meta($postID, 'product_options', $productOptions);
             }
 
             // add product ingredients

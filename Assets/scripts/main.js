@@ -33,13 +33,8 @@ jQuery(document).ready(function ($) {
 
         $(document).on("click", ".cut_tag", deleteInputTag);
         $(".recipes_order_single_tag_plus_img a").click(toggleTagIcon);
-    }
-
-    // Hide the tag input box on clicking of body document
-    function hideTagInputBox() {
-        if ($(".recepes_tag_type_input.recepes_tag1").hasClass("active")) {
-            $(".recepes_tag_type_input.recepes_tag1").hide();
-        }
+        initializeSelectCreateSelectBox();
+        setSelectedValuesForOptions();
     }
 
     function toggleTagIcon(e) {
@@ -579,8 +574,13 @@ jQuery(document).ready(function ($) {
         for (const key in productAttributes) {
             if (Object.hasOwnProperty.call(productAttributes, key)) {
                 let selectedText = $(`#pa_${key} option:selected`).text();
+                let selectedValue = $(`#pa_${key} option:selected`).val();
                 if (selectedText != "Choose") {
-                    optionsValue.push([`${key} | ${selectedText}`]);
+                    let valueObject = {};
+
+                    valueObject[selectedValue] = [`${key} | ${selectedText}`];
+
+                    optionsValue.push(valueObject);
                 }
             }
         }
@@ -594,6 +594,8 @@ jQuery(document).ready(function ($) {
 
     // Initiate the select box in create product option
     function initiateSelectBox() {
+        if (!$("#product_ingredients_1").length) return;
+
         let selector = new SlimSelect({
             select: "#product_ingredients_1",
             placeholder: "Select Ingredients",
@@ -709,5 +711,55 @@ jQuery(document).ready(function ($) {
         );
 
         return total;
+    }
+
+    // initate ingredients select box when existing create product is active
+    function initializeSelectCreateSelectBox() {
+        if (!getSlugParameter("edit_product")) return;
+
+        let selectBoxWrappers = $(".create_ingredients_wrapper");
+
+        $.each(selectBoxWrappers, function (indexInArray, wrapper) {
+            let selectBox = $(wrapper).find(".product_ingredients");
+
+            let select = new SlimSelect({
+                select: selectBox[0],
+                placeholder: "Select Ingredients",
+                allowDeselectOption: true,
+                valuesUseText: false,
+                hideSelectedOption: false,
+                searchText: "Sorry ingredients not found.",
+            });
+
+            select.set(selectBox.attr("data-seleted_val"));
+        });
+    }
+
+    function getSlugParameter(slug) {
+        let url = new URL(window.location);
+        let params = new URLSearchParams(url.search);
+        let retrieve_param = params.get(slug);
+        if (retrieve_param) {
+            return retrieve_param;
+        } else {
+            return false;
+        }
+    }
+
+    // Set the product options dropdown values if user want to edit another user's created product
+
+    function setSelectedValuesForOptions() {
+        if (!getSlugParameter("edit_product") || !getSlugParameter("product_options")) return;
+
+        let productOptions = getSlugParameter("product_options");
+
+        // productOptions = productOptions.split(",");
+
+        console.log(productOptions);
+
+        // $.each($(".vmh_variable_select"), function (i, element) {
+        //     let selectBox = $(element).find("select");
+        //     selectBox.val(productOptions[i]);
+        // });
     }
 });

@@ -25,15 +25,17 @@ if (!defined('ABSPATH')) {
 
 <div class="recepes_right_title_icon">
     <div class="recepes_right_title">
-        <h2><?php echo get_the_title(get_the_ID()) ?></h2>
+        <h3><?php echo get_the_title(get_the_ID()) ?></h3>
     </div>
     <div class="recepes_right_icon">
         <?php if (is_user_logged_in()) {?>
         <a href="#" data-action="<?php echo isProuductUserFavorite(get_the_ID()) ? 'unfavorite' : 'favorite' ?>"
             class="vmh_favorite" data-id="<?php echo get_the_ID() ?>"><i
                 class="fas fa-heart vmh_heart <?php echo isProuductUserFavorite(get_the_ID()) ? null : 'vmh_heart_grey' ?>"></i></a>
-        <a href="<?php echo esc_url(get_permalink(get_option('vmh_create_product_option'))) ?>"><img
-                src="<?php echo esc_url(VMH_URL . 'Assets/images/recepes/setting.png') ?>" alt="images" /></a>
+        <a
+            href="<?php echo esc_url(get_permalink(get_option('vmh_create_product_option'))) ?>?edit_product=<?php echo get_the_ID() ?><?php echo convertSingleProductOptionsToString() ?>">
+            <img src="<?php echo esc_url(VMH_URL . 'Assets/images/recepes/setting.png') ?>" alt="images" />
+        </a>
         <?php }?>
     </div>
 </div>
@@ -41,7 +43,9 @@ if (!defined('ABSPATH')) {
 <?php } else {?>
 
 <div class="recepes_right_title">
-    <h2><input type="text" name="vmh_recipe_name" id="vmh_recipe_name" required placeholder="Your recipe name"></h2>
+    <h3><input type="text" name="vmh_recipe_name" id="vmh_recipe_name" required placeholder="Your recipe name"
+            value="<?php echo isset($_GET['edit_product']) && $_GET['edit_product'] ? get_the_title(sanitize_text_field($_GET['edit_product'])) . ' modified' : '' ?>">
+    </h3>
 </div>
 
 <?php }?>
