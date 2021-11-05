@@ -27,3 +27,7 @@ Tags: ecommerce, woocommerce, one-column, custom-background, custom-colors, cust
 ![](https://img.shields.io/static/v1?label=Release&message=1.2.0&color=nrightgreen)
 
 -   Added Seach feature
+
+![](https://img.shields.io/static/v1?label=Release&message=1.4.0&color=nrightgreen)
+
+-   Re-created product creating feature with ingredients upload

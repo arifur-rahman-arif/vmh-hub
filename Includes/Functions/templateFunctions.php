@@ -428,7 +428,7 @@ function showEarningSectionHtml() {
         ';
     } else {
         return '
-            <p>The section is only for subscribers</p>
+            <p>The section is only for subscribers. Create a <a style="color: white;text-decoration: underline;" href="' . wp_login_url('/login') . '">subsriber account or login to a subscriber account</a></p>
         ';
     }
 }

@@ -38,10 +38,10 @@ if (!is_user_logged_in()) {
             </div>
 
             <!-- backround overly -->
-            <div class="mixxer_earning_popup_overly">
+            <!-- <div class="mixxer_earning_popup_overly">
                 <img src="<?php echo esc_url(VMH_URL . 'Assets/images/mixxer_earning_popup/background_img.png') ?>"
                     alt="images" />
-            </div>
+            </div> -->
         </div>
     </div>
 </section>
