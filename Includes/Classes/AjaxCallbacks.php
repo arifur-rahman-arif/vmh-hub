@@ -264,8 +264,6 @@ trait AjaxCallbacks {
         global $woocommerce;
         $items = $woocommerce->cart->get_cart();
 
-        // wp_console_log($items);
-
         $product = wc_get_product($productID);
 
         if ($product->get_type() == 'variable') {

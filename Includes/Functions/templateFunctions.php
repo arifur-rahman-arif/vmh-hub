@@ -48,8 +48,6 @@ function getProductsByCategory(array $taxonomyArgs) {
     ];
     $products = new WP_Query($args);
 
-    // wp_console_log($products->posts);
-
     return $products->posts;
 }
 
@@ -394,31 +392,50 @@ function simpleProductOptions() {
     $optionsHTML = '';
     $productOptions = get_post_meta($productID, 'product_options', true);
 
-    // wp_console_log($productOptions);
-
     $callbackClass = new \VmhHub\Includes\Classes\HookCallbacks();
 
     $productAttributes = $callbackClass->vmhProductAttributes();
 
-    wp_console_log($productAttributes);
+    if (is_array($productOptions) && is_array($productAttributes)) {
 
-    // wp_console_log($productAttributes);
+        $i = 0;
 
-    if (is_array($productOptions)) {
-        foreach ($productOptions as $key => $option) {
-            $optionKeys = array_keys($option)[0];
+        foreach ($productAttributes as $key => $option) {
 
-            //     $optionsHTML .= '
-            //     <div class="recepes_single_choose_option">
-            //         <h4>' . esc_html($productAttributes[$optionKeys]) . ' :</h4>
-            //         <span class="vmh_simple_option_value">' . esc_html($option[$optionKeys]) . '</span>
-            //     </div>
-            //    ';
+            $optionsHTML .= '
+                <div class="recepes_single_choose_option">
+                    <h4>' . esc_html($option) . ' :</h4>
+                    <span class="vmh_simple_option_value">' . simpleProductOptionsArray($productOptions, $key, $i)[1] . '</span>
+                </div>
+               ';
+
+            $i += 1;
         }
         return $optionsHTML;
     } else {
         return '';
     }
+}
+
+/**
+ * @param $productOptions
+ * @param $key
+ * @param $i
+ */
+function simpleProductOptionsArray($productOptions, $key, $i) {
+    if (!isset($productOptions[$i]) || !$productOptions[$i]) {
+        return '';
+    }
+
+    $optionsArray = $productOptions[$i];
+
+    $attributeKey = explode("|", $optionsArray[array_keys($optionsArray)[0]][0])[0];
+    $optionValue = trim(explode("|", $optionsArray[array_keys($optionsArray)[0]][0])[1]);
+
+    return [
+        $attributeKey,
+        $optionValue
+    ];
 }
 
 // Show earning section html
@@ -760,7 +777,16 @@ function convertSingleProductOptionsToString() {
 
         $productOptions = call_user_func_array('array_merge', $productOptions);
 
-        return '&product_options=' . implode(",", $productOptions) . '';
+        $organizedOptions = [];
+
+        foreach ($productOptions as $key => $value) {
+
+            $option = explode("|", $value[0]);
+
+            $organizedOptions[$key] = trim($option[0]);
+        }
+
+        return '&' . http_build_query($organizedOptions) . '';
     } else {
         return null;
     }

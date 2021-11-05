@@ -747,19 +747,30 @@ jQuery(document).ready(function ($) {
     }
 
     // Set the product options dropdown values if user want to edit another user's created product
-
     function setSelectedValuesForOptions() {
-        if (!getSlugParameter("edit_product") || !getSlugParameter("product_options")) return;
+        if (!getSlugParameter("edit_product")) return;
 
-        let productOptions = getSlugParameter("product_options");
+        let params = {};
 
-        // productOptions = productOptions.split(",");
+        window.location.search
+            .slice(1)
+            .split("&")
+            .forEach((elm, i) => {
+                if (elm === "") return;
 
-        console.log(productOptions);
+                if (i != 0) {
+                    let spl = elm.split("=");
+                    const d = decodeURIComponent;
+                    params[d(spl[0])] = spl.length >= 2 ? d(spl[1]) : true;
+                }
+            });
 
-        // $.each($(".vmh_variable_select"), function (i, element) {
-        //     let selectBox = $(element).find("select");
-        //     selectBox.val(productOptions[i]);
-        // });
+        for (const key in params) {
+            if (Object.hasOwnProperty.call(params, key)) {
+                const element = params[key];
+                let selectBox = $(`#pa_${element}`);
+                selectBox.val(key);
+            }
+        }
     }
 });
