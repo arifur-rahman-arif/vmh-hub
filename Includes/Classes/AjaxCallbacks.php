@@ -527,10 +527,12 @@ trait AjaxCallbacks {
 
             $displayName = ($currentUserData->first_name . ' ' . $currentUserData->last_name);
 
+            $adminName = ($user->first_name . ' ' . $user->last_name);
+
             $subject = 'Needs approval for new product';
 
             $message = '
-                Hello <i>admin</i>. <i>' . $displayName . '</i> has created new a reciepe and waiting for your approval.
+                Hello <i>' . $adminName . '</i>. <i>' . $displayName . '</i> has created new a reciepe and waiting for your approval.
                 <br/>
                 <b>Product ID:</b> ' . $productID . '
                 <br/>
