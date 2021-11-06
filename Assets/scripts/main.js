@@ -819,9 +819,11 @@ jQuery(document).ready(function ($) {
 
             $.each(tags, function (i, tag) {
                 let tagValue = $(tag).val();
-                innerHTML += `<a href="#" class="tag_name" data-target="tag_name_${
-                    i + 3
-                }">${tagValue}</a>`;
+                if (tagValue) {
+                    innerHTML += `<a href="#" class="tag_name" data-target="tag_name_${
+                        i + 3
+                    }">${tagValue}</a>`;
+                }
             });
             $(".dynamic_tags").html(innerHTML);
         } else {
