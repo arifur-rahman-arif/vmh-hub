@@ -368,3 +368,36 @@ body > .wp-dark-mode-switcher {
     color: #324b4b;
     text-align: center;
 }
+
+.tags_popup_container .save_tag_btn {
+    height: 29px;
+    width: 77px;
+    border-radius: 4px;
+    background: #324b4b;
+    border: navajowhite;
+    color: #fff;
+    font-size: 13px;
+    border: 1px solid transparent;
+    transition: 0.3s;
+    font-weight: 700;
+    margin-top: 10px;
+    align-self: flex-end;
+}
+
+.vmh_tag_list {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 10px -5px;
+}
+
+.vmh_tag_list .tag_name {
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 23.8px;
+    color: #fff;
+    padding: 2px 13px;
+    background: #7aa637;
+    border-radius: 4px;
+    display: inline-block;
+    margin: 5px;
+}

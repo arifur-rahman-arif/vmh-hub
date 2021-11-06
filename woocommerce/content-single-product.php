@@ -143,6 +143,8 @@ do_action('woocommerce_single_product_summary');
                                 <div class="recipes_order_tags">
                                     <h6>Recipe's tags</h6>
 
+
+
                                     <div class="recipes_order_single_tag_plus">
                                         <div class="recipes_order_single_tag">
                                             <!-- Start Tag name type -->
@@ -158,21 +160,24 @@ do_action('woocommerce_single_product_summary');
                                                         <div class="tag_input duplicate_tag" style="display: none;">
                                                             <i class="fas fa-times cut_tag"></i>
                                                             <input type="text" placeholder="Type Tag Name"
-                                                                class="vmh_tag_input">
+                                                                class="vmh_tag_input" data-id="3">
                                                         </div>
 
                                                         <div class="tag_input">
-                                                            <input type="text" placeholder="Type Tag Name"
-                                                                class="vmh_tag_input">
+                                                            <input type="text" placeholder="Type Tag Name" data-id="1"
+                                                                class="vmh_tag_input predefied_tag_input"
+                                                                value="Tag Name">
                                                         </div>
 
                                                         <div class="tag_input">
-                                                            <input type="text" placeholder="Type Tag Name"
-                                                                class="vmh_tag_input">
+                                                            <input type="text" placeholder="Type Tag Name" data-id="2"
+                                                                class="vmh_tag_input predefied_tag_input"
+                                                                value="Tag Name">
                                                         </div>
 
                                                     </div>
 
+                                                    <button class="save_tag_btn">Save Tags</button>
 
                                                 </div>
 
@@ -186,6 +191,16 @@ do_action('woocommerce_single_product_summary');
                                             </a>
 
                                         </div>
+                                    </div>
+                                </div>
+
+                                <div class="vmh_tag_list">
+                                    <div class="deafult_tags">
+                                        <a href="#" class="tag_name" data-target="tag_name_1">Tag Name</a>
+                                        <a href="#" class="tag_name" data-target="tag_name_2">Tag Name</a>
+                                    </div>
+                                    <div class="dynamic_tags">
+
                                     </div>
                                 </div>
                                 <!-- End Tags -->

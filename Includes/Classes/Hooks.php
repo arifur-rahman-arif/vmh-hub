@@ -52,6 +52,9 @@ class Hooks extends HookCallbacks {
         // Intitialize custom post type for ingredients
         add_action('init', [$this, 'ingredientsPostType']);
 
+        // Intitialize custom post type for ingredients
+        add_action('init', [$this, 'subscriberPostType']);
+
         // Add meta box to control the map zoom option
         add_action('add_meta_boxes_ingredient', [$this, 'registerMetaBox']);
         // Save the post meta on saving the post
@@ -95,6 +98,10 @@ class Hooks extends HookCallbacks {
 
         /* Create a simple product upon user request */
         add_action('wp_ajax_vmh_upload_ingredients', [$this, 'uploadIngredients']);
+
+        /* Create post type for subscriber mail list */
+        add_action('wp_ajax_vmh_subscriber_action', [$this, 'createSubscriber']);
+        add_action('wp_ajax_nopriv_vmh_subscriber_action', [$this, 'createSubscriber']);
 
     }
 

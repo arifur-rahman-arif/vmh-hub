@@ -462,13 +462,6 @@ trait AjaxCallbacks {
 
             // add the product options to meta value
             if ($productOptions) {
-                // $organizedOptions = [];
-                // foreach ($productOptions as $key => $value) {
-                //     $option = explode("|", $value[0]);
-                //     array_push($organizedOptions, [
-                //         trim($option[0]) => trim($option[1])
-                //     ]);
-                // }
                 add_post_meta($postID, 'product_options', $productOptions);
             }
 
@@ -489,6 +482,9 @@ trait AjaxCallbacks {
 
             $output['response'] = 'success';
             $output['message'] = vmhEscapeTranslate('Product created successfully');
+
+            $this->sendEmailToAdmins($postID);
+
             echo json_encode($output);
             wp_die();
         }
@@ -497,6 +493,63 @@ trait AjaxCallbacks {
         $output['message'] = vmhEscapeTranslate('Product couldn\'t be created');
         echo json_encode($output);
         wp_die();
+
+    }
+
+    /**
+     * Send notification email to all admins if user created a product successfully
+     * @param  $productID
+     * @return null
+     */
+    public function sendEmailToAdmins($productID) {
+
+        $args = [
+            'role'    => 'administrator',
+            'orderby' => 'user_nicename',
+            'order'   => 'ASC'
+        ];
+
+        $users = get_users($args);
+
+        if (!$users) {
+            return;
+        }
+
+        $currentUserData = get_userdata(get_current_user_id());
+
+        if (!$currentUserData) {
+            return;
+        }
+
+        foreach ($users as $user) {
+
+            $to = $user->user_email;
+
+            $displayName = ($currentUserData->first_name . ' ' . $currentUserData->last_name);
+
+            $subject = 'Needs approval for new product';
+
+            $message = '
+                Hello <i>admin</i>. <i>' . $displayName . '</i> has created new a reciepe and waiting for your approval.
+                <br/>
+                <b>Product ID:</b> ' . $productID . '
+                <br/>
+                <b>Product name:</b> ' . get_the_title($productID) . '
+                <br/>
+                <b>Creator email:</b> ' . $currentUserData->user_email . '
+            ';
+
+            $headers = ['Content-Type: text/html; charset=UTF-8'];
+
+            try {
+                if (!wp_mail($to, $subject, $message, $headers)) {
+                    throw 'Error: Mail couldn\'t be sent.';
+                }
+            } catch (\Throwable $th) {
+                throw $th;
+            }
+
+        }
 
     }
 
@@ -629,5 +682,62 @@ trait AjaxCallbacks {
         }
 
         return $output;
+    }
+
+    /**
+     * @param  array   $ingredients
+     * @return mixed
+     */
+    public function createSubscriber() {
+        $output = [];
+
+        if (sanitize_text_field($_POST['action']) !== 'vmh_subscriber_action') {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Action is not valid');
+            echo json_encode($output);
+            wp_die();
+        }
+
+        parse_str($_POST['formData'], $parsedData);
+
+        $sanitizedData = $this->sanitizeData($parsedData);
+
+        if (!isset($sanitizedData['subscriber_mail']) || !$sanitizedData['subscriber_mail']) {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Email is required to be a subscriber');
+            echo json_encode($output);
+            wp_die();
+        }
+
+        $subscribers = get_posts([
+            "post_type" => 'subscriber',
+            "s"         => $sanitizedData['subscriber_mail']
+        ]);
+
+        if ($subscribers) {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Email already exists');
+            echo json_encode($output);
+            wp_die();
+        }
+
+        $args = [
+            'post_title'  => esc_html($sanitizedData['subscriber_mail']),
+            'post_type'   => 'subscriber',
+            'post_status' => 'publish'
+        ];
+
+        $ingredientPost = wp_insert_post($args);
+
+        if (!is_wp_error($ingredientPost)) {
+            $output['response'] = 'success';
+            $output['message'] = vmhEscapeTranslate('You have successfully subscribed.');
+        } else {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Can not add subscriber. Try again');
+        }
+
+        echo json_encode($output);
+        wp_die();
     }
 }

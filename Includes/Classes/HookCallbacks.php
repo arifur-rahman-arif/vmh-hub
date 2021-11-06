@@ -473,6 +473,63 @@ class HookCallbacks {
         register_post_type('ingredient', $args);
     }
 
+    // Register custom post type for subscriber
+    public function subscriberPostType() {
+        // Register Custom Post Type Subscriber
+        $labels = array(
+            'name'                  => _x('Subscribers', 'Post Type General Name', 'textdomain'),
+            'singular_name'         => _x('Subscriber', 'Post Type Singular Name', 'textdomain'),
+            'menu_name'             => _x('Subscribers', 'Admin Menu text', 'textdomain'),
+            'name_admin_bar'        => _x('Subscriber', 'Add New on Toolbar', 'textdomain'),
+            'archives'              => __('Subscriber Archives', 'textdomain'),
+            'attributes'            => __('Subscriber Attributes', 'textdomain'),
+            'parent_item_colon'     => __('Parent Subscriber:', 'textdomain'),
+            'all_items'             => __('All Subscribers', 'textdomain'),
+            'add_new_item'          => __('Add New Subscriber', 'textdomain'),
+            'add_new'               => __('Add New', 'textdomain'),
+            'new_item'              => __('New Subscriber', 'textdomain'),
+            'edit_item'             => __('Edit Subscriber', 'textdomain'),
+            'update_item'           => __('Update Subscriber', 'textdomain'),
+            'view_item'             => __('View Subscriber', 'textdomain'),
+            'view_items'            => __('View Subscribers', 'textdomain'),
+            'search_items'          => __('Search Subscriber', 'textdomain'),
+            'not_found'             => __('Not found', 'textdomain'),
+            'not_found_in_trash'    => __('Not found in Trash', 'textdomain'),
+            'featured_image'        => __('Featured Image', 'textdomain'),
+            'set_featured_image'    => __('Set featured image', 'textdomain'),
+            'remove_featured_image' => __('Remove featured image', 'textdomain'),
+            'use_featured_image'    => __('Use as featured image', 'textdomain'),
+            'insert_into_item'      => __('Insert into Subscriber', 'textdomain'),
+            'uploaded_to_this_item' => __('Uploaded to this Subscriber', 'textdomain'),
+            'items_list'            => __('Subscribers list', 'textdomain'),
+            'items_list_navigation' => __('Subscribers list navigation', 'textdomain'),
+            'filter_items_list'     => __('Filter Subscribers list', 'textdomain')
+        );
+        $args = array(
+            'label'               => __('Subscriber', 'textdomain'),
+            'description'         => __('', 'textdomain'),
+            'labels'              => $labels,
+            'menu_icon'           => '',
+            'supports'            => array('title'),
+            'taxonomies'          => array(),
+            'public'              => true,
+            'show_ui'             => true,
+            'show_in_menu'        => true,
+            'menu_position'       => 5,
+            'menu_icon'           => 'dashicons-email',
+            'show_in_admin_bar'   => true,
+            'show_in_nav_menus'   => true,
+            'can_export'          => true,
+            'has_archive'         => true,
+            'hierarchical'        => false,
+            'exclude_from_search' => false,
+            'show_in_rest'        => true,
+            'publicly_queryable'  => true,
+            'capability_type'     => 'post'
+        );
+        register_post_type('subscriber', $args);
+    }
+
     public function registerMetaBox() {
         add_meta_box(
             'ingredients_stock',

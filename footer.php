@@ -24,9 +24,10 @@
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ultrices mauris vitae lacus
                             consectetur vestibulum.</p>
                         <div class="subscribe_mail home_page_subscribe_popup_main">
-                            <form action="#" method="POST">
+                            <form action="#" method="POST" id="vmh_subscriber_form">
                                 <div class="single_form">
-                                    <input type="email" class="form-control" placeholder="Your Email" required />
+                                    <input type="email" name="subscriber_mail" class="form-control"
+                                        placeholder="Your Email" required />
                                 </div>
                                 <div class="submit_btn">
                                     <button type="submit">Submit</button>

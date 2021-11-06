@@ -179,25 +179,18 @@ jQuery(document).ready(function ($) {
 
         return false;
     });
-    $(".submit_btn").click(function () {
-        $(".subscribe_hide").show();
-        $("body").addClass("popup_overly");
 
-        return false;
-    });
+    // $(".submit_btn").click(function () {
+    //     $(".subscribe_hide").show();
+    //     $("body").addClass("popup_overly");
+
+    //     return false;
+    // });
 
     // Save Recieved Btn(recepes order page)
     $(".subscribe_hide_icon a").click(function () {
         $(".save_recieved_hde").hide();
         $("body").removeClass("popup_overly");
-
-        return false;
-    });
-
-    // Save Recieved Btn(recepes order page)
-    $(".recipes_order_single_tag_plus_img a, .person_search_right a").click(function () {
-        $(".recepes_tag1").toggle();
-        $(".recepes_tag1").toggleClass("active");
 
         return false;
     });
@@ -265,12 +258,13 @@ jQuery(document).ready(function ($) {
     });
 
     // Home Page Subscribe Popup
-    $(".submit_btn").click(function () {
-        $(".home_page_subscribe_popup_parent").show();
-        $("body").addClass("popup_overly");
+    // $(".submit_btn").click(function () {
+    //     $(".home_page_subscribe_popup_parent").show();
+    //     $("body").addClass("popup_overly");
 
-        return false;
-    });
+    //     return false;
+    // });
+
     $(".home_page_subscribe_popup").click(function () {
         $(".home_page_subscribe_popup_parent").hide();
         $("body").removeClass("popup_overly");

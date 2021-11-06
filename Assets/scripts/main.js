@@ -8,6 +8,9 @@ jQuery(document).ready(function ($) {
     let favoriteBtn = $(".vmh_favorite");
     let createRecipeBtn = $(".vmh_save_recipe_btn");
     let addTagName = $(".add_tag_name");
+    let tagInput = $(".predefied_tag_input");
+    let saveTagBtn = $(".save_tag_btn");
+    let subsciberForm = $("#vmh_subscriber_form");
 
     events();
 
@@ -35,20 +38,36 @@ jQuery(document).ready(function ($) {
         $(".recipes_order_single_tag_plus_img a").click(toggleTagIcon);
         initializeSelectCreateSelectBox();
         setSelectedValuesForOptions();
+        tagInput.on("input", changeTagName);
+        saveTagBtn.on("click", saveTagNames);
+        subsciberForm.on("submit", createSubscriber);
     }
 
     function toggleTagIcon(e) {
+        e.preventDefault();
+
         let target = $(e.currentTarget);
 
         let popup = $(".recepes_tag_type_input.recepes_tag1");
 
         if (popup.hasClass("active")) {
-            target.find("i").removeClass("fa-edit");
-            target.find("i").addClass("fa-times");
-        } else {
             target.find("i").removeClass("fa-times");
             target.find("i").addClass("fa-edit");
+
+            let tags = $(
+                ".input_container .tag_input:not(.duplicate_tag) .vmh_tag_input:not(.predefied_tag_input)"
+            );
+
+            if (!tags.length) {
+                $(".dynamic_tags").html("");
+            }
+        } else {
+            target.find("i").removeClass("fa-edit");
+            target.find("i").addClass("fa-times");
         }
+
+        $(".recepes_tag1").toggle();
+        $(".recepes_tag1").toggleClass("active");
     }
 
     // Toggle the dark mode in webstie frontend
@@ -59,7 +78,12 @@ jQuery(document).ready(function ($) {
     // Handle login process
     function loginHandler(e) {
         e.preventDefault();
+
         let formData = $(e.currentTarget).serialize();
+
+        if ($(".login_input #email").val() == "" || $(".login_input #password").val() == "")
+            return alert("One or more field is empty");
+
         $.ajax({
             url: vmhLocal.ajaxUrl,
             data: {
@@ -688,7 +712,6 @@ jQuery(document).ready(function ($) {
         let target = $(e.currentTarget);
 
         let wrapperElements = target.parents(".tag_input");
-
         wrapperElements.remove();
     }
 
@@ -772,5 +795,84 @@ jQuery(document).ready(function ($) {
                 selectBox.val(key);
             }
         }
+    }
+
+    // Change the predefined tag name on typing of tag name
+    function changeTagName(e) {
+        let target = $(e.currentTarget);
+        let spanTag = $(".vmh_tag_list").find(`[data-target=tag_name_${target.attr("data-id")}]`);
+        if (target.val()) {
+            spanTag.text(target.val());
+        } else {
+            spanTag.text("No Tag");
+        }
+    }
+
+    // Save all the tags upon click on save tag button
+    function saveTagNames(e) {
+        let tags = $(
+            ".input_container .tag_input:not(.duplicate_tag) .vmh_tag_input:not(.predefied_tag_input)"
+        );
+
+        if (tags.length) {
+            let innerHTML = "";
+
+            $.each(tags, function (i, tag) {
+                let tagValue = $(tag).val();
+                innerHTML += `<a href="#" class="tag_name" data-target="tag_name_${
+                    i + 3
+                }">${tagValue}</a>`;
+            });
+            $(".dynamic_tags").html(innerHTML);
+        } else {
+            $(".dynamic_tags").html("");
+        }
+
+        $(".recepes_tag_type_input.recepes_tag1").removeClass("active");
+        $(".recepes_tag_type_input.recepes_tag1").css({
+            display: "none",
+        });
+
+        $(".tag_edit_icon").removeClass("fa-times");
+        $(".tag_edit_icon").addClass("fa-edit");
+    }
+
+    // create a subscriber on submit of a subscriber form
+    function createSubscriber(e) {
+        e.preventDefault();
+
+        let currentTarget = $(e.currentTarget);
+
+        if (currentTarget.find("input[type=email]").val() == "")
+            return alert("Email is required to subscribe");
+
+        let formData = currentTarget.serialize();
+
+        $.ajax({
+            url: vmhLocal.ajaxUrl,
+            data: {
+                formData,
+                action: "vmh_subscriber_action",
+            },
+            method: "post",
+            success: (res) => {
+                console.log(res);
+
+                if (!res) return;
+
+                let response = JSON.parse(res);
+
+                if (response.response == "success") {
+                    $(".subscribe_mail_popup").css({
+                        display: "block",
+                    });
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: (err) => {
+                console.error(err);
+            },
+        });
     }
 });
