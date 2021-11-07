@@ -96,7 +96,7 @@ function getAdministratorsOptionHTML($saveID) {
         return '';
     }
 
-    $optionsHTML = '';
+    $optionsHTML = '<option disabled>Select a admin</option>';
 
     foreach ($admins as $key => $admin) {
         $selected = $saveID == $admin->ID ? "selected" : null;
