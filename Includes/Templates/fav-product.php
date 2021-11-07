@@ -7,7 +7,7 @@
       <?php echo getProductIngrediants($args['productID']) ?>
 
       <div class="single_recopies_items_overly">
-          <a href="#" class="my_orh2 vmh_fav_close vmh_favorite" data-action="unfavorite"
+          <a href="#" class="my_orh2 vmh_fav_close vmh_favorite vmh_recipie_close_btn" data-action="unfavorite"
               data-id="<?php echo $args['productID'] ?>">
               <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path

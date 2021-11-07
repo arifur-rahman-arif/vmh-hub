@@ -448,7 +448,7 @@ function showEarningSectionHtml() {
     if (in_array('subscriber', $user_roles)) {
         return '
             <h4>Earned: ' . totalEarningOfUser() . '</h4>
-            <p>You Will be paid by end of each calendar month</p>
+            <p>You will be paid by end of each calendar month</p>
         ';
     } else {
         return '
@@ -496,10 +496,11 @@ function getUserCreatedRecipe() {
         foreach ($recipes as $key => $recipe) {
             if (wc_get_product($recipe)->get_id() != get_option('vmh_create_product_option')) {
                 load_template(VMH_PATH . 'Includes/Templates/product.php', false, [
-                    'postTitle'    => $recipe->post_title,
-                    'postAuthorID' => $recipe->post_author,
-                    'productID'    => $recipe->ID,
-                    'productType'  => wc_get_product($recipe)->get_type()
+                    'postTitle'     => $recipe->post_title,
+                    'postAuthorID'  => $recipe->post_author,
+                    'productID'     => $recipe->ID,
+                    'productType'   => wc_get_product($recipe)->get_type(),
+                    'createdRecipe' => true
                 ]);
             }
         }
@@ -507,7 +508,7 @@ function getUserCreatedRecipe() {
         echo '
         <div class="card">
             <div class="card-body">
-              Oops. There are no products found for you.
+              Oops. You have not created any products.
             </div>
         </div>';
     }

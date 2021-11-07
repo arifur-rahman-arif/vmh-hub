@@ -3,6 +3,9 @@
 <!-- Start how it works area -->
 <section class="comon_section_area my_recipes_area">
     <div class="container">
+        <div class="alert alert-dark vmh_alert" role="alert" style="display: none;">
+            This is a dark alert—check it out!
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <!-- start recopies area -->

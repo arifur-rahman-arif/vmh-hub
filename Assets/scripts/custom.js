@@ -60,31 +60,6 @@ jQuery(document).ready(function ($) {
         return false;
     });
 
-    // Mixxer Earning Popup Page
-    $(".mixxer_hide_icon").click(function () {
-        $(".mixxer_earning_popup").fadeOut(500);
-
-        return false;
-    });
-
-    // box hide js functions
-    // $('.my_favorite_close a').click(function(){
-    //   $('.my_favorite_close').hide();
-    // })
-
-    // Thank You2
-    $(".thank_you2_hide_btn").click(function () {
-        $(".thank_you2").fadeOut(500);
-
-        return false;
-    });
-
-    $(".thank_you2_hide_btn").click(function () {
-        $(".login_main").addClass("thank_you2_height");
-
-        return false;
-    });
-
     var x, i, j, l, ll, selElmnt, a, b, c;
     /*look for any elements with the class "custom-select":*/
     x = document.getElementsByClassName("custom-select");
@@ -180,13 +155,6 @@ jQuery(document).ready(function ($) {
         return false;
     });
 
-    // $(".submit_btn").click(function () {
-    //     $(".subscribe_hide").show();
-    //     $("body").addClass("popup_overly");
-
-    //     return false;
-    // });
-
     // Save Recieved Btn(recepes order page)
     $(".subscribe_hide_icon a").click(function () {
         $(".save_recieved_hde").hide();
@@ -202,12 +170,7 @@ jQuery(document).ready(function ($) {
 
         return false;
     });
-    // $('.single_btn_ct_area button').click(function(){
-    //   $('.send_popup').show();
-    //   $('body').addClass('popup_overly');
 
-    //   return false;
-    // });
     $(".submit_thanked_btn button").click(function () {
         $(".submit_thanked").show();
         $("body").addClass("popup_overly");
@@ -256,14 +219,6 @@ jQuery(document).ready(function ($) {
 
         return false;
     });
-
-    // Home Page Subscribe Popup
-    // $(".submit_btn").click(function () {
-    //     $(".home_page_subscribe_popup_parent").show();
-    //     $("body").addClass("popup_overly");
-
-    //     return false;
-    // });
 
     $(".home_page_subscribe_popup").click(function () {
         $(".home_page_subscribe_popup_parent").hide();

@@ -8,6 +8,7 @@ $pgVg = get_option('vmh_pg_vg') ? sanitize_text_field(get_option('vmh_pg_vg')) :
 $bottleSize = get_option('vmh_bottle_size') ? sanitize_text_field(get_option('vmh_bottle_size')) : null;
 $createProductOption = get_option('vmh_create_product_option') ? sanitize_text_field(get_option('vmh_create_product_option')) : null;
 $productCommission = get_option('vmh_product_commission') ? sanitize_text_field(get_option('vmh_product_commission')) : null;
+$mainAdmin = get_option('vmh_main_admin') ? sanitize_text_field(get_option('vmh_main_admin')) : null;
 
 ?>
 
@@ -73,11 +74,24 @@ $productCommission = get_option('vmh_product_commission') ? sanitize_text_field(
 <tr>
     <td>
         <strong style="font-size: 15px;">
-            <label for="vmh_create_product_option">Product Commission (%) :</label>
+            <label for="vmh_product_commission">Product Commission (%) :</label>
         </strong>
     </td>
     <td>
         <input style='width: 200px;' type="number" name="vmh_product_commission" placeholder="Product commission"
             value="<?php echo esc_attr($productCommission) ?>" />
+    </td>
+</tr>
+
+<tr>
+    <td>
+        <strong style="font-size: 15px;">
+            <label for="vmh_main_admin">Main Admin :</label>
+        </strong>
+    </td>
+    <td>
+        <select style="width: 200px;" name="vmh_main_admin" id="vmh_main_admin">
+            <?php echo getAdministratorsOptionHTML($mainAdmin) ?>
+        </select>
     </td>
 </tr>

@@ -60,7 +60,7 @@ if ($order):
                 </div>
 
                 <div class="mixxer_hide_icon thank_you2_hide_btn">
-                    <a href="#"><img
+                    <a href="<?php echo site_url('/') ?>"><img
                             src="<?php echo esc_url(VMH_URL . 'Assets/images/mixxer_earning_popup/icon.png') ?>"
                             alt="images" /></a>
                 </div>
@@ -81,7 +81,7 @@ if ($order):
             <?php else: ?>
 
             <p class="woocommerce-notice woocommerce-notice--success woocommerce-thankyou-order-received">
-                <?php echo apply_filters('woocommerce_thankyou_order_received_text', esc_html__('Thank you. Your order has been received.', 'woocommerce'), null); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped                  ?>
+                <?php echo apply_filters('woocommerce_thankyou_order_received_text', esc_html__('Thank you. Your order has been received.', 'woocommerce'), null); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped                   ?>
             </p>
 
             <?php endif;?>

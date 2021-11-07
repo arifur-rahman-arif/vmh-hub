@@ -503,13 +503,7 @@ trait AjaxCallbacks {
      */
     public function sendEmailToAdmins($productID) {
 
-        $args = [
-            'role'    => 'administrator',
-            'orderby' => 'user_nicename',
-            'order'   => 'ASC'
-        ];
-
-        $users = get_users($args);
+        $users = getAdministrators();
 
         if (!$users) {
             return;
@@ -527,7 +521,7 @@ trait AjaxCallbacks {
 
             $displayName = ($currentUserData->first_name . ' ' . $currentUserData->last_name);
 
-            $adminName = ($user->first_name . ' ' . $user->last_name);
+            $adminName = $user->display_name;
 
             $subject = 'Needs approval for new product';
 
@@ -737,6 +731,52 @@ trait AjaxCallbacks {
         } else {
             $output['response'] = 'invalid';
             $output['message'] = vmhEscapeTranslate('Can not add subscriber. Try again');
+        }
+
+        echo json_encode($output);
+        wp_die();
+    }
+
+    // Remove product from subscriber product list and make that product to admin product list
+    public function removeProduct() {
+        $output = [];
+
+        if (sanitize_text_field($_POST['action']) !== 'vmh_remove_product_action') {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Action is not valid');
+            echo json_encode($output);
+            wp_die();
+        }
+
+        if (!isset($_POST['productID']) || !$_POST['productID']) {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Product ID is missing.');
+            echo json_encode($output);
+            wp_die();
+        }
+
+        $productID = sanitize_text_field($_POST['productID']);
+
+        if (!get_option('vmh_main_admin')) {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Product authority could not be moved to admin.');
+            echo json_encode($output);
+            wp_die();
+        }
+
+        $response = wp_update_post(
+            [
+                'ID'          => $productID,
+                'post_author' => get_option('vmh_main_admin')
+            ]
+        );
+
+        if (!is_wp_error($response)) {
+            $output['response'] = 'success';
+            $output['message'] = vmhEscapeTranslate('Product is removed from your list');
+        } else {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Product is not removed from your list. Try again');
         }
 
         echo json_encode($output);

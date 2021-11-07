@@ -103,6 +103,10 @@ class Hooks extends HookCallbacks {
         add_action('wp_ajax_vmh_subscriber_action', [$this, 'createSubscriber']);
         add_action('wp_ajax_nopriv_vmh_subscriber_action', [$this, 'createSubscriber']);
 
+        /* Create post type for subscriber mail list */
+        add_action('wp_ajax_vmh_remove_product_action', [$this, 'removeProduct']);
+        add_action('wp_ajax_nopriv_vmh_remove_product_action', [$this, 'removeProduct']);
+
     }
 
     // Remove functions that are hooked with functions

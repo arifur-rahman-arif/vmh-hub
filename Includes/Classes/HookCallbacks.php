@@ -123,8 +123,8 @@ class HookCallbacks {
     // Registering admin menus to control product options
     public function adminMenus() {
         add_menu_page(
-            __('VMH Product Options', 'sheetstowptable'),
-            __('VMH Product Options', 'sheetstowptable'),
+            __('VMH Options', 'sheetstowptable'),
+            __('VMH Options', 'sheetstowptable'),
             'manage_options',
             'vmh-product-options',
             [$this, 'adminPage'],
@@ -173,6 +173,10 @@ class HookCallbacks {
             );
         }
 
+        // ============================
+        // Register additional settings
+        // ============================
+
         // Register create product options ID
         register_setting(
             'vmh_options_key',
@@ -183,6 +187,14 @@ class HookCallbacks {
             'vmh_options_key',
             'vmh_product_commission'
         );
+        // Register main admin for this site
+        register_setting(
+            'vmh_options_key',
+            'vmh_main_admin'
+        );
+        // ============================
+        // End of additional settings
+        // ============================
 
         add_settings_section(
             'vmh_settings_section_id',
@@ -329,7 +341,7 @@ class HookCallbacks {
                     $percentageValue = $this->getTotalPercentage($total);
                     if ($order->get_status() === 'completed') {
                         $totalCommssion = get_user_meta($userID, 'user_commision', true);
-                        $newCommission = $percentageValue + $totalCommssion;
+                        $newCommission = (float) $percentageValue + (float) $totalCommssion;
                         update_user_meta($userID, 'user_commision', $newCommission);
                     }
                 }

@@ -33,7 +33,8 @@ if (!is_user_logged_in()) {
             </div>
 
             <div class="mixxer_hide_icon">
-                <a href="#"><img src="<?php echo esc_url(VMH_URL . 'Assets/images/mixxer_earning_popup/icon.png') ?>"
+                <a href="<?php echo site_url('/') ?>"><img
+                        src="<?php echo esc_url(VMH_URL . 'Assets/images/mixxer_earning_popup/icon.png') ?>"
                         alt="images" /></a>
             </div>
 

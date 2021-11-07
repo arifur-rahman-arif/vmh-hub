@@ -11,6 +11,7 @@ jQuery(document).ready(function ($) {
     let tagInput = $(".predefied_tag_input");
     let saveTagBtn = $(".save_tag_btn");
     let subsciberForm = $("#vmh_subscriber_form");
+    let deleteRecipeBtn = $(".vmh_delete_recipe");
 
     events();
 
@@ -41,6 +42,7 @@ jQuery(document).ready(function ($) {
         tagInput.on("input", changeTagName);
         saveTagBtn.on("click", saveTagNames);
         subsciberForm.on("submit", createSubscriber);
+        deleteRecipeBtn.click(deleteRecipe);
     }
 
     function toggleTagIcon(e) {
@@ -868,6 +870,52 @@ jQuery(document).ready(function ($) {
                     $(".subscribe_mail_popup").css({
                         display: "block",
                     });
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: (err) => {
+                console.error(err);
+            },
+        });
+    }
+
+    // Delete a user created recipe if the user is a subscriber
+    function deleteRecipe(e) {
+        e.preventDefault();
+        let target = $(e.currentTarget);
+
+        let productID = target.attr("data-id");
+
+        if (!productID || productID == "") return productAlert("Product ID is missing");
+
+        let item = target.parents(".single_recopies_items");
+        let itemTitle = item.find("h6").text();
+
+        if (
+            !confirm(
+                "Are you sure that you want to delete this product. ? If you do so you won't get any commision for this product from now on"
+            )
+        )
+            return;
+
+        $.ajax({
+            url: vmhLocal.ajaxUrl,
+            data: {
+                productID,
+                action: "vmh_remove_product_action",
+            },
+            method: "post",
+            success: (res) => {
+                console.log(res);
+
+                if (!res) return;
+
+                let response = JSON.parse(res);
+
+                if (response.response == "success") {
+                    productAlert(`${itemTitle} is removed from your list`);
+                    item.remove();
                 } else {
                     alert(response.message);
                 }

@@ -66,3 +66,42 @@ function getSearchBar() {
     }
     return '';
 }
+
+// Get the all administrator info
+
+/**
+ * @return mixed
+ */
+function getAdministrators() {
+
+    $args = [
+        'role'    => 'administrator',
+        'orderby' => 'user_nicename',
+        'order'   => 'ASC'
+    ];
+
+    $users = get_users($args);
+
+    return $users;
+}
+
+// Get the admins as a select box options
+/**
+ * @return mixed
+ */
+function getAdministratorsOptionHTML($saveID) {
+    $admins = getAdministrators();
+
+    if (!$admins || !is_array($admins)) {
+        return '';
+    }
+
+    $optionsHTML = '';
+
+    foreach ($admins as $key => $admin) {
+        $selected = $saveID == $admin->ID ? "selected" : null;
+        $optionsHTML .= '<option ' . $selected . ' value="' . esc_attr($admin->ID) . '" >' . esc_html($admin->display_name) . '</option>';
+    }
+
+    return $optionsHTML;
+}
