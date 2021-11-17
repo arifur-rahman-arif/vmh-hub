@@ -57,18 +57,19 @@ function getProductsByCategory(array $taxonomyArgs) {
  * @return mixed
  */
 function getProductIngrediants($productID, $includePTage = false) {
-    $ingredients = get_post_meta($productID, 'product_ingredients', true);
 
-    if (!$ingredients) {
+    $productContents = organizePercentageAndIngredients($productID);
+
+    if (!$productContents) {
         return '';
     }
 
-    if (!is_array($ingredients)) {
+    if (!is_array($productContents)) {
         return '';
     }
 
     $ingredientsHTML = $includePTage ? '<p>' : '<ul>';
-    foreach ($ingredients as $key => $singleIngredient) {
+    foreach ($productContents as $key => $singleIngredient) {
         $ingredientsHTML .= '
                                     ' . productIngredientsHTML($singleIngredient, $includePTage) . '
                                 ';
@@ -80,6 +81,32 @@ function getProductIngrediants($productID, $includePTage = false) {
 
 }
 
+/**
+ * Organize the proudcut ingredients and its percentage value to show it in a organized way
+ * @param $productID
+ */
+function organizePercentageAndIngredients($productID) {
+    $ingredients = get_post_meta($productID, 'product_ingredients', true);
+    $productPercentage = get_post_meta($productID, 'ingredients_percentage_values', true);
+
+    if (!$ingredients) {
+        return [];
+    }
+
+    $organizedValues = [];
+
+    foreach ($ingredients as $key => $ingredient) {
+
+        if (isset($productPercentage[$key]) && $productPercentage[$key]) {
+            $organizedValues[$productPercentage[$key]] = '' . get_the_title($ingredient) . ' ' . $productPercentage[$key] . '%';
+        }
+    }
+
+    krsort($organizedValues);
+
+    return $organizedValues;
+}
+
 // Should include p tag or li tag in cart products ingredients
 
 /**
@@ -89,9 +116,9 @@ function getProductIngrediants($productID, $includePTage = false) {
  */
 function productIngredientsHTML($singleIngredient, $includePTage) {
     if ($includePTage) {
-        return '<p>' . trim(get_the_title($singleIngredient)) . '</p>';
+        return '<p>' . trim($singleIngredient) . '</p>';
     } else {
-        return '<li><span>' . trim(get_the_title($singleIngredient)) . '</span></li>';
+        return '<li><span>' . trim($singleIngredient) . '</span></li>';
     }
 }
 
@@ -508,7 +535,7 @@ function getUserCreatedRecipe() {
         echo '
         <div class="card">
             <div class="card-body">
-              Oops. You have not created any products.
+              Oops. You have not created any products. <a href="' . esc_url(get_permalink(get_option('vmh_create_product_option'))) . '">Create a recipe</a>
             </div>
         </div>';
     }
@@ -774,6 +801,14 @@ function showIngredientsPercentageValues($key, $ingredientsPercentage) {
 function convertSingleProductOptionsToString() {
     $productOptions = get_post_meta(get_the_ID(), 'product_options', true);
 
+    $postAuthor = get_post(get_the_ID())->post_author;
+
+    $updateProduct = false;
+
+    if ($postAuthor == get_current_user_id()) {
+        $updateProduct = true;
+    }
+
     if (is_array($productOptions)) {
 
         $productOptions = call_user_func_array('array_merge', $productOptions);
@@ -787,8 +822,28 @@ function convertSingleProductOptionsToString() {
             $organizedOptions[$key] = trim($option[0]);
         }
 
-        return '&' . http_build_query($organizedOptions) . '';
+        return '&' . http_build_query($organizedOptions) . '&update_product=' . $updateProduct . '';
     } else {
-        return null;
+        return '&update_product=' . $updateProduct . '';
     }
+}
+
+// Get product tags HTML
+/**
+ * @return mixed
+ */
+function getProductTags() {
+    $tags = wp_get_post_terms(get_the_ID(), 'product_tag', array("fields" => "all"));
+
+    if (!$tags) {
+        return '';
+    }
+
+    $tagsHTML = '';
+
+    foreach ($tags as $key => $tag) {
+        $tagsHTML .= '<span href="#" class="tag_name" data-target="tag_name_1">' . esc_html($tag->name) . '</span>';
+    }
+
+    return $tagsHTML;
 }

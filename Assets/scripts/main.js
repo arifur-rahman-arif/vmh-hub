@@ -385,19 +385,41 @@ jQuery(document).ready(function ($) {
     // Create a simple product as new recipe
     function createRecipe(e) {
         e.preventDefault();
+        let target = $(e.currentTarget);
         let productName = $("#vmh_recipe_name").val();
         let ingredientsValues = getIngredientsValues();
         let recipeNote = $(".vmh_recipe_create_note").val();
         let tagValues = getTagValues();
         let optionsValue = getOptionsValue();
         let ingredientsPercentageValues = getIngredientsPercentageValues();
+        let recipeAction = target.attr("data-action");
+        let proudctID = parseInt(getSlugParameter("edit_product"));
+
+        if (recipeAction == "update-recepie") {
+            if (!proudctID) {
+                let recipePopup = $(".vmh_create_recipe_popup");
+                recipePopup.find(".vmh_checkbox_image").css({
+                    display: "none",
+                });
+                recipePopup.find(".vmh_checkbox_image_warning").css({
+                    display: "block",
+                });
+
+                recipePopup.find(".vmh_alert_text").text("Product name is required");
+
+                $(".save_recieved_hde").show();
+                $("body").addClass("popup_overly");
+                return false;
+            }
+        }
 
         let requiredFields = showAlertOnRequiredFields(productName, optionsValue);
 
         if (requiredFields === false) {
             return false;
         }
-        let productPrice = parseInt(
+
+        let productPrice = parseFloat(
             $(".woocommerce-variation-price bdi")?.text()?.replace(vmhLocal.currencySymbol, "")
         );
 
@@ -413,6 +435,8 @@ jQuery(document).ready(function ($) {
                 optionsValue,
                 productPrice,
                 action: "vmh_create_product",
+                recipeAction,
+                proudctID,
             },
             success: (res) => {
                 console.log(res);
@@ -438,7 +462,11 @@ jQuery(document).ready(function ($) {
 
                     recipePopup
                         .find(".vmh_alert_text")
-                        .text("Product is created. Please wait for admin to approve");
+                        .text(
+                            recipeAction == "save-recepie"
+                                ? "Product is created. Please wait for admin to approve"
+                                : "Product is updated successfully."
+                        );
 
                     $(".save_recieved_hde").show();
                     $("body").addClass("popup_overly");
@@ -474,20 +502,6 @@ jQuery(document).ready(function ($) {
             $("body").addClass("popup_overly");
             return false;
         }
-        if (optionsValue.length !== attributesLength) {
-            recipePopup.find(".vmh_checkbox_image").css({
-                display: "none",
-            });
-            recipePopup.find(".vmh_checkbox_image_warning").css({
-                display: "block",
-            });
-
-            recipePopup.find(".vmh_alert_text").text("All options needs to filled.");
-
-            $(".save_recieved_hde").show();
-            $("body").addClass("popup_overly");
-            return false;
-        }
 
         let ingredients = $("select.product_ingredients:not(#product_ingredients_0)");
 
@@ -506,6 +520,37 @@ jQuery(document).ready(function ($) {
             return false;
         }
 
+        if (ingredients) {
+            let breakLoop = false;
+            $.each(ingredients, function (i, element) {
+                let value = $(element).val();
+                if (value) {
+                    let inputElement = $(element).parent().find(".ingredient_percentage");
+                    if (!inputElement.val()) {
+                        breakLoop = true;
+                        return false; // breaks
+                    }
+                }
+            });
+
+            if (breakLoop) {
+                recipePopup.find(".vmh_checkbox_image").css({
+                    display: "none",
+                });
+                recipePopup.find(".vmh_checkbox_image_warning").css({
+                    display: "block",
+                });
+
+                recipePopup
+                    .find(".vmh_alert_text")
+                    .text("All selected ingredients percentage value needs to filled");
+
+                $(".save_recieved_hde").show();
+                $("body").addClass("popup_overly");
+                return false;
+            }
+        }
+
         let totalPercentage = calculatePercentage();
 
         if (totalPercentage >= 30) {
@@ -519,6 +564,21 @@ jQuery(document).ready(function ($) {
             recipePopup
                 .find(".vmh_alert_text")
                 .text("Ingredients amount is exceeded. Please keep it in 30%");
+
+            $(".save_recieved_hde").show();
+            $("body").addClass("popup_overly");
+            return false;
+        }
+
+        if (optionsValue.length !== attributesLength) {
+            recipePopup.find(".vmh_checkbox_image").css({
+                display: "none",
+            });
+            recipePopup.find(".vmh_checkbox_image_warning").css({
+                display: "block",
+            });
+
+            recipePopup.find(".vmh_alert_text").text("All options needs to filled.");
 
             $(".save_recieved_hde").show();
             $("body").addClass("popup_overly");

@@ -427,13 +427,36 @@ trait AjaxCallbacks {
         $userID = get_current_user_id();
         $sanitizedData = $this->sanitizeData($_POST);
 
-        $postID = wp_insert_post(array(
+        $postID = null;
+
+        $postArg = [
             'post_author'  => $userID,
             'post_title'   => $sanitizedData['productName'],
             'post_content' => $sanitizedData['recipeNote'],
             'post_status'  => 'pending',
             'post_type'    => "product"
-        ));
+        ];
+
+        if ($sanitizedData['recipeAction'] === 'save-recepie') {
+            $postID = wp_insert_post($postArg);
+        }
+
+        if ($sanitizedData['recipeAction'] === 'update-recepie') {
+            $productID = isset($sanitizedData['proudctID']) ? intval($sanitizedData['proudctID']) : null;
+
+            $postAuthor = get_post($productID)->post_author;
+
+            if ($postAuthor != get_current_user_id()) {
+                $output['response'] = 'invalid';
+                $output['message'] = vmhEscapeTranslate('User don\'t have permission to edit product');
+                echo json_encode($output);
+                wp_die();
+            }
+
+            $postArg['ID'] = $productID;
+            $postArg['post_status'] = 'publish';
+            $postID = wp_update_post($postArg);
+        }
 
         if (!is_wp_error($postID)) {
             wp_set_object_terms($postID, 'simple', 'product_type');
@@ -462,7 +485,7 @@ trait AjaxCallbacks {
 
             // add the product options to meta value
             if ($productOptions) {
-                add_post_meta($postID, 'product_options', $productOptions);
+                update_post_meta($postID, 'product_options', $productOptions);
             }
 
             // add product ingredients
@@ -472,7 +495,7 @@ trait AjaxCallbacks {
 
             // add product ingredients
             if ($ingredientsPercentageValues) {
-                add_post_meta($postID, 'ingredients_percentage_values', $ingredientsPercentageValues);
+                update_post_meta($postID, 'ingredients_percentage_values', $ingredientsPercentageValues);
             }
 
             // add product tags
@@ -481,7 +504,14 @@ trait AjaxCallbacks {
             }
 
             $output['response'] = 'success';
-            $output['message'] = vmhEscapeTranslate('Product created successfully');
+
+            if ($sanitizedData['recipeAction'] === 'save-recepie') {
+                $output['message'] = vmhEscapeTranslate('Product created successfully');
+            }
+
+            if ($sanitizedData['recipeAction'] === 'update-recepie') {
+                $output['message'] = vmhEscapeTranslate('Product updated successfully');
+            }
 
             $this->sendEmailToAdmins($postID);
 

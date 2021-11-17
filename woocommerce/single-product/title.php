@@ -20,6 +20,16 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
 
+$recipeName = '';
+
+if (isset($_GET['edit_product']) && $_GET['edit_product']) {
+    if (isset($_GET['update_product']) && $_GET['update_product'] === '1') {
+        $recipeName = get_the_title(sanitize_text_field($_GET['edit_product']));
+    } else {
+        $recipeName = get_the_title(sanitize_text_field($_GET['edit_product'])) . ' modified';
+    }
+}
+
 ?>
 <?php if (get_the_ID() != get_option('vmh_create_product_option')) {?>
 
@@ -44,7 +54,7 @@ if (!defined('ABSPATH')) {
 
 <div class="recepes_right_title">
     <h3><input type="text" name="vmh_recipe_name" id="vmh_recipe_name" required placeholder="Your recipe name"
-            value="<?php echo isset($_GET['edit_product']) && $_GET['edit_product'] ? get_the_title(sanitize_text_field($_GET['edit_product'])) . ' modified' : '' ?>">
+            value="<?php echo $recipeName ?>">
     </h3>
 </div>
 

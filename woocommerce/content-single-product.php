@@ -127,9 +127,18 @@ do_action('woocommerce_single_product_summary');
                                     <h6>Note By
                                         <?php echo get_the_author_meta('display_name', get_post(get_the_ID())->post_author); ?>
                                     </h6>
+
                                     <p class="vmh_product_content">
                                         <?php echo get_the_content() ?>
                                     </p>
+
+
+                                    <div class="vmh_tag_list">
+                                        <div class="deafult_tags">
+                                            <?php echo getProductTags() ?>
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <?php } else {?>
                                 <div class="recepes_right_site_right_content">
