@@ -89,7 +89,7 @@ function organizePercentageAndIngredients($productID) {
     $ingredients = get_post_meta($productID, 'product_ingredients', true);
     $productPercentage = get_post_meta($productID, 'ingredients_percentage_values', true);
 
-    if (!$ingredients) {
+    if (!is_array($ingredients) || count($ingredients) < 1) {
         return [];
     }
 
