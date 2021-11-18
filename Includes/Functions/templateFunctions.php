@@ -828,12 +828,19 @@ function convertSingleProductOptionsToString() {
     }
 }
 
-// Get product tags HTML
 /**
+ * Get product tags HTML
  * @return mixed
  */
-function getProductTags() {
-    $tags = wp_get_post_terms(get_the_ID(), 'product_tag', array("fields" => "all"));
+function getProductTags($productID = null) {
+
+    $postID = get_the_ID();
+
+    if ($productID) {
+        $postID = $productID;
+    }
+
+    $tags = wp_get_post_terms($postID, 'product_tag', array("fields" => "all"));
 
     if (!$tags) {
         return '';
@@ -842,8 +849,105 @@ function getProductTags() {
     $tagsHTML = '';
 
     foreach ($tags as $key => $tag) {
-        $tagsHTML .= '<span href="#" class="tag_name" data-target="tag_name_1">' . esc_html($tag->name) . '</span>';
+        $tagsHTML .= '<span class="tag_name" data-target="tag_name_' . ($key + 1) . '">' . esc_html($tag->name) . '</span>';
     }
 
     return $tagsHTML;
+}
+
+function editProductTagsHTML() {
+    if (isset($_GET['edit_product']) && $_GET['edit_product']) {
+        $productID = sanitize_text_field($_GET['edit_product']);
+
+        if (isset($_GET['update_product']) && $_GET['update_product'] === '1') {
+
+            $tags = wp_get_post_terms($productID, 'product_tag', array("fields" => "all"));
+
+            if (!$tags) {
+                return '';
+            }
+
+            $deafultTags = '<div class="deafult_tags">';
+            $dynamicTags = '<div class="dynamic_tags">';
+
+            foreach ($tags as $key => $tag) {
+
+                if ($key < 2) {
+                    $deafultTags .= '<span class="tag_name" data-target="tag_name_' . ($key + 1) . '">' . esc_html($tag->name) . '</span>';
+                } else {
+                    $dynamicTags .= '<span class="tag_name" data-target="tag_name_' . ($key + 1) . '">' . esc_html($tag->name) . '</span>';
+                }
+            }
+
+            $deafultTags .= '</div>';
+            $dynamicTags .= '</div>';
+
+            echo $deafultTags . $dynamicTags;
+
+        } else {
+            echo '
+            <div class="deafult_tags">
+                <a href="#" class="tag_name" data-target="tag_name_1">Tag Name</a>
+                <a href="#" class="tag_name" data-target="tag_name_2">Tag Name</a>
+            </div>
+            <div class="dynamic_tags">
+            </div>
+            ';
+        }
+    }
+}
+
+// Display the tag input fields based on product edit conditions
+function editProductTagsInput() {
+    if (isset($_GET['edit_product']) && $_GET['edit_product']) {
+        $productID = sanitize_text_field($_GET['edit_product']);
+
+        if (isset($_GET['update_product']) && $_GET['update_product'] === '1') {
+
+            $tags = wp_get_post_terms($productID, 'product_tag', array("fields" => "all"));
+
+            if (!$tags) {
+                return '';
+            }
+
+            $tagsInputHTML = '';
+
+            foreach ($tags as $key => $tag) {
+
+                if ($key < 2) {
+                    $tagsInputHTML .= '
+                    <div class="tag_input">
+                        <input type="text" placeholder="Type Tag Name" data-id="' . ($key + 1) . '"
+                        class="vmh_tag_input predefied_tag_input"
+                        value="' . esc_html($tag->name) . '">
+                    </div>';
+                } else {
+                    $tagsInputHTML .= '
+                    <div class="tag_input" style="display: flex;">
+                        <i class="fas fa-times cut_tag"></i>
+                        <input type="text" placeholder="Type Tag Name" data-id="' . ($key + 1) . '"
+                        class="vmh_tag_input"
+                        value="' . esc_html($tag->name) . '">
+                    </div>';
+                }
+            }
+
+            echo $tagsInputHTML;
+
+        } else {
+            echo '
+            <div class="tag_input">
+                <input type="text" placeholder="Type Tag Name" data-id="1"
+                    class="vmh_tag_input predefied_tag_input"
+                    value="Tag Name">
+            </div>
+
+            <div class="tag_input">
+                <input type="text" placeholder="Type Tag Name" data-id="2"
+                    class="vmh_tag_input predefied_tag_input"
+                    value="Tag Name">
+            </div>
+            ';
+        }
+    }
 }

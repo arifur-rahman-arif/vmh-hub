@@ -19,11 +19,11 @@ Tags: ecommerce, woocommerce, one-column, custom-background, custom-colors, cust
 
 ### **Releases**
 
-<!-- ![](https://img.shields.io/static/v1?label=Release&message=1.8.0&color=nrightgreen)
+![](https://img.shields.io/static/v1?label=Release&message=1.8.0&color=nrightgreen)
 
--   Modified some UI/UX.
--   Added main select box in VMH options.
--   Added delete product feature for user. -->
+-   Added product update feature
+-   Added product tag edit feature
+-   Added percentage view from top to bottom
 
 ![](https://img.shields.io/static/v1?label=Release&message=1.7.0&color=nrightgreen)
 

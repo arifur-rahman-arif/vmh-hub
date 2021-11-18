@@ -169,10 +169,10 @@ do_action('woocommerce_single_product_summary');
                                                         <div class="tag_input duplicate_tag" style="display: none;">
                                                             <i class="fas fa-times cut_tag"></i>
                                                             <input type="text" placeholder="Type Tag Name"
-                                                                class="vmh_tag_input" data-id="3">
+                                                                class="vmh_tag_input">
                                                         </div>
 
-                                                        <div class="tag_input">
+                                                        <!-- <div class="tag_input">
                                                             <input type="text" placeholder="Type Tag Name" data-id="1"
                                                                 class="vmh_tag_input predefied_tag_input"
                                                                 value="Tag Name">
@@ -182,7 +182,9 @@ do_action('woocommerce_single_product_summary');
                                                             <input type="text" placeholder="Type Tag Name" data-id="2"
                                                                 class="vmh_tag_input predefied_tag_input"
                                                                 value="Tag Name">
-                                                        </div>
+                                                        </div> -->
+
+                                                        <?php editProductTagsInput()?>
 
                                                     </div>
 
@@ -204,13 +206,7 @@ do_action('woocommerce_single_product_summary');
                                 </div>
 
                                 <div class="vmh_tag_list">
-                                    <div class="deafult_tags">
-                                        <a href="#" class="tag_name" data-target="tag_name_1">Tag Name</a>
-                                        <a href="#" class="tag_name" data-target="tag_name_2">Tag Name</a>
-                                    </div>
-                                    <div class="dynamic_tags">
-
-                                    </div>
+                                    <?php editProductTagsHTML()?>
                                 </div>
                                 <!-- End Tags -->
                                 <?php }?>
