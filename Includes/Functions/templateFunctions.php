@@ -894,6 +894,15 @@ function editProductTagsHTML() {
             </div>
             ';
         }
+    } else {
+        echo '
+        <div class="deafult_tags">
+            <a href="#" class="tag_name" data-target="tag_name_1">Tag Name</a>
+            <a href="#" class="tag_name" data-target="tag_name_2">Tag Name</a>
+        </div>
+        <div class="dynamic_tags">
+        </div>
+        ';
     }
 }
 
@@ -949,5 +958,18 @@ function editProductTagsInput() {
             </div>
             ';
         }
+    } else {
+        echo '
+        <div class="tag_input">
+            <input type="text" placeholder="Type Tag Name" data-id="1"
+                class="vmh_tag_input predefied_tag_input"
+                value="Tag Name">
+        </div>
+        <div class="tag_input">
+            <input type="text" placeholder="Type Tag Name" data-id="2"
+                class="vmh_tag_input predefied_tag_input"
+                value="Tag Name">
+        </div>
+        ';
     }
 }
