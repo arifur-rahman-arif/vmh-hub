@@ -331,7 +331,7 @@ class HookCallbacks {
                         $this->sendCommsionMailToCreator([
                             'postID'     => $productID,
                             'user'       => $user,
-                            'commission' => $newCommission
+                            'commission' => $percentageValue
                         ]);
                     }
                 }
