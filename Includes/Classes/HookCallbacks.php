@@ -39,7 +39,7 @@ class HookCallbacks {
     public function localizeFile() {
         wp_localize_script('vmh-main', 'vmhLocal', [
             'ajaxUrl'              => admin_url('admin-ajax.php'),
-            'vmhProductAttributes' => $this->vmhProductAttributes(),
+            'vmhProductAttributes' => vmhProductAttributes(),
             'currencySymbol'       => get_woocommerce_currency_symbol(),
             'siteUrl'              => site_url('/')
         ]);
@@ -146,25 +146,10 @@ class HookCallbacks {
         load_template(VMH_PATH . 'Includes/Templates/admin-menu.php', true);
     }
 
-    /**
-     * Define all the product attibutes that will be used in options settings & in product attributes
-     * @return mixed
-     */
-    public function vmhProductAttributes() {
-        $settinsKey = [
-            // Settings key with title
-            'vmh_nicotine_amount' => 'Nicotine Amount',
-            'vmh_nicotine_type'   => 'Nicotine Type',
-            'vmh_pg_vg'           => 'PG:VG',
-            'vmh_bottle_size'     => 'Bottle size'
-        ];
-        return $settinsKey;
-    }
-
     // Register settings for product options
     public function addOptionSettings() {
 
-        $settinsKey = $this->vmhProductAttributes();
+        $settinsKey = vmhProductAttributes();
 
         foreach ($settinsKey as $key => $settingKey) {
             register_setting(
@@ -226,7 +211,7 @@ class HookCallbacks {
 
             $attributes = wc_get_attribute_taxonomies();
 
-            $settingsKey = $this->vmhProductAttributes();
+            $settingsKey = vmhProductAttributes();
 
             $slugs = wp_list_pluck($attributes, 'attribute_name');
 
@@ -261,7 +246,7 @@ class HookCallbacks {
 
         if (isset($_GET['page']) && $_GET['page'] == 'vmh-product-options') {
 
-            $settingsKey = $this->vmhProductAttributes();
+            $settingsKey = vmhProductAttributes();
 
             if (!$settingsKey) {
                 return;
@@ -343,10 +328,43 @@ class HookCallbacks {
                         $totalCommssion = get_user_meta($userID, 'user_commision', true);
                         $newCommission = (float) $percentageValue + (float) $totalCommssion;
                         update_user_meta($userID, 'user_commision', $newCommission);
+                        $this->sendCommsionMailToCreator([
+                            'postID'     => $productID,
+                            'user'       => $user,
+                            'commission' => $newCommission
+                        ]);
                     }
                 }
             }
         }
+    }
+
+    /**
+     * @param string  $mail
+     * @param $user
+     */
+    public function sendCommsionMailToCreator($args) {
+
+        if (!isset($args['postID']) || !isset($args['user']) || !isset($args['commission'])) {
+            return;
+        }
+
+        $user = $args['user'];
+        $postID = $args['postID'];
+        $post = get_post($postID);
+        $productCommissionPercentage = get_option('vmh_product_commission');
+        $commission = $args['commission'];
+
+        $to = $user->data->user_email;
+        $displayName = $user->data->display_name;
+        $subject = 'Congratulations! You have earned a commission';
+
+        $message = '
+                    Hello ' . $displayName . ' you have got ' . $productCommissionPercentage . '% a commission for <b>' . $post->post_title . '</b> <br/>
+                    <b>Commission Value:</b> ' . get_woocommerce_currency_symbol() . ' ' . $commission . '
+                ';
+        $headers = ['Content-Type: text/html; charset=UTF-8'];
+        wp_mail($to, $subject, $message, $headers);
     }
 
     /**
@@ -393,13 +411,13 @@ class HookCallbacks {
      * @return mixed
      */
     public function getTotalPercentage($total) {
-        $productCommission = get_option('vmh_product_commission');
+        $productCommissionPercentage = get_option('vmh_product_commission');
 
-        if (!$productCommission) {
+        if (!$productCommissionPercentage) {
             return $total;
         }
 
-        $percentageValue = ($productCommission / 100) * $total;
+        $percentageValue = ($productCommissionPercentage / 100) * $total;
         return $percentageValue;
     }
 
@@ -737,7 +755,7 @@ class HookCallbacks {
         foreach ($ingredientsPercentage as $key => $ingredientPercentage) {
 
             if (isset($ingredients[$key]) && $ingredients[$key]) {
-                $options .= '<option selected value="' . esc_attr($ingredientPercentage) . '" >
+                $options .= '<option selected value="' . $key . '_' . esc_attr($ingredientPercentage) . '" >
                                 ' . get_the_title($ingredients[$key]) . ' ' . $ingredientPercentage . '%
                             </option>';
             }
@@ -798,6 +816,72 @@ class HookCallbacks {
         } elseif ("" == $new_meta_value && $meta_value) {
             /* If there is no new meta value but an old value exists, delete it. */
             delete_post_meta($postID, $meta_key, $meta_value);
+        }
+    }
+
+    /**
+     * Increase the cart item price based on nicotine shot
+     * @param  $cartObject
+     * @return null
+     */
+    public function addNicotineshotprice($cart) {
+
+        // Avoiding hook repetition (when using price calculations for example | optional)
+        if (did_action('woocommerce_before_calculate_totals') >= 2) {
+            return;
+        }
+
+        // Loop through cart items
+        foreach ($cart->get_cart() as $cart_item) {
+
+            $nicotineShotValue = isset($cart_item['nicotine_shot_value']) && $cart_item['nicotine_shot_value'] ? $cart_item['nicotine_shot_value'] : null;
+
+            if ($nicotineShotValue) {
+                $newPrice = $cart_item['data']->get_price() + ($cart_item['nicotine_shot_value'] * NICOTINE_SHOT_PRICE);
+                $cart_item['data']->set_price($newPrice);
+            }
+        }
+
+    }
+
+    /**
+     * @param Type $var
+     */
+    public function addNicotineshotfield() {
+        if (wc_get_product(get_the_ID())->get_type() === 'variable' && get_the_ID() != get_option('vmh_create_product_option')) {
+            echo '<input type="hidden" name="nicotine_shot_value" id="nicotine_shot_value" />';
+        }
+    }
+
+    /**
+     * Add custom nicotine shot data to cart item
+     * @param  $cartItemData
+     * @param  $productID
+     * @param  $variationID
+     * @return mixed
+     */
+    public function addNicotineshotToCart($cartItemData, $productID, $variationID) {
+        if (isset($_POST['nicotine_shot_value']) && sanitize_text_field($_POST['nicotine_shot_value'])) {
+            $cartItemData['nicotine_shot_value'] = sanitize_text_field($_POST['nicotine_shot_value']);
+        }
+
+        return $cartItemData;
+    }
+
+    /**
+     * Add the nicotineshot amount data to order item in admin dashboard
+     * @param $item
+     * @param $cart_item_key
+     * @param $values
+     * @param $order
+     */
+    public function addNicotineshotToItem($item, $cart_item_key, $values, $order) {
+        if (isset($values['nicotine_shot_value'])) {
+            $item->add_meta_data(
+                'Nicotine Shot:',
+                $values['nicotine_shot_value'],
+                true
+            );
         }
     }
 }

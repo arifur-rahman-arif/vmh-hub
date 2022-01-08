@@ -36,6 +36,7 @@ if (isset($_GET['edit_product']) && $_GET['edit_product']) {
     $btnAttribute = 'save-recepie';
 }
 
+// If this product id is not = to production option than display the normal variable product template
 if ($product->get_id() != get_option('vmh_create_product_option')) {
     $attribute_keys = array_keys($attributes);
     $variations_json = wp_json_encode($available_variations);
@@ -60,7 +61,7 @@ if ($product->get_id() != get_option('vmh_create_product_option')) {
         <form class="variations_form cart"
             action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product->get_permalink())); ?>"
             method="post" enctype='multipart/form-data' data-product_id="<?php echo absint($product->get_id()); ?>"
-            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                                                                    ?>">
+            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                                                                                  ?>">
             <?php do_action('woocommerce_before_variations_form');?>
 
             <?php if (empty($available_variations) && false !== $available_variations): ?>
@@ -100,6 +101,15 @@ wc_dropdown_variation_attribute_options(
                     <?php endforeach;?>
                 </tbody>
             </table>
+
+
+            <!-- Display the nicotine shot calculation here -->
+            <div class="nicotine_shot mb-3">
+                <strong class="shot_name">Nicotine Shot:</strong>
+                <strong class="shot_amount"></strong>
+            </div>
+            <!-- End of nicotine shot -->
+
 
             <div class="single_variation_wrap">
                 <?php
@@ -216,7 +226,7 @@ $attribute_keys = array_keys($attributes);
         <form class="variations_form cart"
             action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product->get_permalink())); ?>"
             method="post" enctype='multipart/form-data' data-product_id="<?php echo absint($product->get_id()); ?>"
-            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                                                                    ?>">
+            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                                                                                  ?>">
             <?php do_action('woocommerce_before_variations_form');?>
 
             <?php if (empty($available_variations) && false !== $available_variations): ?>

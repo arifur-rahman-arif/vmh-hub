@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) {
 }
 
 if (!defined('VMH_VERSION')) {
-    define('VMH_VERSION', '1.8.0');
+    define('VMH_VERSION', '1.9.0');
     // define('VMH_VERSION', time());
 }
 
@@ -22,6 +22,7 @@ if (!class_exists('WooCommerce')) {
 }
 
 require_once VMH_PATH . 'vendor/autoload.php';
+require_once VMH_PATH . 'constant.php';
 require_once VMH_PATH . 'Includes/Functions/templateFunctions.php';
 require_once VMH_PATH . 'Includes/Functions/generalFunctions.php';
 

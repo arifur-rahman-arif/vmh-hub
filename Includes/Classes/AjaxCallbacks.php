@@ -1,8 +1,6 @@
 <?php
 namespace VmhHub\Includes\Classes;
 
-use WC_Product;
-
 trait AjaxCallbacks {
 
     // Handle the login process
@@ -787,19 +785,21 @@ trait AjaxCallbacks {
 
         $productID = sanitize_text_field($_POST['productID']);
 
-        if (!get_option('vmh_main_admin')) {
-            $output['response'] = 'invalid';
-            $output['message'] = vmhEscapeTranslate('Product authority could not be moved to admin.');
-            echo json_encode($output);
-            wp_die();
-        }
+        // if (!get_option('vmh_main_admin')) {
+        //     $output['response'] = 'invalid';
+        //     $output['message'] = vmhEscapeTranslate('Product authority could not be moved to admin.');
+        //     echo json_encode($output);
+        //     wp_die();
+        // }
 
-        $response = wp_update_post(
-            [
-                'ID'          => $productID,
-                'post_author' => get_option('vmh_main_admin')
-            ]
-        );
+        // $response = wp_update_post(
+        //     [
+        //         'ID'          => $productID,
+        //         'post_author' => get_option('vmh_main_admin')
+        //     ]
+        // );
+
+        $response = wp_delete_post($productID);
 
         if (!is_wp_error($response)) {
             $output['response'] = 'success';
@@ -812,4 +812,71 @@ trait AjaxCallbacks {
         echo json_encode($output);
         wp_die();
     }
+
+    /* Update nicotineshot value via ajax from cart page */
+    public function updateNicotineshotValue() {
+        $output = [];
+
+        if (sanitize_text_field($_POST['action']) !== 'vmh_update_nicotineshot') {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Action is not valid');
+            echo json_encode($output);
+            wp_die();
+        }
+
+        if (!isset($_POST['cartKey']) || !$_POST['cartKey']) {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Cart key is missing');
+            echo json_encode($output);
+            wp_die();
+        }
+
+        if (!isset($_POST['nicotineShot'])) {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Nicotine shot is requried to update');
+            echo json_encode($output);
+            wp_die();
+        }
+
+        $cartKey = sanitize_text_field($_POST['cartKey']);
+
+        $nicotineShot = intval(sanitize_text_field($_POST['nicotineShot']));
+
+        if ($nicotineShot < 0) {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Nicotine shot can not be negative value');
+            echo json_encode($output);
+            wp_die();
+        }
+
+        try {
+            $cart = WC()->cart->cart_contents;
+
+            $cartItem = $cart[$cartKey];
+
+            $cartItem['nicotine_shot_value'] = $nicotineShot;
+
+            WC()->cart->cart_contents[$cartKey] = $cartItem;
+
+            WC()->cart->set_session();
+
+            // $cartTotal = WC()->cart->cart_contents_total;
+
+            $output['response'] = 'success';
+            $output['message'] = vmhEscapeTranslate('Nicotine shot updated');
+            // $output['cartTotal'] = $cartTotal;
+            echo json_encode($output);
+            wp_die();
+
+        } catch (\Throwable $th) {
+
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate($th->getMessage());
+            echo json_encode($output);
+            wp_die();
+        }
+
+        wp_die();
+    }
+
 }

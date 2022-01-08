@@ -49,9 +49,10 @@ setup_postdata($GLOBALS['post'] = &$post_object); // phpcs:ignore WordPress.WP.G
     <div class="single_recopies_items_overly">
 
         <div class="single_recopies_items_overly_item">
-            <?php if (wc_get_product($related_product)->get_type() !== 'variable') {?>
+            <!-- HIding the add to cart button -->
+            <!-- <?php if (wc_get_product($related_product)->get_type() !== 'variable') {?>
             <a href="#" class="vmh_add_to_cart_btn" data-id="<?php echo $post_object->ID ?>">Add To Cart</a>
-            <?php }?>
+            <?php }?> -->
             <a href="<?php echo esc_url(get_permalink($post_object->ID)) ?>">View Recepie</a>
         </div>
 

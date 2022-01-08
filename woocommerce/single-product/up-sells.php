@@ -32,6 +32,7 @@ $post_object = get_post($upsell->get_id());
 setup_postdata($GLOBALS['post'] = &$post_object); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited, Squiz.PHP.DisallowMultipleAssignments.Found
 ?>
 
+<?php if (isset($related_product)) {?>
 <div class="single_recopies_items recepes_single_left_item">
     <h6><?php echo vmhEscapeTranslate($post_object->post_title) ?></h6>
     <p>By <?php echo get_the_author_meta('display_name', $post_object->post_author); ?></p>
@@ -45,6 +46,8 @@ setup_postdata($GLOBALS['post'] = &$post_object); // phpcs:ignore WordPress.WP.G
         </div>
     </div>
 </div>
+
+<?php }?>
 
 <?php endforeach;?>
 

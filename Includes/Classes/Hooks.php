@@ -39,6 +39,7 @@ class Hooks extends HookCallbacks {
         // add user commsion on purchase of simple product
         add_action('woocommerce_order_status_completed', [$this, 'addCommisionToUser']);
 
+        // Reduce the ingredients stock on successfull order complete
         add_action('woocommerce_order_status_completed', [$this, 'reduceIngredientsStock']);
 
         // update post on order status update
@@ -67,8 +68,41 @@ class Hooks extends HookCallbacks {
 
         // Add meta box to control the map zoom option
         add_action('add_meta_boxes_product', [$this, 'registerIngredientsPercentage'], 10, 1);
+
         // Save the post meta on saving the post
         // add_action('save_post_product', [$this, 'saveIngredientsPercentage'], 10, 2);
+
+        // Add nicotineshot field in in product cart
+        add_action('woocommerce_before_add_to_cart_button', [$this, 'addNicotineshotfield'], 10);
+
+        // function plugin_republic_add_to_cart_validation($passed, $product_id, $quantity, $variation_id = null) {
+        //     if (empty($_POST['pr-field'])) {
+        //         $passed = false;
+        //         wc_add_notice(__('Your name is a required field.', 'plugin-republic'), 'error');
+        //     }
+        //     return $passed;
+        // }
+
+        // add_filter('woocommerce_add_to_cart_validation', 'plugin_republic_add_to_cart_validation', 10, 4);
+
+        // Add custom nicotine shot data to cart item
+        add_action('woocommerce_add_cart_item_data', [$this, 'addNicotineshotToCart'], 10, 3);
+
+        // Add the nicotine shot price to the cart
+        add_action('woocommerce_before_calculate_totals', [$this, 'addNicotineshotprice'], 10);
+
+        // Add the nicotineshot amount data to order item in admin dashboard
+        add_action('woocommerce_checkout_create_order_line_item', [$this, 'addNicotineshotToItem'], 10, 4);
+
+        // // Show the nicotineshot amount in admin order items
+        // add_action('woocommerce_after_order_itemmeta', function () {
+
+        //     if (did_action('woocommerce_after_order_itemmeta') < 2) {
+        //         echo '<h3>Hello</h3>';
+        //     }
+
+        // }, 10);
+
     }
 
     public function sessionStart() {
@@ -107,9 +141,12 @@ class Hooks extends HookCallbacks {
         add_action('wp_ajax_vmh_remove_product_action', [$this, 'removeProduct']);
         add_action('wp_ajax_nopriv_vmh_remove_product_action', [$this, 'removeProduct']);
 
+        /* Update nicotineshot value via ajax from cart page */
+        add_action('wp_ajax_vmh_update_nicotineshot', [$this, 'updateNicotineshotValue']);
+        add_action('wp_ajax_nopriv_vmh_update_nicotineshot', [$this, 'updateNicotineshotValue']);
     }
 
-    // Remove functions that are hooked with functions
+    // Remove functions that are hooked with these hooks
     public function removeHookedFunctions() {
         // Remove woocommerce_show_product_sale_flash function from hook
         remove_action('woocommerce_before_single_product_summary', 'woocommerce_show_product_sale_flash', 10);

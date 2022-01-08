@@ -401,3 +401,33 @@ body > .wp-dark-mode-switcher {
     display: inline-block;
     margin: 5px;
 }
+
+.single_recopies_items .nicotineshot_container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 11px;
+    margin-bottom: 18px;
+}
+
+.nicotineshot_container .cart_nicotine_shot_value {
+    padding: 2px 10px;
+    max-width: calc(100% - 30px);
+    width: 100%;
+}
+
+.nicotineshot_container .input_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nicotineshot_save_btn {
+    color: #fff;
+    font-size: 21px;
+    cursor: pointer;
+}
+
+.cart .quantity {
+    display: none;
+}

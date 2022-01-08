@@ -105,3 +105,18 @@ function getAdministratorsOptionHTML($saveID) {
 
     return $optionsHTML;
 }
+
+/**
+ * Define all the product attibutes that will be used in options settings & in product attributes
+ * @return mixed
+ */
+function vmhProductAttributes() {
+    $settinsKey = [
+        // Settings key with title
+        'vmh_nicotine_amount' => 'Nicotine Amount',
+        'vmh_nicotine_type'   => 'Nicotine Type',
+        'vmh_pg_vg'           => 'PG:VG',
+        'vmh_bottle_size'     => 'Bottle size'
+    ];
+    return $settinsKey;
+}

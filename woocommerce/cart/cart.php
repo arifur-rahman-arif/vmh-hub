@@ -7,7 +7,7 @@
     <div class="container">
         <!-- Start Background Overly -->
         <div class="shipping_background">
-            <img src="<?php echo VMH_URL.'Assets/images/shipping_address/circle.png' ?>" alt="images" />
+            <img src="<?php echo VMH_URL . 'Assets/images/shipping_address/circle.png' ?>" alt="images" />
         </div>
         <!-- End Background Overly -->
 
@@ -28,11 +28,12 @@
                 <h4>Your Cart</h4>
             </div>
 
-            <div class="cart_single_boxs">
+            <div class="cart_single_boxs" data-cart_key="">
                 <?php if ($cartItems) {?>
 
                 <?php foreach ($cartItems as $key => $item) {?>
-                <?php load_template(VMH_PATH.'Includes/Templates/single-cart.php', false, $item)?>
+                <input type="hidden" name="cart_key" class="cart_key" data-key="<?php echo esc_attr($key) ?>">
+                <?php load_template(VMH_PATH . 'Includes/Templates/single-cart.php', false, $item)?>
                 <?php }?>
                 <?php }?>
             </div>

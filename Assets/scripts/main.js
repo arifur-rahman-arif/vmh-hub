@@ -13,6 +13,12 @@ jQuery(document).ready(function ($) {
     let subsciberForm = $("#vmh_subscriber_form");
     let deleteRecipeBtn = $(".vmh_delete_recipe");
 
+    // Calculation of nicotine shot amount
+    // These selection is required to to calculation the Nicotine shot
+    let nicotineShotTrigger = $("#pa_vmh_bottle_size, #pa_vmh_nicotine_amount");
+    let shotAmountElement = $(".shot_amount");
+    let nicotineshotCartUpdateBtn = $(".nicotineshot_save_btn");
+
     events();
 
     function events() {
@@ -43,6 +49,9 @@ jQuery(document).ready(function ($) {
         saveTagBtn.on("click", saveTagNames);
         subsciberForm.on("submit", createSubscriber);
         deleteRecipeBtn.click(deleteRecipe);
+
+        nicotineShotTrigger.change(calculateNicotineShot);
+        nicotineshotCartUpdateBtn.click(updateNicotineshotValue);
     }
 
     function toggleTagIcon(e) {
@@ -270,6 +279,7 @@ jQuery(document).ready(function ($) {
             },
             success: (res) => {
                 console.log(res);
+
                 if (!res) return;
 
                 let response = JSON.parse(res);
@@ -277,19 +287,22 @@ jQuery(document).ready(function ($) {
                 if (response.response == "invalid") {
                     productAlert(response.message);
                 }
+
                 if (response.response == "success") {
                     productAlert(response.message);
                     let cartQuantity = $(".vmh_cart_quantity");
-                    let cartTotal = $(".vmh_total_price");
+                    let cartTotal = $(".vmh_bottom_cart_total");
 
                     let updatedQuatity =
                         parseInt(cartQuantity.text()) - Number(parseInt(response.productQuantity));
+
                     let updatedPrice = (
                         Number(cartTotal.text()) - Number(response.productPrice)
                     ).toFixed(2);
 
                     cartQuantity.html(updatedQuatity);
                     cartTotal.html(updatedPrice);
+
                     $(".vmh_bottom_cart_total").html(updatedPrice);
 
                     target
@@ -956,8 +969,9 @@ jQuery(document).ready(function ($) {
             !confirm(
                 "Are you sure that you want to delete this product. ? If you do so you won't get any commision for this product from now on"
             )
-        )
+        ) {
             return;
+        }
 
         $.ajax({
             url: vmhLocal.ajaxUrl,
@@ -982,6 +996,68 @@ jQuery(document).ready(function ($) {
             },
             error: (err) => {
                 console.error(err);
+            },
+        });
+    }
+
+    function calculateNicotineShot(e) {
+        let nicotineAmount = parseFloat($("#pa_vmh_nicotine_amount").val());
+        let bottleSize = parseFloat($("#pa_vmh_bottle_size").val());
+
+        let nictineShotValue = 0;
+
+        nictineShotValue = Math.round(nicotineAmount / ((1.8 / 100) * bottleSize));
+
+        if (nictineShotValue) {
+            shotAmountElement.html(nictineShotValue);
+            $("#nicotine_shot_value").val(nictineShotValue);
+        }
+    }
+
+    // Update the nicotine shot value from cart page
+    function updateNicotineshotValue(e) {
+        let target = $(e.currentTarget);
+
+        let cartKey = target.parents(".cart_single_boxs").find(".cart_key").attr("data-key");
+        let nicotineShot = parseInt(target.siblings(".cart_nicotine_shot_value").val());
+
+        if (nicotineShot < 0) {
+            productAlert("Nicotine shot can not be negative value");
+            return;
+        }
+
+        if (!confirm("Are you sure that you want to modify your nicotine shot amount ?")) {
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: vmhLocal.ajaxUrl,
+            data: {
+                action: "vmh_update_nicotineshot",
+                cartKey,
+                nicotineShot,
+            },
+            success: function (res) {
+                console.log(res);
+                if (!res) return;
+
+                let response = JSON.parse(res);
+
+                if (response.response == "invalid") {
+                    productAlert(response.message);
+                }
+
+                if (response.response == "success") {
+                    // productAlert(response.message);
+                    location.reload();
+                    // let cartTotal = response.cartTotal.toFixed(2);
+                    // $(".vmh_bottom_cart_total").html(` ${cartTotal}`);
+                }
+            },
+            error: (err) => {
+                console.error(err);
+                alert("Something went wrong. Try again");
             },
         });
     }

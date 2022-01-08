@@ -20,9 +20,10 @@
         <?php }?>
 
         <div class="single_recopies_items_overly_item">
-            <?php if ($args['productType'] !== 'variable') {?>
+            <!-- Turning of this add to cart button for direct product adding -->
+            <!-- <?php if ($args['productType'] !== 'variable') {?>
             <a href="#" class="vmh_add_to_cart_btn" data-id="<?php echo $args['productID'] ?>">Add To Cart</a>
-            <?php }?>
+            <?php }?> -->
             <a href="<?php echo esc_url(get_permalink($args['productID'])) ?>">View Recepie</a>
         </div>
     </div>

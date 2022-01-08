@@ -77,8 +77,6 @@ function getProductIngrediants($productID, $includePTage = false) {
     return $ingredientsHTML;
     $ingredientsHTML .= $includePTage ? '<p>' : '</ul>';
 
-    return '';
-
 }
 
 /**
@@ -86,7 +84,9 @@ function getProductIngrediants($productID, $includePTage = false) {
  * @param $productID
  */
 function organizePercentageAndIngredients($productID) {
+
     $ingredients = get_post_meta($productID, 'product_ingredients', true);
+
     $productPercentage = get_post_meta($productID, 'ingredients_percentage_values', true);
 
     if (!is_array($ingredients) || count($ingredients) < 1) {
@@ -95,10 +95,24 @@ function organizePercentageAndIngredients($productID) {
 
     $organizedValues = [];
 
+    // If there are no percentage value than return only the ingredeints
+    if (!is_array($productPercentage) || count($productPercentage) < 1) {
+        foreach ($ingredients as $key => $ingredient) {
+            $organizedValues[] = esc_html(get_the_title($ingredient));
+        }
+        return $organizedValues;
+    }
+
     foreach ($ingredients as $key => $ingredient) {
 
         if (isset($productPercentage[$key]) && $productPercentage[$key]) {
-            $organizedValues[$productPercentage[$key]] = '' . get_the_title($ingredient) . ' ' . $productPercentage[$key] . '%';
+
+            if (isset($organizedValues[$productPercentage[$key]])) {
+                $organizedValues[$productPercentage[$key] + 1] = '' . get_the_title($ingredient) . ' ' . $productPercentage[$key] . '%';
+            } else {
+                $organizedValues[$productPercentage[$key]] = '' . get_the_title($ingredient) . ' ' . $productPercentage[$key] . '%';
+            }
+
         }
     }
 
@@ -419,9 +433,7 @@ function simpleProductOptions() {
     $optionsHTML = '';
     $productOptions = get_post_meta($productID, 'product_options', true);
 
-    $callbackClass = new \VmhHub\Includes\Classes\HookCallbacks();
-
-    $productAttributes = $callbackClass->vmhProductAttributes();
+    $productAttributes = vmhProductAttributes();
 
     if (is_array($productOptions) && is_array($productAttributes)) {
 
