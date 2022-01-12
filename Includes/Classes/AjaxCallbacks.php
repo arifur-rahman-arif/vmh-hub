@@ -436,7 +436,30 @@ trait AjaxCallbacks {
         ];
 
         if ($sanitizedData['recipeAction'] === 'save-recepie') {
-            $postID = wp_insert_post($postArg);
+
+            $templateProductID = get_option('vmh_create_product_option');
+
+            if ($templateProductID) {
+                $productObject = wc_get_product($templateProductID);
+
+                if (!$productObject->is_type('variable')) {
+                    $output['response'] = 'invalid';
+                    $output['message'] = vmhEscapeTranslate('Template product is not a variable product');
+                    echo json_encode($output);
+                    wp_die();
+                }
+
+                // Duplicate the template product for creating a new product
+                $duplicateProduct = new \WC_Admin_Duplicate_Product;
+                $newProduct = $duplicateProduct->product_duplicate($productObject);
+                $postID = $newProduct->get_id();
+
+                // Update the post tile after creating the variable product
+                $postArg['ID'] = $postID;
+
+                wp_update_post($postArg);
+            }
+
         }
 
         if ($sanitizedData['recipeAction'] === 'update-recepie') {
@@ -457,24 +480,6 @@ trait AjaxCallbacks {
         }
 
         if (!is_wp_error($postID)) {
-            wp_set_object_terms($postID, 'simple', 'product_type');
-            update_post_meta($postID, '_visibility', 'visible');
-            update_post_meta($postID, '_stock_status', 'instock');
-            update_post_meta($postID, 'total_sales', '0');
-            update_post_meta($postID, '_downloadable', 'no');
-            update_post_meta($postID, '_virtual', 'yes');
-            update_post_meta($postID, '_regular_price', '');
-            update_post_meta($postID, '_sale_price', '');
-            update_post_meta($postID, '_purchase_note', '');
-            update_post_meta($postID, '_featured', 'no');
-            update_post_meta($postID, '_weight', '');
-            update_post_meta($postID, '_length', '');
-            update_post_meta($postID, '_width', '');
-            update_post_meta($postID, '_height', '');
-            update_post_meta($postID, '_product_attributes', array());
-            update_post_meta($postID, '_price', $sanitizedData['productPrice']);
-            update_post_meta($postID, '_regular_price', $sanitizedData['productPrice']);
-            update_post_meta($postID, '_virtual', 'no');
 
             $productOptions = $sanitizedData['optionsValue'];
             $productIngredients = $sanitizedData['ingredientsValues'];
@@ -877,6 +882,47 @@ trait AjaxCallbacks {
         }
 
         wp_die();
+    }
+
+    // Trigger vmh_create_product_attribute_action hook to create the woocommerce product attributes
+    public function createProductAttributes() {
+        $output = [];
+
+        if (sanitize_text_field($_POST['action']) !== 'vmh_create_product_attribute') {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Action is not valid');
+            echo json_encode($output);
+            wp_die();
+        }
+
+        do_action('vmh_create_product_attribute_action');
+
+        $output['response'] = 'success';
+        $output['message'] = vmhEscapeTranslate('Product attributes are created');
+        echo json_encode($output);
+        wp_die();
+
+    }
+
+    // Trigger vmh_create_product_taxonomy_action hook to create the taxonomies terms
+    // This hoook comes after this vmh_create_product_attribute_action hook
+    public function createProductTaxonomies() {
+        $output = [];
+
+        if (sanitize_text_field($_POST['action']) !== 'vmh_create_product_taxonomy') {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Action is not valid');
+            echo json_encode($output);
+            wp_die();
+        }
+
+        do_action('vmh_create_product_taxonomy_action');
+
+        $output['response'] = 'success';
+        $output['message'] = vmhEscapeTranslate('Product attributes are created');
+        echo json_encode($output);
+        wp_die();
+
     }
 
 }

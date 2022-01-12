@@ -1,5 +1,5 @@
 <?php
-/**
+/* *
  * Related Products
  *
  * This template can be overridden by copying it to yourtheme/woocommerce/single-product/related.php.
@@ -9,10 +9,8 @@
  * maintain compatibility. We try to do this as little as possible, but it does
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
- *
  * @version     3.9.0
  * @package     WooCommerce\Templates
- *
  * @see         https://docs.woocommerce.com/document/template-structure/
  */
 
@@ -20,7 +18,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-if ($related_products): ?>
+if ($related_products) {?>
 
 <?php $count = 0?>
 <?php woocommerce_product_loop_start();?>
@@ -30,12 +28,12 @@ if ($related_products): ?>
 <?php
 $post_object = get_post($related_product->get_id());
 
-if ($count == 4) {
-    break;
-}
+    if ($count == 4) {
+        break;
+    }
 
-setup_postdata($GLOBALS['post'] = &$post_object); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited, Squiz.PHP.DisallowMultipleAssignments.Found
-?>
+    setup_postdata($GLOBALS['post'] = &$post_object); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited, Squiz.PHP.DisallowMultipleAssignments.Found
+    ?>
 
 <?php if ($related_product->get_id() != get_option('vmh_create_product_option')) {?>
 <div class="single_recopies_items recepes_single_left_item">
@@ -65,13 +63,29 @@ setup_postdata($GLOBALS['post'] = &$post_object); // phpcs:ignore WordPress.WP.G
 <?php
 $count++
 // wc_get_template_part('content', 'product');
-?>
+    ?>
 
 <?php endforeach;?>
 
 <?php woocommerce_product_loop_end();?>
 
 <?php
-endif;
-
 wp_reset_postdata();
+} else {
+    ?>
+
+<style>
+.recepes_title {
+    display: none;
+}
+
+.empty_column {
+    width: 200px;
+}
+</style>
+
+<ul class="products empty_column columns-<?php echo esc_attr(wc_get_loop_prop('columns')); ?>">
+</ul>
+
+<?php
+}

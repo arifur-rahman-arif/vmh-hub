@@ -40,6 +40,7 @@ class HookCallbacks {
         wp_localize_script('vmh-main', 'vmhLocal', [
             'ajaxUrl'              => admin_url('admin-ajax.php'),
             'vmhProductAttributes' => vmhProductAttributes(),
+            'hideNicotineValue'    => esc_html(get_option('vmh_hide_nicotine')),
             'currencySymbol'       => get_woocommerce_currency_symbol(),
             'siteUrl'              => site_url('/')
         ]);
@@ -172,11 +173,19 @@ class HookCallbacks {
             'vmh_options_key',
             'vmh_product_commission'
         );
+
         // Register main admin for this site
         register_setting(
             'vmh_options_key',
             'vmh_main_admin'
         );
+
+        // Register main admin for this site
+        register_setting(
+            'vmh_options_key',
+            'vmh_hide_nicotine'
+        );
+
         // ============================
         // End of additional settings
         // ============================
@@ -207,33 +216,30 @@ class HookCallbacks {
      */
     public function setProductAttributes() {
 
-        if (isset($_GET['page']) && $_GET['page'] == 'vmh-product-options') {
+        $attributes = wc_get_attribute_taxonomies();
 
-            $attributes = wc_get_attribute_taxonomies();
+        $settingsKey = vmhProductAttributes();
 
-            $settingsKey = vmhProductAttributes();
+        $slugs = wp_list_pluck($attributes, 'attribute_name');
 
-            $slugs = wp_list_pluck($attributes, 'attribute_name');
+        if (!$settingsKey) {
+            return;
+        }
 
-            if (!$settingsKey) {
-                return;
-            }
+        foreach ($settingsKey as $key => $setting) {
 
-            foreach ($settingsKey as $key => $setting) {
+            // if current attribute array is not in saved attributes than create a new one
+            if (!in_array($key, $slugs)) {
 
-                // if current attribute array is not in saved attributes than create a new one
-                if (!in_array($key, $slugs)) {
+                $args = array(
+                    'slug'         => $key,
+                    'name'         => __($setting, 'vmh-hub'),
+                    'type'         => 'select',
+                    'orderby'      => 'menu_order',
+                    'has_archives' => false
+                );
 
-                    $args = array(
-                        'slug'         => $key,
-                        'name'         => __($setting, 'vmh-hub'),
-                        'type'         => 'select',
-                        'orderby'      => 'menu_order',
-                        'has_archives' => false
-                    );
-
-                    wc_create_attribute($args);
-                }
+                wc_create_attribute($args);
             }
         }
     }
@@ -244,19 +250,17 @@ class HookCallbacks {
      */
     public function generateCustomTaxonomy() {
 
-        if (isset($_GET['page']) && $_GET['page'] == 'vmh-product-options') {
+        $settingsKey = vmhProductAttributes();
 
-            $settingsKey = vmhProductAttributes();
+        if (!$settingsKey) {
+            return;
+        }
 
-            if (!$settingsKey) {
-                return;
-            }
+        foreach ($settingsKey as $key => $setting) {
+            $settingsValues = get_option($key);
 
-            foreach ($settingsKey as $key => $setting) {
-                $settingsValues = get_option($key);
-                if ($settingsValues) {
-                    $this->saveTaxonomyValues($settingsValues, $key);
-                }
+            if ($settingsValues) {
+                $this->saveTaxonomyValues($settingsValues, $key);
             }
         }
 
@@ -279,13 +283,14 @@ class HookCallbacks {
         }
 
         foreach ($splitedValues as $key => $value) {
-            wp_insert_term(
+            $response = wp_insert_term(
                 $value, // the term
                 'pa_' . $taxonomy . '', // the taxonomy
                 [
                     'slug' => $value
                 ]
             );
+
         }
 
     }
@@ -837,7 +842,7 @@ class HookCallbacks {
             $nicotineShotValue = isset($cart_item['nicotine_shot_value']) && $cart_item['nicotine_shot_value'] ? $cart_item['nicotine_shot_value'] : null;
 
             if ($nicotineShotValue) {
-                $newPrice = $cart_item['data']->get_price() + ($cart_item['nicotine_shot_value'] * NICOTINE_SHOT_PRICE);
+                $newPrice = $cart_item['data']->get_price() + (($cart_item['nicotine_shot_value'] / 10) * NICOTINE_SHOT_PRICE);
                 $cart_item['data']->set_price($newPrice);
             }
         }
@@ -878,10 +883,59 @@ class HookCallbacks {
     public function addNicotineshotToItem($item, $cart_item_key, $values, $order) {
         if (isset($values['nicotine_shot_value'])) {
             $item->add_meta_data(
-                'Nicotine Shot:',
+                'Nicotine Shot Value',
                 $values['nicotine_shot_value'],
-                true
+                false
             );
         }
+    }
+
+    /**
+     * Display the calculated nicotine shot value after order details
+     * @param $order
+     */
+    public function displayCalculatedNicotineShot($order) {
+
+        $shotCalculationData = [
+            'freebase-nicotine' => [
+                'name'      => 'Freebase Nicotine',
+                'shotValue' => 0
+            ],
+            'nicotine-salt'     => [
+                'name'      => 'Nicotine Salt',
+                'shotValue' => 0
+            ]
+        ];
+
+        foreach ($order->get_items() as $item_id => $item) {
+
+            $nicotineType = $item->get_meta('pa_vmh_nicotine_type', true);
+            $nicotineShotValue = $item->get_meta('Nicotine Shot Value', true);
+
+            // Add up the nicotine shot value
+            $shotCalculationData[$nicotineType]['shotValue'] += $nicotineShotValue;
+        }
+
+        echo $this->displayShotValueHtml($shotCalculationData);
+    }
+
+    /**
+     * @param  array   $shotCalculationData
+     * @return mixed
+     */
+    public function displayShotValueHtml(array $shotCalculationData) {
+        if (count($shotCalculationData) < 1) {
+            return '';
+        }
+
+        $shotHtml = '<div class="order_data_column" style="width: 100%">';
+
+        foreach ($shotCalculationData as $key => $value) {
+            $shotHtml .= '<h3 style="font-weight: bold">' . esc_html($value['name']) . ': ' . esc_html($value['shotValue'] / 10) . ' shot</h3>';
+        }
+
+        $shotHtml .= '</div>';
+
+        return $shotHtml;
     }
 }

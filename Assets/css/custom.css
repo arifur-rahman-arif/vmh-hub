@@ -105,6 +105,13 @@ body > .wp-dark-mode-switcher {
     transition: 0.3s !important;
     font-weight: 700 !important;
 }
+
+.vmh_single_add_to_cart.disabled,
+.vmh_button.disabled {
+    opacity: 0.3 !important;
+    cursor: not-allowed !important;
+}
+
 .vmh_single_add_to_cart:hover,
 .vmh_button:hover {
     background: transparent !important;
@@ -285,6 +292,11 @@ body > .wp-dark-mode-switcher {
     padding-left: 10px;
     width: 65px;
 }
+
+.ingredients_wrapper .ingredient_percentage::placeholder {
+    opacity: 0.4;
+}
+
 .ingredients_wrapper .disabled {
     color: red;
 }
@@ -430,4 +442,23 @@ body > .wp-dark-mode-switcher {
 
 .cart .quantity {
     display: none;
+}
+
+#vmh_recipe_name {
+    padding: 5px 15px;
+}
+#vmh_recipe_name::placeholder {
+    font-size: 2rem;
+    opacity: 0.2;
+}
+
+.create_recipe_option,
+.create_recipe_option ~ .recepes_btn {
+    display: none;
+}
+
+.recipie_create_next_btn {
+    width: 70px !important;
+    height: 30px !important;
+    margin-top: 15px;
 }

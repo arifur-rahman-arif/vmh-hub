@@ -73,17 +73,15 @@ do_action('woocommerce_before_single_product');
             <?php }?>
 
             <div class="recepes_page">
-                <?php if ($product->get_id() != get_option('vmh_create_product_option')) {?>
-                <div class="recepes_title">
-                    <h4>Similar Recepies</h4>
-                </div>
-                <?php }?>
 
                 <div class="recepes_main_content">
                     <div class="recepes_left">
 
-
-
+                        <?php if ($product->get_id() != get_option('vmh_create_product_option')) {?>
+                        <div class="recepes_title" style="margin-top: -45px">
+                            <h4>Similar Recepies</h4>
+                        </div>
+                        <?php }?>
 
                         <?php
 /*

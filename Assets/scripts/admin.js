@@ -88,6 +88,8 @@ var $ = jQuery.noConflict();
 
     // Initialize the dropdown select in product post type
     function initializeSelectBox() {
+        if (!$(".product_ingredients, .ingredients_percentage_values").length) return;
+
         new SlimSelect({
             select: ".product_ingredients",
         });

@@ -19,6 +19,12 @@ jQuery(document).ready(function ($) {
     let shotAmountElement = $(".shot_amount");
     let nicotineshotCartUpdateBtn = $(".nicotineshot_save_btn");
 
+    // Controll the cart nicotine shot input
+
+    let cartNicotineShotInput = $(".cart_nicotine_shot_value");
+
+    let recipeCreateNextBtn = $(".recipie_create_next_btn");
+
     events();
 
     function events() {
@@ -44,14 +50,25 @@ jQuery(document).ready(function ($) {
         $(document).on("click", ".cut_tag", deleteInputTag);
         $(".recipes_order_single_tag_plus_img a").click(toggleTagIcon);
         initializeSelectCreateSelectBox();
-        setSelectedValuesForOptions();
+
+        // setSelectedValuesForOptions();
+
         tagInput.on("input", changeTagName);
         saveTagBtn.on("click", saveTagNames);
         subsciberForm.on("submit", createSubscriber);
         deleteRecipeBtn.click(deleteRecipe);
 
+        // Modify the nicotine shot value either on change of select or initial loading
+        calculateNicotineShot();
         nicotineShotTrigger.change(calculateNicotineShot);
+
+        // Controll the cart nicotine shot value input by restricting the increase feature
+        cartNicotineShotInput.change(controllCartNicotineShotInput);
+
         nicotineshotCartUpdateBtn.click(updateNicotineshotValue);
+
+        // Show the attributes options when clicked on next button
+        recipeCreateNextBtn.click(showAttributeOptions);
     }
 
     function toggleTagIcon(e) {
@@ -255,7 +272,7 @@ jQuery(document).ready(function ($) {
     function productAlert(message) {
         let alertBox = $(".vmh_alert");
         alertBox.html(`<b>${message}</b>`);
-        alertBox.slideDown(500);
+        alertBox.slideDown(500).delay(4000).slideUp();
     }
 
     // Remove the product from cart
@@ -451,6 +468,12 @@ jQuery(document).ready(function ($) {
                 recipeAction,
                 proudctID,
             },
+            beforeSend: () => {
+                $(e.currentTarget).attr("disabled", true);
+                $(e.currentTarget).addClass("disabled");
+                $(".vmh_discard_recipe").hide();
+            },
+
             success: (res) => {
                 console.log(res);
                 if (!res) return;
@@ -489,7 +512,15 @@ jQuery(document).ready(function ($) {
                     }, 2000);
                 }
             },
+
+            complete: () => {
+                $(e.currentTarget).attr("disabled", false);
+                $(e.currentTarget).removeClass("disabled");
+            },
+
             error: (err) => {
+                $(e.currentTarget).attr("disabled", false);
+                $(e.currentTarget).removeClass("disabled");
                 alert("Someting went wrong try again.");
                 console.error(err);
             },
@@ -501,6 +532,7 @@ jQuery(document).ready(function ($) {
         let attributesLength = Object.keys(productAttributes).length;
 
         let recipePopup = $(".vmh_create_recipe_popup");
+
         if (!productName) {
             recipePopup.find(".vmh_checkbox_image").css({
                 display: "none",
@@ -516,52 +548,8 @@ jQuery(document).ready(function ($) {
             return false;
         }
 
-        let ingredients = $("select.product_ingredients:not(#product_ingredients_0)");
-
-        if (!ingredients.val() || ingredients.val() == "") {
-            recipePopup.find(".vmh_checkbox_image").css({
-                display: "none",
-            });
-            recipePopup.find(".vmh_checkbox_image_warning").css({
-                display: "block",
-            });
-
-            recipePopup.find(".vmh_alert_text").text("Please select 1 or more ingredients");
-
-            $(".save_recieved_hde").show();
-            $("body").addClass("popup_overly");
+        if (showAlertOnEmptyIngredients() === false) {
             return false;
-        }
-
-        if (ingredients) {
-            let breakLoop = false;
-            $.each(ingredients, function (i, element) {
-                let value = $(element).val();
-                if (value) {
-                    let inputElement = $(element).parent().find(".ingredient_percentage");
-                    if (!inputElement.val()) {
-                        breakLoop = true;
-                        return false; // breaks
-                    }
-                }
-            });
-
-            if (breakLoop) {
-                recipePopup.find(".vmh_checkbox_image").css({
-                    display: "none",
-                });
-                recipePopup.find(".vmh_checkbox_image_warning").css({
-                    display: "block",
-                });
-
-                recipePopup
-                    .find(".vmh_alert_text")
-                    .text("All selected ingredients percentage value needs to filled");
-
-                $(".save_recieved_hde").show();
-                $("body").addClass("popup_overly");
-                return false;
-            }
         }
 
         let totalPercentage = calculatePercentage();
@@ -613,6 +601,61 @@ jQuery(document).ready(function ($) {
             $(".save_recieved_hde").show();
             $("body").addClass("popup_overly");
             return false;
+        }
+    }
+
+    // Show a alert value if all ingredients percentage value is not filled
+    function showAlertOnEmptyIngredients() {
+        let ingredients = $("select.product_ingredients:not(#product_ingredients_0)");
+
+        let recipePopup = $(".vmh_create_recipe_popup");
+
+        if (!ingredients.val() || ingredients.val() == "") {
+            recipePopup.find(".vmh_checkbox_image").css({
+                display: "none",
+            });
+
+            recipePopup.find(".vmh_checkbox_image_warning").css({
+                display: "block",
+            });
+
+            recipePopup.find(".vmh_alert_text").text("Please select 1 or more ingredients");
+
+            $(".save_recieved_hde").show();
+            $("body").addClass("popup_overly");
+            return false;
+        }
+
+        if (ingredients.length) {
+            let breakLoop = false;
+
+            $.each(ingredients, function (i, element) {
+                let value = $(element).val();
+                if (value) {
+                    let inputElement = $(element).parent().find(".ingredient_percentage");
+                    if (!inputElement.val()) {
+                        breakLoop = true;
+                        return false; // breaks
+                    }
+                }
+            });
+
+            if (breakLoop) {
+                recipePopup.find(".vmh_checkbox_image").css({
+                    display: "none",
+                });
+                recipePopup.find(".vmh_checkbox_image_warning").css({
+                    display: "block",
+                });
+
+                recipePopup
+                    .find(".vmh_alert_text")
+                    .text("All selected ingredients percentage value needs to filled");
+
+                $(".save_recieved_hde").show();
+                $("body").addClass("popup_overly");
+                return false;
+            }
         }
     }
 
@@ -844,33 +887,33 @@ jQuery(document).ready(function ($) {
         }
     }
 
-    // Set the product options dropdown values if user want to edit another user's created product
-    function setSelectedValuesForOptions() {
-        if (!getSlugParameter("edit_product")) return;
+    // // Set the product options dropdown values if user want to edit another user's created product
+    // function setSelectedValuesForOptions() {
+    //     if (!getSlugParameter("edit_product")) return;
 
-        let params = {};
+    //     let params = {};
 
-        window.location.search
-            .slice(1)
-            .split("&")
-            .forEach((elm, i) => {
-                if (elm === "") return;
+    //     window.location.search
+    //         .slice(1)
+    //         .split("&")
+    //         .forEach((elm, i) => {
+    //             if (elm === "") return;
 
-                if (i != 0) {
-                    let spl = elm.split("=");
-                    const d = decodeURIComponent;
-                    params[d(spl[0])] = spl.length >= 2 ? d(spl[1]) : true;
-                }
-            });
+    //             if (i != 0) {
+    //                 let spl = elm.split("=");
+    //                 const d = decodeURIComponent;
+    //                 params[d(spl[0])] = spl.length >= 2 ? d(spl[1]) : true;
+    //             }
+    //         });
 
-        for (const key in params) {
-            if (Object.hasOwnProperty.call(params, key)) {
-                const element = params[key];
-                let selectBox = $(`#pa_${element}`);
-                selectBox.val(key);
-            }
-        }
-    }
+    //     for (const key in params) {
+    //         if (Object.hasOwnProperty.call(params, key)) {
+    //             const element = params[key];
+    //             let selectBox = $(`#pa_${element}`);
+    //             selectBox.val(key);
+    //         }
+    //     }
+    // }
 
     // Change the predefined tag name on typing of tag name
     function changeTagName(e) {
@@ -1000,18 +1043,30 @@ jQuery(document).ready(function ($) {
         });
     }
 
-    function calculateNicotineShot(e) {
+    function calculateNicotineShot() {
         let nicotineAmount = parseFloat($("#pa_vmh_nicotine_amount").val());
         let bottleSize = parseFloat($("#pa_vmh_bottle_size").val());
+
+        if (!nicotineAmount || !bottleSize) return;
 
         let nictineShotValue = 0;
 
         nictineShotValue = Math.round(nicotineAmount / ((1.8 / 100) * bottleSize));
 
+        nictineShotValue = roundNumberTo10Times(nictineShotValue);
+
         if (nictineShotValue) {
             shotAmountElement.html(nictineShotValue);
             $("#nicotine_shot_value").val(nictineShotValue);
         }
+    }
+
+    // Round the number to nearest 10 times
+    // For exmplate 2 would be 10 11 would be 20 like this
+    function roundNumberTo10Times(n) {
+        let roundedNumber = Math.ceil(n / 10) * 10;
+
+        return roundedNumber;
     }
 
     // Update the nicotine shot value from cart page
@@ -1060,5 +1115,79 @@ jQuery(document).ready(function ($) {
                 alert("Something went wrong. Try again");
             },
         });
+    }
+
+    // Controll the shot value in by 10
+    function controllCartNicotineShotInput(e) {
+        let target = $(e.currentTarget);
+        let value = target.val();
+
+        let prevValue = target.parent().find(".cart_nicotine_shot_hidden_value").val();
+
+        if (value > prevValue) {
+            productAlert("You can't increase the shot value");
+            target.val(prevValue);
+            return;
+        }
+
+        value = roundNumberTo10Times(value);
+        target.val(value);
+    }
+
+    // Show the attribute options when clicked on next button
+    function showAttributeOptions(e) {
+        e.preventDefault();
+
+        let target = $(e.currentTarget);
+
+        let isOk = showAlertOnEmptyIngredients();
+
+        if (isOk === false) {
+            return false;
+        }
+
+        $(".create_recipe_option").show();
+        $(".recepes_btn").css({
+            display: "flex",
+        });
+
+        restrictNicotineAmountValue();
+
+        target.hide();
+    }
+
+    // Hide the nicotine amount attribute option if ingredients percentage is greater than 16.7
+    function restrictNicotineAmountValue() {
+        let ingredientsPercentageValues = getIngredientsPercentageValues();
+
+        let hiddenValue = vmhLocal.hideNicotineValue;
+
+        hiddenValue = hiddenValue.toLowerCase().split(" ").join("-");
+
+        if (ingredientsPercentageValues > 16.7) {
+            $("#pa_vmh_nicotine_amount")
+                .find(`option[value=${hiddenValue}]`)
+                .attr("disabled", true)
+                .hide();
+        }
+
+        let attributes = vmhLocal.vmhProductAttributes;
+
+        if (!attributes) return;
+
+        for (const key in attributes) {
+            if (Object.hasOwnProperty.call(attributes, key)) {
+                $(document).on("change", `#pa_${key}`, (e) => {
+                    ingredientsPercentageValues = getIngredientsPercentageValues();
+
+                    if (ingredientsPercentageValues > 16.7) {
+                        $("#pa_vmh_nicotine_amount")
+                            .find(`option[value=${hiddenValue}]`)
+                            .attr("disabled", true)
+                            .hide();
+                    }
+                });
+            }
+        }
     }
 });

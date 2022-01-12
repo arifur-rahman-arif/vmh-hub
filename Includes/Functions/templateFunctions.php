@@ -810,35 +810,35 @@ function showIngredientsPercentageValues($key, $ingredientsPercentage) {
     }
 }
 
-function convertSingleProductOptionsToString() {
-    $productOptions = get_post_meta(get_the_ID(), 'product_options', true);
+// function convertSingleProductOptionsToString() {
+//     $productOptions = get_post_meta(get_the_ID(), 'product_options', true);
 
-    $postAuthor = get_post(get_the_ID())->post_author;
+//     $postAuthor = get_post(get_the_ID())->post_author;
 
-    $updateProduct = false;
+//     $updateProduct = false;
 
-    if ($postAuthor == get_current_user_id()) {
-        $updateProduct = true;
-    }
+//     if ($postAuthor == get_current_user_id()) {
+//         $updateProduct = true;
+//     }
 
-    if (is_array($productOptions)) {
+//     if (is_array($productOptions)) {
 
-        $productOptions = call_user_func_array('array_merge', $productOptions);
+//         $productOptions = call_user_func_array('array_merge', $productOptions);
 
-        $organizedOptions = [];
+//         $organizedOptions = [];
 
-        foreach ($productOptions as $key => $value) {
+//         foreach ($productOptions as $key => $value) {
 
-            $option = explode("|", $value[0]);
+//             $option = explode("|", $value[0]);
 
-            $organizedOptions[$key] = trim($option[0]);
-        }
+//             $organizedOptions[$key] = trim($option[0]);
+//         }
 
-        return '&' . http_build_query($organizedOptions) . '&update_product=' . $updateProduct . '';
-    } else {
-        return '&update_product=' . $updateProduct . '';
-    }
-}
+//         return '&' . http_build_query($organizedOptions) . '&update_product=' . $updateProduct . '';
+//     } else {
+//         return '&update_product=' . $updateProduct . '';
+//     }
+// }
 
 /**
  * Get product tags HTML
@@ -974,13 +974,11 @@ function editProductTagsInput() {
         echo '
         <div class="tag_input">
             <input type="text" placeholder="Type Tag Name" data-id="1"
-                class="vmh_tag_input predefied_tag_input"
-                value="Tag Name">
+                class="vmh_tag_input predefied_tag_input">
         </div>
         <div class="tag_input">
             <input type="text" placeholder="Type Tag Name" data-id="2"
-                class="vmh_tag_input predefied_tag_input"
-                value="Tag Name">
+                class="vmh_tag_input predefied_tag_input">
         </div>
         ';
     }

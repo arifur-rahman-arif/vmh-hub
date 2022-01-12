@@ -42,8 +42,8 @@ if (isset($_GET['edit_product']) && $_GET['edit_product']) {
         <a href="#" data-action="<?php echo isProuductUserFavorite(get_the_ID()) ? 'unfavorite' : 'favorite' ?>"
             class="vmh_favorite" data-id="<?php echo get_the_ID() ?>"><i
                 class="fas fa-heart vmh_heart <?php echo isProuductUserFavorite(get_the_ID()) ? null : 'vmh_heart_grey' ?>"></i></a>
-        <a style="width: 20px;"
-            href="<?php echo esc_url(get_permalink(get_option('vmh_create_product_option'))) ?>?edit_product=<?php echo get_the_ID() ?><?php echo convertSingleProductOptionsToString() ?>">
+        <a style="width: 20px;" class="edit_product_icon"
+            href="<?php echo esc_url(get_permalink(get_option('vmh_create_product_option'))) ?>?edit_product=<?php echo get_the_ID() ?>">
             <img src="<?php echo esc_url(VMH_URL . 'Assets/images/recepes/setting.png') ?>" alt="images" />
         </a>
         <?php }?>

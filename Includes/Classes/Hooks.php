@@ -31,10 +31,10 @@ class Hooks extends HookCallbacks {
         add_action('admin_init', [$this, 'addOptionSettings']);
 
         // Set vmh product attributes
-        add_action('admin_init', [$this, 'setProductAttributes']);
+        add_action('vmh_create_product_attribute_action', [$this, 'setProductAttributes']);
 
         // Register Custom Taxonomy
-        add_action('admin_init', [$this, 'generateCustomTaxonomy'], 0);
+        add_action('vmh_create_product_taxonomy_action', [$this, 'generateCustomTaxonomy']);
 
         // add user commsion on purchase of simple product
         add_action('woocommerce_order_status_completed', [$this, 'addCommisionToUser']);
@@ -94,14 +94,8 @@ class Hooks extends HookCallbacks {
         // Add the nicotineshot amount data to order item in admin dashboard
         add_action('woocommerce_checkout_create_order_line_item', [$this, 'addNicotineshotToItem'], 10, 4);
 
-        // // Show the nicotineshot amount in admin order items
-        // add_action('woocommerce_after_order_itemmeta', function () {
-
-        //     if (did_action('woocommerce_after_order_itemmeta') < 2) {
-        //         echo '<h3>Hello</h3>';
-        //     }
-
-        // }, 10);
+        // Action hook after order details in woocomerce order edit page
+        add_action('woocommerce_admin_order_data_after_order_details', [$this, 'displayCalculatedNicotineShot'], 10);
 
     }
 
@@ -144,6 +138,10 @@ class Hooks extends HookCallbacks {
         /* Update nicotineshot value via ajax from cart page */
         add_action('wp_ajax_vmh_update_nicotineshot', [$this, 'updateNicotineshotValue']);
         add_action('wp_ajax_nopriv_vmh_update_nicotineshot', [$this, 'updateNicotineshotValue']);
+
+        /* Update nicotineshot value via ajax from cart page */
+        add_action('wp_ajax_vmh_create_product_attribute', [$this, 'createProductAttributes']);
+        add_action('wp_ajax_vmh_create_product_taxonomy', [$this, 'createProductTaxonomies']);
     }
 
     // Remove functions that are hooked with these hooks

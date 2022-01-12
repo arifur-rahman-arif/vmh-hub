@@ -3149,10 +3149,12 @@ img {
 .recipes_order_btn_content {
     position: relative;
 }
+
 .save_recieved_hde {
     position: absolute;
-    top: -505px;
-    right: -166px;
+    top: 25%;
+    left: 50%;
+    transform: translateX(-50%);
     display: none;
     z-index: 9;
 }
