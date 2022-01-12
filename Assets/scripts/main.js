@@ -602,6 +602,27 @@ jQuery(document).ready(function ($) {
             $("body").addClass("popup_overly");
             return false;
         }
+
+        let productPrice = parseFloat(
+            $(".woocommerce-variation-price bdi")?.text()?.replace(vmhLocal.currencySymbol, "")
+        );
+
+        if (!productPrice) {
+            recipePopup.find(".vmh_checkbox_image").css({
+                display: "none",
+            });
+            recipePopup.find(".vmh_checkbox_image_warning").css({
+                display: "block",
+            });
+
+            recipePopup
+                .find(".vmh_alert_text")
+                .text("Sorry, this product is unavailable. Please choose a different combination.");
+
+            $(".save_recieved_hde").show();
+            $("body").addClass("popup_overly");
+            return false;
+        }
     }
 
     // Show a alert value if all ingredients percentage value is not filled
@@ -1185,6 +1206,11 @@ jQuery(document).ready(function ($) {
                             .find(`option[value=${hiddenValue}]`)
                             .attr("disabled", true)
                             .hide();
+                    } else {
+                        $("#pa_vmh_nicotine_amount")
+                            .find(`option[value=${hiddenValue}]`)
+                            .attr("disabled", false)
+                            .show();
                     }
                 });
             }

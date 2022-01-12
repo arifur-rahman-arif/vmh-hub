@@ -20,6 +20,7 @@
  *
  *
  *
+ *
  * @package WooCommerce\Templates
  *
  * @see https://docs.woocommerce.com/document/template-structure/
@@ -71,7 +72,7 @@ if ($product->get_id() != get_option('vmh_create_product_option')) {
         <form class="variations_form cart"
             action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product->get_permalink())); ?>"
             method="post" enctype='multipart/form-data' data-product_id="<?php echo absint($product->get_id()); ?>"
-            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                                                                                           ?>">
+            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                                                                                            ?>">
             <?php do_action('woocommerce_before_variations_form');?>
 
             <?php if (empty($available_variations) && false !== $available_variations): ?>
@@ -236,7 +237,7 @@ $attribute_keys = array_keys($attributes);
         <form class="variations_form cart"
             action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product->get_permalink())); ?>"
             method="post" enctype='multipart/form-data' data-product_id="<?php echo absint($product->get_id()); ?>"
-            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                                                                                           ?>">
+            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                                                                                            ?>">
             <?php do_action('woocommerce_before_variations_form');?>
 
             <?php if (empty($available_variations) && false !== $available_variations): ?>
@@ -326,7 +327,8 @@ wc_dropdown_variation_attribute_options(
             <img class="vmh_checkbox_image_warning" style="display: none;"
                 src="<?php echo esc_url(VMH_URL . 'Assets/images/warning.png') ?>" alt="images">
             <div class="vmh_alert_text"
-                style="text-align: center;font-size: 20px;font-weight: bolder;word-break: break-all;">Recepie
+                style="text-align: center;font-size: 20px;font-weight: bolder;word-break: break-all; padding: 10px">
+                Recepie
                 saved</div>
         </div>
         <div class="subscribe_hide_icon">
