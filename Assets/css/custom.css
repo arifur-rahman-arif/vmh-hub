@@ -462,3 +462,7 @@ body > .wp-dark-mode-switcher {
     height: 30px !important;
     margin-top: 15px;
 }
+
+.woocommerce-notices-wrapper {
+    margin-bottom: 60px;
+}
