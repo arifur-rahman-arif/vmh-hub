@@ -11,6 +11,8 @@
  * the readme will list any important changes.
  *
  * @version    1.6.4
+ *
+ *
  * @package    WooCommerce\Templates
  *
  * @see        https://docs.woocommerce.com/document/template-structure/
@@ -43,7 +45,7 @@ if (isset($_GET['edit_product']) && $_GET['edit_product']) {
             class="vmh_favorite" data-id="<?php echo get_the_ID() ?>"><i
                 class="fas fa-heart vmh_heart <?php echo isProuductUserFavorite(get_the_ID()) ? null : 'vmh_heart_grey' ?>"></i></a>
         <a style="width: 20px;" class="edit_product_icon"
-            href="<?php echo esc_url(get_permalink(get_option('vmh_create_product_option'))) ?>?edit_product=<?php echo get_the_ID() ?>">
+            href="<?php echo esc_url(get_permalink(get_option('vmh_create_product_option'))) ?>?edit_product=<?php echo get_the_ID() ?><?php echo updateOrEditTag() ?>">
             <img src="<?php echo esc_url(VMH_URL . 'Assets/images/recepes/setting.png') ?>" alt="images" />
         </a>
         <?php }?>

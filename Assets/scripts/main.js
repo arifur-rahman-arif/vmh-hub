@@ -1181,13 +1181,15 @@ jQuery(document).ready(function ($) {
     function restrictNicotineAmountValue() {
         let ingredientsPercentageValues = getIngredientsPercentageValues();
 
+        let totalPercentage = ingredientsPercentageValues.reduce(
+            (prevValue, currentValue) => prevValue + currentValue
+        );
+
         let hiddenValue = vmhLocal.hideNicotineValue;
 
-        hiddenValue = hiddenValue.toLowerCase().split(" ").join("-");
-
-        if (ingredientsPercentageValues > 16.7) {
+        if (totalPercentage > 16.7) {
             $("#pa_vmh_nicotine_amount")
-                .find(`option[value=${hiddenValue}]`)
+                .find(`option:contains("${hiddenValue}")`)
                 .attr("disabled", true)
                 .hide();
         }
@@ -1201,14 +1203,18 @@ jQuery(document).ready(function ($) {
                 $(document).on("change", `#pa_${key}`, (e) => {
                     ingredientsPercentageValues = getIngredientsPercentageValues();
 
-                    if (ingredientsPercentageValues > 16.7) {
+                    totalPercentage = ingredientsPercentageValues.reduce(
+                        (prevValue, currentValue) => prevValue + currentValue
+                    );
+
+                    if (totalPercentage > 16.7) {
                         $("#pa_vmh_nicotine_amount")
-                            .find(`option[value=${hiddenValue}]`)
+                            .find(`option:contains("${hiddenValue}")`)
                             .attr("disabled", true)
                             .hide();
                     } else {
                         $("#pa_vmh_nicotine_amount")
-                            .find(`option[value=${hiddenValue}]`)
+                            .find(`option:contains("${hiddenValue}")`)
                             .attr("disabled", false)
                             .show();
                     }

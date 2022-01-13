@@ -810,35 +810,38 @@ function showIngredientsPercentageValues($key, $ingredientsPercentage) {
     }
 }
 
-// function convertSingleProductOptionsToString() {
-//     $productOptions = get_post_meta(get_the_ID(), 'product_options', true);
+// Determiner if the product should be move to update mode or create new mode
+// If the the product owner clicks the range icon than it should be update mode
+// Or if user click on the range icon of other user product it should be create new mode
+function updateOrEditTag() {
+    // $productOptions = get_post_meta(get_the_ID(), 'product_options', true);
 
-//     $postAuthor = get_post(get_the_ID())->post_author;
+    $postAuthor = get_post(get_the_ID())->post_author;
 
-//     $updateProduct = false;
+    $updateProduct = false;
 
-//     if ($postAuthor == get_current_user_id()) {
-//         $updateProduct = true;
-//     }
+    if ($postAuthor == get_current_user_id()) {
+        $updateProduct = true;
+    }
 
-//     if (is_array($productOptions)) {
+    // if (is_array($productOptions)) {
 
-//         $productOptions = call_user_func_array('array_merge', $productOptions);
+    //     $productOptions = call_user_func_array('array_merge', $productOptions);
 
-//         $organizedOptions = [];
+    //     $organizedOptions = [];
 
-//         foreach ($productOptions as $key => $value) {
+    //     foreach ($productOptions as $key => $value) {
 
-//             $option = explode("|", $value[0]);
+    //         $option = explode("|", $value[0]);
 
-//             $organizedOptions[$key] = trim($option[0]);
-//         }
+    //         $organizedOptions[$key] = trim($option[0]);
+    //     }
 
-//         return '&' . http_build_query($organizedOptions) . '&update_product=' . $updateProduct . '';
-//     } else {
-//         return '&update_product=' . $updateProduct . '';
-//     }
-// }
+    //     return '&' . http_build_query($organizedOptions) . '&update_product=' . $updateProduct . '';
+    // } else {
+    // }
+    return '&update_product=' . $updateProduct . '';
+}
 
 /**
  * Get product tags HTML
@@ -867,6 +870,9 @@ function getProductTags($productID = null) {
     return $tagsHTML;
 }
 
+/**
+ * @return null
+ */
 function editProductTagsHTML() {
     if (isset($_GET['edit_product']) && $_GET['edit_product']) {
         $productID = sanitize_text_field($_GET['edit_product']);
@@ -876,7 +882,8 @@ function editProductTagsHTML() {
             $tags = wp_get_post_terms($productID, 'product_tag', array("fields" => "all"));
 
             if (!$tags) {
-                return '';
+                echo '<div class="dynamic_tags"></div>';
+                return;
             }
 
             $deafultTags = '<div class="deafult_tags">';
