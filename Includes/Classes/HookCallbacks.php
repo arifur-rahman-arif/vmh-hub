@@ -320,7 +320,7 @@ class HookCallbacks {
                 return;
             }
 
-            if ($product->get_type() == 'simple') {
+            if ($product->get_type() == 'simple' || $product->get_type() == 'variable') {
                 $userID = get_post($productID)->post_author;
                 $user = get_userdata($userID);
                 // Get all the user roles as an array.
