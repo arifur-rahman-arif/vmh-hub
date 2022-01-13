@@ -18,10 +18,10 @@
               <p>Nicotine Shot (ml):</p>
               <div class="input_container">
                   <input type="hidden" class="cart_nicotine_shot_hidden_value" min="0"
-                      max="<?php echo esc_attr($args['nicotine_shot_value']) ?>"
-                      value="<?php echo esc_attr($args['nicotine_shot_value']) ?>">
+                      max="<?php echo esc_attr($args['nicotine_shot_calculated_value']) ?>"
+                      value="<?php echo esc_attr($args['nicotine_shot_calculated_value']) ?>">
                   <input type="number" class="cart_nicotine_shot_value" min="0"
-                      max="<?php echo esc_attr($args['nicotine_shot_value']) ?>" step="10"
+                      max="<?php echo esc_attr($args['nicotine_shot_calculated_value']) ?>" step="10"
                       value="<?php echo esc_attr($args['nicotine_shot_value']) ?>">
                   <i class="far fa-save nicotineshot_save_btn"></i>
               </div>

@@ -868,6 +868,7 @@ class HookCallbacks {
     public function addNicotineshotToCart($cartItemData, $productID, $variationID) {
         if (isset($_POST['nicotine_shot_value']) && sanitize_text_field($_POST['nicotine_shot_value'])) {
             $cartItemData['nicotine_shot_value'] = sanitize_text_field($_POST['nicotine_shot_value']);
+            $cartItemData['nicotine_shot_calculated_value'] = sanitize_text_field($_POST['nicotine_shot_value']);
         }
 
         return $cartItemData;
@@ -928,10 +929,12 @@ class HookCallbacks {
             return '';
         }
 
-        $shotHtml = '<div class="order_data_column" style="width: 100%">';
+        $shotHtml = '<div class="order_data_column" style="width: 90%;margin-top: 20px;border: 2px solid #324b4b;padding: 0px 10px 15px 10px;">';
 
         foreach ($shotCalculationData as $key => $value) {
-            $shotHtml .= '<h3 style="font-weight: bold">' . esc_html($value['name']) . ': ' . esc_html($value['shotValue'] / 10) . ' shot</h3>';
+            if ($value['shotValue'] > 0) {
+                $shotHtml .= '<h3 style="font-weight: bold">' . esc_html($value['name']) . ': ' . esc_html($value['shotValue'] / 10) . ' shot</h3>';
+            }
         }
 
         $shotHtml .= '</div>';
