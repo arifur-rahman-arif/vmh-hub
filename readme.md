@@ -19,6 +19,10 @@ Tags: ecommerce, woocommerce, one-column, custom-background, custom-colors, cust
 
 ### **Releases**
 
+![](https://img.shields.io/static/v1?label=Release&message=1.10.1&color=nrightgreen)
+
+-   Changed button text
+
 ![](https://img.shields.io/static/v1?label=Release&message=1.10.0&color=nrightgreen)
 
 -   Fixed minor bug
