@@ -10,6 +10,8 @@
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
  * @version 3.5.5
+ *
+ *
  * @package WooCommerce\Templates
  *
  * @see https://docs.woocommerce.com/document/template-structure/
@@ -27,11 +29,11 @@ if (isset($_GET['edit_product']) && $_GET['edit_product']) {
         $btnText = 'Update Recepie';
         $btnAttribute = 'update-recepie';
     } else {
-        $btnText = 'Add to cart';
+        $btnText = 'Save Recepie';
         $btnAttribute = 'save-recepie';
     }
 } else {
-    $btnText = 'Add to cart';
+    $btnText = 'Save Recepie';
     $btnAttribute = 'save-recepie';
 }
 
@@ -61,7 +63,7 @@ if ($product->get_id() != get_option('vmh_create_product_option')) {
         <form class="variations_form cart"
             action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product->get_permalink())); ?>"
             method="post" enctype='multipart/form-data' data-product_id="<?php echo absint($product->get_id()); ?>"
-            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                                                                                                 ?>">
+            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                                                                                                   ?>">
             <?php do_action('woocommerce_before_variations_form');?>
 
             <?php if (empty($available_variations) && false !== $available_variations): ?>
@@ -226,7 +228,7 @@ $attribute_keys = array_keys($attributes);
         <form class="variations_form cart"
             action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product->get_permalink())); ?>"
             method="post" enctype='multipart/form-data' data-product_id="<?php echo absint($product->get_id()); ?>"
-            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                                                                                                 ?>">
+            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                                                                                                   ?>">
             <?php do_action('woocommerce_before_variations_form');?>
 
             <?php if (empty($available_variations) && false !== $available_variations): ?>
@@ -289,7 +291,7 @@ wc_dropdown_variation_attribute_options(
     </div>
 
     <button class="vmh_button recipie_create_next_btn">
-        Save Recipe
+        Next
     </button>
 
     <!-- Start Button -->
