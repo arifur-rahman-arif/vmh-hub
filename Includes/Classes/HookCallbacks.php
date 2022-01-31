@@ -20,6 +20,7 @@ class HookCallbacks {
         wp_enqueue_style('vmh-slim-select', VMH_URL . 'Assets/css/slimselect.min.css', [], VMH_VERSION, 'all');
         wp_enqueue_style('vmh-style', VMH_URL . 'Assets/css/style.css', [], VMH_VERSION, 'all');
         wp_enqueue_style('vmh-responsive', VMH_URL . 'Assets/css/responsive.css', [], VMH_VERSION, 'all');
+        wp_enqueue_style('vmh-datepickercss', VMH_URL . 'Assets/scripts/datetimepicker/build/jquery.datetimepicker.min.css', [], VMH_VERSION, 'all');
         wp_enqueue_style('vmh-custom', VMH_URL . 'Assets/css/custom.css', [], VMH_VERSION, 'all');
         wp_enqueue_style('vmh-themeCss', get_stylesheet_uri());
     }
@@ -32,6 +33,7 @@ class HookCallbacks {
         wp_enqueue_script('vmh-popper', VMH_URL . 'Assets/scripts/popper.min.js', [], VMH_VERSION, true);
         wp_enqueue_script('vmh-bootstrap', VMH_URL . 'Assets/scripts/bootstrap.min.js', [], VMH_VERSION, true);
         wp_enqueue_script('vmh-custom', VMH_URL . 'Assets/scripts/custom.js', ['jquery'], VMH_VERSION, true);
+        wp_enqueue_script('vmh-datepicker', VMH_URL . 'Assets/scripts/datetimepicker/build/jquery.datetimepicker.full.min.js', ['jquery'], VMH_VERSION, true);
         wp_enqueue_script('vmh-main', VMH_URL . 'Assets/scripts/main.js', ['jquery'], VMH_VERSION, true);
     }
 
@@ -180,10 +182,28 @@ class HookCallbacks {
             'vmh_main_admin'
         );
 
-        // Register main admin for this site
+        // Register hiding option for nicotine shot
         register_setting(
             'vmh_options_key',
             'vmh_hide_nicotine'
+        );
+
+        // Register price of 10ml nicotine shot
+        register_setting(
+            'vmh_options_key',
+            'vmh_10ml_nicotineshot_price'
+        );
+
+        // Register constant price for 10ml bottle size
+        register_setting(
+            'vmh_options_key',
+            'vmh_10ml_bottle_size_price'
+        );
+
+        // Register constant price for 50ml bottle size
+        register_setting(
+            'vmh_options_key',
+            'vmh_50ml_bottle_size_price'
         );
 
         // ============================
@@ -824,6 +844,147 @@ class HookCallbacks {
         }
     }
 
+    // Register the ingredients price meta box in ingredient post type
+    public function registerIngredientPriceMeta() {
+        add_meta_box(
+            'ingredients_price',
+            'Ingredients Price',
+            [$this, 'ingredientsPriceHtml'],
+            ['ingredient'],
+            'normal',
+            'high'
+        );
+    }
+
+    /**
+     * The HTML of ingredient price meta box
+     * @param $post
+     */
+    public function ingredientsPriceHtml($post) {
+        wp_nonce_field('vmh_ingredients_price_action', 'vmh_ingredients_price_nonce');
+
+        $metaValue = get_post_meta($post->ID, 'ingredients_price', true);
+
+        if ($metaValue <= 0) {
+            $metaValue = '0';
+        }
+
+        echo '
+            <div>
+                <strong>
+                    <label for="ingredients_price">Price/ml: (<span>' . get_woocommerce_currency_symbol() . '</span>)</label>
+                    <br/>
+                </strong>
+                <br />
+                <input type="number" name="ingredients_price" min="0" id="ingredients_price" value="' . $metaValue . '"/>
+            </div>
+       ';
+    }
+
+    /**
+     * Save the meta value of ingredients price in ingredient post type
+     * @param  int     $postID
+     * @param  object  $postObject
+     * @return mixed
+     */
+    public function saveIngredientPriceMeta(int $postID, object $postObject) {
+
+        if (!isset($_POST['vmh_ingredients_price_nonce']) || !wp_verify_nonce($_POST['vmh_ingredients_price_nonce'], 'vmh_ingredients_price_action')) {
+            return $postID;
+        }
+
+        /* Does current user have capabitlity to edit post */
+        $post_type = get_post_type_object($postObject->post_type);
+
+        if (!current_user_can($post_type->cap->edit_post, $postID)) {
+            return $postID;
+        }
+
+        /* Get the meta key. */
+        $meta_key = 'ingredients_price';
+
+        /* Get the posted data and check it for uses. */
+        $new_meta_value = (isset($_POST[$meta_key]) ? $_POST[$meta_key] : "");
+
+        /* Get the meta value of the custom field key. */
+        $meta_value = get_post_meta($postID, $meta_key, true);
+
+        if ($new_meta_value && "" == $meta_value) {
+            /* If a new meta value was added and there was no previous value, add it. */
+            add_post_meta($postID, $meta_key, $new_meta_value);
+        } elseif ($new_meta_value && $new_meta_value != $meta_value) {
+            /* If the new meta value does not match the old value, update it. */
+            update_post_meta($postID, $meta_key, $new_meta_value);
+        } elseif ("" == $new_meta_value && $meta_value) {
+            /* If there is no new meta value but an old value exists, delete it. */
+            delete_post_meta($postID, $meta_key, $meta_value);
+        }
+    }
+
+    /**
+     * @param Type $var
+     */
+    public function addNicotineshotfield() {
+        if (wc_get_product(get_the_ID())->get_type() === 'variable' && get_the_ID() != get_option('vmh_create_product_option')) {
+            echo '
+                <input type="hidden" name="nicotine_shot_value" id="nicotine_shot_value" />
+                <div class="price_box">
+                    <input type="hidden" id="created_recipe_id" value="' . get_the_ID() . '">
+                </div>
+                ';
+        }
+    }
+
+    /**
+     * Validate custom field ( nicotine shot value & ingredients price )
+     * @param  $passed
+     * @param  $productID
+     * @param  $quantity
+     * @param  $variationID
+     * @return mixed
+     */
+    public function validatedCustomField($passed, $productID, $quantity, $variationID = null) {
+        if (empty($_POST['nicotine_shot_value'])) {
+            $passed = false;
+            wc_add_notice(__('Nicotine shot value is required', 'vmh-hub'), 'error');
+        }
+        return $passed;
+    }
+
+    /**
+     * Add custom nicotine shot data to cart item
+     * @param  $cartItemData
+     * @param  $productID
+     * @param  $variationID
+     * @return mixed
+     */
+    public function addNicotineshotToCart($cartItemData, $productID, $variationID) {
+
+        if (isset($_POST['nicotine_shot_value']) && sanitize_text_field($_POST['nicotine_shot_value'])) {
+            $cartItemData['nicotine_shot_value'] = sanitize_text_field($_POST['nicotine_shot_value']);
+            $cartItemData['nicotine_shot_calculated_value'] = sanitize_text_field($_POST['nicotine_shot_value']);
+        }
+
+        // Add the ingredients total price to cart
+        if ($productID && $variationID) {
+
+            $attributes = wc_get_product_variation_attributes($variationID);
+            $productIngredients = get_post_meta($productID, 'product_ingredients', true);
+            $ingredientsPercentageValues = get_post_meta($productID, 'ingredients_percentage_values', true);
+            $bottleSize = $attributes['attribute_pa_vmh_bottle_size'];
+
+            $ingredientsTotalPrice = getIngredientsTotalPrice([
+                'productIngredients'          => $productIngredients,
+                'ingredientsPercentageValues' => $ingredientsPercentageValues,
+                'bottleSize'                  => $bottleSize
+            ]);
+
+            $cartItemData['ingredientsTotalPrice'] = $ingredientsTotalPrice;
+        }
+
+        return $cartItemData;
+    }
+
     /**
      * Increase the cart item price based on nicotine shot
      * @param  $cartObject
@@ -836,42 +997,42 @@ class HookCallbacks {
             return;
         }
 
+        $cartItems = $cart->get_cart();
+
+        if (!$cartItems || count($cartItems) < 1) {
+            return;
+        }
+
         // Loop through cart items
-        foreach ($cart->get_cart() as $cart_item) {
+        foreach ($cartItems as $cartItem) {
 
-            $nicotineShotValue = isset($cart_item['nicotine_shot_value']) && $cart_item['nicotine_shot_value'] ? $cart_item['nicotine_shot_value'] : null;
-
-            if ($nicotineShotValue) {
-                $newPrice = $cart_item['data']->get_price() + (($cart_item['nicotine_shot_value'] / 10) * NICOTINE_SHOT_PRICE);
-                $cart_item['data']->set_price($newPrice);
-            }
+            // $newPrice = (($cartItem['nicotine_shot_value'] / 10) * NICOTINE_SHOT_PRICE);
+            $newPrice = $cartItem['ingredientsTotalPrice'];
+            $cartItem['data']->set_price($newPrice);
         }
 
     }
 
     /**
-     * @param Type $var
+     * @param $cart
      */
-    public function addNicotineshotfield() {
-        if (wc_get_product(get_the_ID())->get_type() === 'variable' && get_the_ID() != get_option('vmh_create_product_option')) {
-            echo '<input type="hidden" name="nicotine_shot_value" id="nicotine_shot_value" />';
-        }
-    }
+    public function calculateCartTotal($cart) {
+        $freebasePrice = 0;
+        $nicotineSaltPrice = 0;
 
-    /**
-     * Add custom nicotine shot data to cart item
-     * @param  $cartItemData
-     * @param  $productID
-     * @param  $variationID
-     * @return mixed
-     */
-    public function addNicotineshotToCart($cartItemData, $productID, $variationID) {
-        if (isset($_POST['nicotine_shot_value']) && sanitize_text_field($_POST['nicotine_shot_value'])) {
-            $cartItemData['nicotine_shot_value'] = sanitize_text_field($_POST['nicotine_shot_value']);
-            $cartItemData['nicotine_shot_calculated_value'] = sanitize_text_field($_POST['nicotine_shot_value']);
-        }
+        $cartItems = $cart->get_cart();
 
-        return $cartItemData;
+        $combinedNicotineShot = getCalculatedNicotineShots($cartItems);
+
+        $freebaseSalt = $combinedNicotineShot['freebase-nicotine']['shotValue'];
+        $nicotineSalt = $combinedNicotineShot['nicotine-salt']['shotValue'];
+
+        $freebasePrice = getIndividualShotPrice($freebaseSalt);
+        $nicotineSaltPrice = getIndividualShotPrice($nicotineSalt);
+
+        $total = $cart->total + ($freebasePrice + $nicotineSaltPrice);
+
+        $cart->add_fee(__('Total Nicotine shot price', 'vmh-hub'), $total);
     }
 
     /**

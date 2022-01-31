@@ -209,34 +209,178 @@ trait AjaxCallbacks {
         if (sanitize_text_field($_POST['action']) !== 'vmh_add_product_to_cart') {
             $output['response'] = 'invalid';
             $output['message'] = vmhEscapeTranslate('Action is not valid');
-            echo json_encode($output);
+            wp_send_json_error($output, 400);
             wp_die();
         }
 
         $productID = sanitize_text_field($_POST['productID']);
+        $nicotineShotValue = sanitize_text_field($_POST['nicotineShotValue']);
+
+        if (!$productID) {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Product ID is missing');
+            wp_send_json_error($output, 400);
+            wp_die();
+        }
+
+        if (!$nicotineShotValue) {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Nicotine shot is missing');
+            wp_send_json_error($output, 400);
+            wp_die();
+        }
+
+        $variationsValue = $this->sanitizeData($_POST['variationsValue']);
+
+        if (!$variationsValue || count($variationsValue) < count(vmhProductAttributes())) {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('1 or more varitions are missing');
+            wp_send_json_error($output, 400);
+            wp_die();
+        }
+
+        $variationData = $this->getMatchingVariationID($productID, $variationsValue);
+
+        if ($variationData['response'] == 'invalid') {
+            wp_send_json_error($variationData, 404);
+            wp_die();
+        }
 
         global $woocommerce;
 
         if (get_post_meta($productID, "_stock_status", true) !== 'instock') {
             $output['response'] = 'invalid';
-            $output['message'] = vmhEscapeTranslate('This product is out of stock');
-            echo json_encode($output);
+            $output['message'] = vmhEscapeTranslate('Product is out of stock');
+            wp_send_json_error($output, 404);
             wp_die();
         }
 
-        if ($woocommerce->cart->add_to_cart($productID)) {
+        $cartItemData = [];
+
+        $cartItemData['nicotine_shot_value'] = $nicotineShotValue;
+        $cartItemData['nicotine_shot_calculated_value'] = $nicotineShotValue;
+
+        // Add the ingredients total price to cart
+        $attributes = wc_get_product_variation_attributes($variationData['variationID']);
+        $productIngredients = get_post_meta($productID, 'product_ingredients', true);
+        $ingredientsPercentageValues = get_post_meta($productID, 'ingredients_percentage_values', true);
+        $bottleSize = $attributes['attribute_pa_vmh_bottle_size'];
+        $ingredientsTotalPrice = getIngredientsTotalPrice([
+            'productIngredients'          => $productIngredients,
+            'ingredientsPercentageValues' => $ingredientsPercentageValues,
+            'bottleSize'                  => $bottleSize
+        ]);
+        $cartItemData['ingredientsTotalPrice'] = $ingredientsTotalPrice;
+
+        if ($woocommerce->cart->add_to_cart($productID, 1, $variationData['variationID'], [], $cartItemData)) {
             $output['response'] = 'success';
             $output['message'] = vmhEscapeTranslate('Your product is added to your cart');
             $output['productPrice'] = wc_get_product($productID)->get_price();
-            echo json_encode($output);
+            wp_send_json_success($output, 200);
             wp_die();
         }
 
-        $output['response'] = 'invalid';
-        $output['message'] = vmhEscapeTranslate('Product couldn\'t be added. Please try again');
-        echo json_encode($output);
+    }
 
-        wp_die();
+    /**
+     * Get a variable product matching variations varition ID
+     * @param  $productID
+     * @param  $attributes
+     * @return mixed
+     */
+    public function getMatchingVariationID($productID, $variationsValue) {
+        $returnValue = [];
+        $product = wc_get_product($productID);
+
+        if (!$product) {
+            $returnValue['response'] = 'invalid';
+            $returnValue['message'] = vmhEscapeTranslate('Product not found');
+            $returnValue['code'] = 404;
+            return $returnValue;
+        }
+
+        $variations = $product->get_available_variations();
+
+        if (!$variations || count($variations) < 1) {
+            $returnValue['response'] = 'invalid';
+            $returnValue['message'] = vmhEscapeTranslate('No variations found');
+            $returnValue['code'] = 404;
+            return $returnValue;
+        }
+
+        $attributes = $this->getOrganizedAttributes($variationsValue);
+
+        if (!$attributes || count($attributes) < 1) {
+            $returnValue['response'] = 'invalid';
+            $returnValue['message'] = vmhEscapeTranslate('Unable get attributes');
+            $returnValue['code'] = 404;
+            return $returnValue;
+        }
+
+        $variationID = null;
+
+        foreach ($variations as $key => $variation) {
+            $currentAttributes = $variation['attributes'];
+
+            if (!is_array($currentAttributes) || count($currentAttributes) < 1) {
+                continue;
+            }
+
+            $allMatch = [];
+
+            foreach ($attributes as $attrKey => $attributeValue) {
+                $dataAttributeValue = $currentAttributes['attribute_pa_' . $attrKey];
+                if ($attributeValue === $dataAttributeValue) {
+                    $allMatch[] = true;
+                } else {
+                    $allMatch[] = false;
+                }
+            }
+
+            // Check if all match value is true
+            // if true exit the loop and return the variation ID
+            if (array_unique($allMatch) === [true]) {
+                $variationID = $variation['variation_id'];
+                break;
+            }
+
+        }
+
+        if ($variationID) {
+            $returnValue['response'] = 'success';
+            $returnValue['message'] = vmhEscapeTranslate('Varition ID is #' . $variationID . '');
+            $returnValue['variationID'] = $variationID;
+            $returnValue['code'] = 200;
+            return $returnValue;
+        }
+
+        $returnValue['response'] = 'invalid';
+        $returnValue['message'] = vmhEscapeTranslate('No variations ID found');
+        $returnValue['code'] = 404;
+        return $returnValue;
+    }
+
+    /**
+     * Organize the attibutes key and its value
+     * @param  $variationsValue
+     * @return mixed
+     */
+    public function getOrganizedAttributes($variationsValue) {
+        $attributes = [];
+
+        if (!$variationsValue || count($variationsValue) < 1) {
+            return $attributes;
+        }
+
+        foreach ($variationsValue as $i => $variation) {
+
+            $attributeKey = trim(explode("|", $variation[array_keys($variation)[0]][0])[0]);
+            $optionValue = trim(array_keys($variation)[0]);
+
+            $attributes[$attributeKey] = $optionValue;
+        }
+
+        return $attributes;
     }
 
     // Remove product from cart via ajax request
@@ -494,6 +638,7 @@ trait AjaxCallbacks {
             // add product ingredients
             if ($productIngredients) {
                 update_post_meta($postID, 'product_ingredients', $productIngredients);
+
             }
 
             // add product ingredients
@@ -507,9 +652,10 @@ trait AjaxCallbacks {
             }
 
             $output['response'] = 'success';
+            $output['id'] = $postID;
 
             if ($sanitizedData['recipeAction'] === 'save-recepie') {
-                $output['message'] = vmhEscapeTranslate('Product created successfully');
+                $output['message'] = vmhEscapeTranslate('Product is created. You can buy it now by clicking Add to cart');
             }
 
             if ($sanitizedData['recipeAction'] === 'update-recepie') {
@@ -525,6 +671,61 @@ trait AjaxCallbacks {
         $output['response'] = 'invalid';
         $output['message'] = vmhEscapeTranslate('Product couldn\'t be created');
         echo json_encode($output);
+        wp_die();
+
+    }
+
+    public function calculatedIngredientPrice() {
+        $output = [];
+
+        if (sanitize_text_field($_POST['action']) !== 'vmh_get_ingredients_price') {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Action is not valid');
+            wp_send_json_error($output, 400);
+            wp_die();
+        }
+
+        $sanitizedData = $this->sanitizeData($_POST);
+
+        $productID = $sanitizedData['productID'];
+        $bottleSize = $sanitizedData['bottleSize'];
+
+        if (!$productID) {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Product ID is missing or invalid product ID');
+            wp_send_json_error($output, 400);
+            wp_die();
+        }
+
+        if (!$bottleSize) {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Bottle size is a required field');
+            wp_send_json_error($output, 400);
+            wp_die();
+        }
+
+        $productIngredients = get_post_meta($productID, 'product_ingredients', true);
+        $ingredientsPercentageValues = get_post_meta($productID, 'ingredients_percentage_values', true);
+
+        $ingredientsTotalPrice = getIngredientsTotalPrice([
+            'productIngredients'          => $productIngredients,
+            'ingredientsPercentageValues' => $ingredientsPercentageValues,
+            'bottleSize'                  => $bottleSize
+        ]);
+
+        if ($ingredientsTotalPrice) {
+            $ingredientsTotalPrice = number_format($ingredientsTotalPrice, 2);
+
+            $output['response'] = 'success';
+            $output['message'] = vmhEscapeTranslate('Total price of ingredients: ' . get_woocommerce_currency_symbol() . $ingredientsTotalPrice);
+            $output['price'] = $ingredientsTotalPrice;
+            wp_send_json_success($output, 200);
+            wp_die();
+        }
+
+        $output['response'] = 'invalid';
+        $output['message'] = vmhEscapeTranslate('Unable to get ingredients price');
+        wp_send_json_error($output, 400);
         wp_die();
 
     }
@@ -698,8 +899,11 @@ trait AjaxCallbacks {
 
             if (!is_wp_error($ingredientPost)) {
                 $stockQuantity = $ingredient[1];
+                $ingredientPrice = $ingredient[2];
 
-                if (update_post_meta($ingredientPost, 'ingredients_stock', $stockQuantity)) {
+                if (update_post_meta($ingredientPost, 'ingredients_stock', $stockQuantity) &&
+                    update_post_meta($ingredientPost, 'ingredients_price', $ingredientPrice)
+                ) {
                     $output['response'] = 'success';
                     $output['message'] = vmhEscapeTranslate('All ingredients created successfully');
                 }
@@ -855,7 +1059,7 @@ trait AjaxCallbacks {
         }
 
         try {
-            $cart = WC()->cart->cart_contents;
+            $cart = WC()->cart->get_cart();
 
             $cartItem = $cart[$cartKey];
 
@@ -863,13 +1067,10 @@ trait AjaxCallbacks {
 
             WC()->cart->cart_contents[$cartKey] = $cartItem;
 
-            WC()->cart->set_session();
-
-            // $cartTotal = WC()->cart->cart_contents_total;
+            WC()->cart->calculate_totals();
 
             $output['response'] = 'success';
             $output['message'] = vmhEscapeTranslate('Nicotine shot updated');
-            // $output['cartTotal'] = $cartTotal;
             echo json_encode($output);
             wp_die();
 

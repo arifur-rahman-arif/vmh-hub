@@ -23,6 +23,6 @@ if (!defined('ABSPATH')) {
 global $product;
 
 ?>
-<p style="margin-bottom: 10px;"
+<!-- <p style="margin-bottom: 10px;"
     class="<?php echo esc_attr(apply_filters('woocommerce_product_price_class', 'price')); ?>">
-    <?php echo $product->get_price_html(); ?></p>
+    <?php echo $product->get_price_html(); ?></p> -->

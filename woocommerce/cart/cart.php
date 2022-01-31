@@ -2,6 +2,8 @@
 
 <?php $cartItems = getCartItems();?>
 
+<?php $combinedNicotineShot = getCalculatedNicotineShots($cartItems)?>
+
 <!--======================== Start Cart Page ========================-->
 <section class="login_main create_account shopping_method_main_padd">
     <div class="container">
@@ -28,17 +30,37 @@
                 <h4>Your Cart</h4>
             </div>
 
-            <div class="cart_single_boxs" data-cart_key="">
+            <div class="cart_single_boxs">
                 <?php if ($cartItems) {?>
 
                 <?php foreach ($cartItems as $key => $item) {?>
+                <?php $item['cart_key'] = $key?>
                 <input type="hidden" name="cart_key" class="cart_key" data-key="<?php echo esc_attr($key) ?>">
                 <?php load_template(VMH_PATH . 'Includes/Templates/single-cart.php', false, $item)?>
                 <?php }?>
                 <?php }?>
             </div>
 
-            <div class="cart_header cart_header2">
+            <?php $freebaseSalt = $combinedNicotineShot['freebase-nicotine']['shotValue']?>
+            <?php $nicotineSalt = $combinedNicotineShot['nicotine-salt']['shotValue']?>
+
+            <div class="card vmh_nicotine_shot_card">
+                <div class="card-body">
+                    <label>Nicotine Freebase:&nbsp;<strong><?php echo esc_html($freebaseSalt) ?>ml</strong></label>
+                    <span>Price:
+                        <?php echo get_woocommerce_currency_symbol() . " " . getIndividualShotPrice($freebaseSalt) ?></span>
+                </div>
+            </div>
+
+            <div class="card vmh_nicotine_shot_card">
+                <div class="card-body">
+                    <label>Nicotine Salt:&nbsp;<strong><?php echo esc_html($nicotineSalt) ?>ml</strong></label>
+                    <span>Price:
+                        <?php echo get_woocommerce_currency_symbol() . " " . getIndividualShotPrice($nicotineSalt) ?></span>
+                </div>
+            </div>
+
+            <div class="cart_header cart_header2 vmh_cart_total_container">
                 <h4>Total: <?php echo get_woocommerce_currency_symbol() ?><span class="vmh_bottom_cart_total">
                         <?php echo getTotalCartPrice() ?></span>
                 </h4>

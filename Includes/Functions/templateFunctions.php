@@ -161,20 +161,7 @@ function getTotalCartQuantity() {
  * @return mixed
  */
 function getTotalCartPrice() {
-    global $woocommerce;
-    $items = $woocommerce->cart->get_cart();
-
-    $totalPrice = 0;
-
-    if ($items) {
-        foreach ($items as $key => $item) {
-            $totalPrice += $item['line_total'];
-        }
-    }
-
-    $totalPrice = number_format($totalPrice, 2);
-
-    return $totalPrice;
+    return WC()->cart->total;
 }
 
 // Get the all cart items
@@ -444,7 +431,7 @@ function simpleProductOptions() {
             $optionsHTML .= '
                 <div class="recepes_single_choose_option">
                     <h4>' . esc_html($option) . ' :</h4>
-                    <span class="vmh_simple_option_value">' . simpleProductOptionsArray($productOptions, $key, $i)[1] . '</span>
+                    <span class="vmh_simple_option_value">' . getOrganizedAttributes($productOptions, $key, $i)[1] . '</span>
                 </div>
                ';
 
@@ -457,11 +444,12 @@ function simpleProductOptions() {
 }
 
 /**
+ * Get the attributes and its values in an organized array
  * @param $productOptions
  * @param $key
  * @param $i
  */
-function simpleProductOptionsArray($productOptions, $key, $i) {
+function getOrganizedAttributes($productOptions, $key, $i) {
     if (!isset($productOptions[$i]) || !$productOptions[$i]) {
         return '';
     }
@@ -816,13 +804,13 @@ function showIngredientsPercentageValues($key, $ingredientsPercentage) {
 function updateOrEditTag() {
     // $productOptions = get_post_meta(get_the_ID(), 'product_options', true);
 
-    $postAuthor = get_post(get_the_ID())->post_author;
+    // $postAuthor = get_post(get_the_ID())->post_author;
 
     $updateProduct = false;
 
-    if ($postAuthor == get_current_user_id()) {
-        $updateProduct = true;
-    }
+    // if ($postAuthor == get_current_user_id()) {
+    //     $updateProduct = true;
+    // }
 
     // if (is_array($productOptions)) {
 
@@ -989,4 +977,73 @@ function editProductTagsInput() {
         </div>
         ';
     }
+}
+
+/**
+ * @param  array   $cartItems
+ * @return mixed
+ */
+function getCalculatedNicotineShots(array $cartItems) {
+
+    if (!$cartItems || count($cartItems) < 1) {
+        return [];
+    }
+
+    $shotCalculationData = [
+        'freebase-nicotine' => [
+            'name'      => 'Freebase Nicotine',
+            'shotValue' => 0
+        ],
+        'nicotine-salt'     => [
+            'name'      => 'Nicotine Salt',
+            'shotValue' => 0
+        ]
+    ];
+
+    foreach ($cartItems as $key => $item) {
+        $nicotineType = isset($item["variation"]["attribute_pa_vmh_nicotine_type"]) ? $item["variation"]["attribute_pa_vmh_nicotine_type"] : null;
+        $nicotineShotValue = isset($item["nicotine_shot_value"]) ? $item["nicotine_shot_value"] : null;
+
+        if ($nicotineType && $nicotineShotValue) {
+            // Add up the nicotine shot value
+            $shotCalculationData[$nicotineType]['shotValue'] += $nicotineShotValue;
+        }
+    }
+
+    return $shotCalculationData;
+}
+
+/**
+ * @param  $shotValue
+ * @return mixed
+ */
+function getIndividualShotPrice($shotValue) {
+
+    $shotPrice = 0;
+
+    if (!$shotValue) {
+        return number_format($shotPrice, 2);
+    }
+
+    $shotPrice = ($shotValue / 10) * NICOTINE_SHOT_PRICE;
+
+    return $shotPrice;
+}
+
+/**
+ * Get the formatted nicotine type based on value
+ * @param $type
+ */
+function getFormattedNicotineType($type) {
+
+    $formattedType = [
+        'freebase-nicotine' => [
+            'name' => 'Freebase Nicotine'
+        ],
+        'nicotine-salt'     => [
+            'name' => 'Nicotine Salt'
+        ]
+    ];
+
+    return isset($formattedType[$type]) ? $formattedType[$type]['name'] : null;
 }

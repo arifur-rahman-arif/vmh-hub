@@ -19,6 +19,14 @@ Tags: ecommerce, woocommerce, one-column, custom-background, custom-colors, cust
 
 ### **Releases**
 
+![](https://img.shields.io/static/v1?label=Release&message=1.11.0&color=nrightgreen)
+
+-   Re-modified nicotine shot calculation
+-   Added product creating and add to cart flow
+-   Fixed UI
+-   Added popup UI
+-   Other minor UI bug fix
+
 ![](https://img.shields.io/static/v1?label=Release&message=1.10.1&color=nrightgreen)
 
 -   Changed button text

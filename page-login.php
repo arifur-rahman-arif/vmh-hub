@@ -57,6 +57,7 @@
                             href="#">Terms of service</a></p>
                 </div>
             </div> -->
+
         </div>
     </div>
 </section>

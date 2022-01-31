@@ -27,7 +27,22 @@ if (!$notices) {
 ?>
 
 <?php foreach ($notices as $notice): ?>
-<div class="woocommerce-message" <?php echo wc_get_notice_data_attr($notice); ?> role="alert">
-    <?php echo wc_kses_notice($notice['notice']); ?>
+
+
+<div class="sign_in_box vmh_woocommerce_notice thank_you_mu create_acc_pages">
+    <!-- Hide Btn Overly -->
+    <div class="thank_hide_btn">
+        <a href="#"><img src="<?php echo VMH_URL . 'Assets/images/thank-you/hide.png' ?>" alt="" /></a>
+    </div>
+
+    <div class="sing_in_header sing_in_header2 vmh-response-msg">
+        <h3>Thank you</h3>
+        <p><?php echo wc_kses_notice($notice['notice']); ?></p>
+        <div class="create_recipe_add_to_cart_popup">
+            <a class="vmh_checkout_btn" href="<?php echo site_url('/cart') ?>">Go to cart</a>
+            <a class="vmh_checkout_btn" href="<?php echo site_url('/') ?>">Continue shopping</a>
+        </div>
+    </div>
 </div>
+
 <?php endforeach;?>

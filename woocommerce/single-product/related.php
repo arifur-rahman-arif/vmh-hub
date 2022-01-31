@@ -36,7 +36,8 @@ $post_object = get_post($related_product->get_id());
     ?>
 
 <?php if ($related_product->get_id() != get_option('vmh_create_product_option')) {?>
-<div class="single_recopies_items recepes_single_left_item">
+<div class="single_recopies_items recepes_single_left_item"
+    onclick="location.href='<?php echo esc_url(get_permalink($post_object->ID)) ?>'">
 
     <h6><?php echo vmhEscapeTranslate($post_object->post_title) ?></h6>
 
@@ -44,17 +45,17 @@ $post_object = get_post($related_product->get_id());
 
     <?php echo getProductIngrediants($post_object->ID) ?>
 
-    <div class="single_recopies_items_overly">
+    <!-- <div class="single_recopies_items_overly">
 
         <div class="single_recopies_items_overly_item">
-            <!-- HIding the add to cart button -->
-            <!-- <?php if (wc_get_product($related_product)->get_type() !== 'variable') {?>
+            HIding the add to cart button
+            <?php if (wc_get_product($related_product)->get_type() !== 'variable') {?>
             <a href="#" class="vmh_add_to_cart_btn" data-id="<?php echo $post_object->ID ?>">Add To Cart</a>
-            <?php }?> -->
+            <?php }?>
             <a href="<?php echo esc_url(get_permalink($post_object->ID)) ?>">View Recepie</a>
         </div>
 
-    </div>
+    </div> -->
 
 </div>
 

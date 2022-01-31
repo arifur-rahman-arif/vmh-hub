@@ -120,3 +120,64 @@ function vmhProductAttributes() {
     ];
     return $settinsKey;
 }
+
+/**
+ * Calculate and return the combined ingredient price for specific bottle size variation
+ * @param $productIngredients
+ */
+function getIngredientsTotalPrice($args) {
+    $price = 0;
+
+    if (!is_array($args['productIngredients']) ||
+        count($args['productIngredients']) < 1 ||
+        !is_array($args['ingredientsPercentageValues']) ||
+        count($args['ingredientsPercentageValues']) < 1 ||
+        !$args['bottleSize']) {
+        return $price;
+    }
+
+    extract($args);
+
+    $acceptedBottleSize = ['10ml', '50ml'];
+
+    if (!in_array($bottleSize, $acceptedBottleSize)) {
+        return $price;
+    }
+
+    $bottleSizeInteger = null;
+    $bottleSizePrice = null;
+
+    if ($bottleSize == '10ml') {
+        $bottleSizePrice = BOTTLE_SIZE_PRICE_10ml;
+        $bottleSizeInteger = 10;
+    }
+
+    if ($bottleSize == '50ml') {
+        $bottleSizePrice = BOTTLE_SIZE_PRICE_50ml;
+        $bottleSizeInteger = 50;
+    }
+
+    if ($bottleSizePrice == null) {
+        return $price;
+    }
+
+    foreach ($productIngredients as $key => $ingredient) {
+        $userSelectedPercentage = $ingredientsPercentageValues[$key];
+        $ingredientPerMlPrice = floatval(get_post_meta($ingredient, 'ingredients_price', true));
+
+        // If there are no price defined than skip the current ingredient
+        if (!$ingredientPerMlPrice) {
+            continue;
+        }
+
+        $ingredientPrice = $bottleSizeInteger * ($userSelectedPercentage / 100) * $ingredientPerMlPrice;
+
+        $price += $ingredientPrice;
+    }
+
+    if ($price != 0) {
+        $price += $bottleSizePrice;
+    }
+
+    return $price;
+}

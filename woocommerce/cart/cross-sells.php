@@ -39,7 +39,8 @@ $post_object = get_post($cross_sell->get_id());
 setup_postdata($GLOBALS['post'] = &$post_object); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited, Squiz.PHP.DisallowMultipleAssignments.Found
 ?>
 
-    <div class="single_recopies_items recepes_single_left_item">
+    <div class="single_recopies_items recepes_single_left_item"
+        onclick="location.href='<?php echo esc_url(get_permalink($post_object->ID)) ?>'">
         <h6><?php echo vmhEscapeTranslate($post_object->post_title) ?></h6>
         <p>By <?php echo get_the_author_meta('display_name', $post_object->post_author); ?></p>
         <?php echo getProductIngrediants($post_object->ID) ?>

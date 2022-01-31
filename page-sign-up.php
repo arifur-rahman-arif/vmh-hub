@@ -8,10 +8,10 @@
         </div>
         <!-- End Background Overly -->
 
-        <div class="sign_in_box">
+        <div class="sign_in_box" style="position: relative;">
             <div class="sing_in_header">
                 <h3>Create an account</h3>
-                <p><span>Already have an account?!</span> &nbsp; <a style="margin-bottom: 20px;"
+                <p><span>Already have an account?</span> &nbsp; <a style="margin-bottom: 20px;"
                         href="<?php echo site_url('login') ?>">Sign in</a>
                 </p>
             </div>
@@ -49,10 +49,10 @@
                         </div>
                         <div class="login_input_left create_input_reletive">
                             <label for="date_of_birth">Date of Birth</label>
-                            <input required type="date" id="date_of_birth" name="date_of_birth" />
-                            <!-- <div class="create_input_icon_absolute">
-                                    <a href="#"><i class="fas fa-sort-down"></i></a>
-                                </div> -->
+                            <input required type="text" id="date_of_birth" name="date_of_birth" autocomplete="off" />
+                            <div class="create_input_icon_absolute" style="pointer-events: none;">
+                                <i class="fas fa-sort-down"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -67,13 +67,11 @@
                             <input type="checkbox" id="privacy_policy" />
                             <label for="privacy_policy"></label>
                         </div>
-                        <div class="create_chekbox_content ">
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
-                                has
-                                been the industry's.</p>
+                        <div class="create_chekbox_content mt-1">
+                            <p>I accept <?php echo get_bloginfo() ?> terms and conditions terms & conditions</p>
                         </div>
                     </div>
-                    <div class="create_chekbox_item">
+                    <!-- <div class="create_chekbox_item">
                         <div class="mu-form-group">
                             <input type="checkbox" id="over_age" name="over_age" />
                             <label for="over_age"></label>
@@ -81,7 +79,7 @@
                         <div class="create_chekbox_content">
                             <p>I am over 18</p>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </form>
 
@@ -90,33 +88,13 @@
 
                 <input type="submit" value="Create Account" form="vmh-signup-form" id="vmh-user-create-submit"
                     class="vmh_button" />
-
-
-                <div class="sign_in_box thank_you_mu create_acc_pages">
-                    <!-- Hide Btn Overly -->
-                    <div class="thank_hide_btn">
-                        <a href="#"><img src="<?php echo VMH_URL . 'Assets/images/thank-you/hide.png' ?>" alt="" /></a>
-                    </div>
-
-                    <div class="sing_in_header sing_in_header2 vmh-response-msg">
-                        <h3>Thank you</h3>
-                        <p>Your account successfully created</p>
-                    </div>
-
-                    <div class="logon_input_btn logon_input_btn2 logon_input_btn3 logon_input_btn4 vmh-login-btn">
-                        <a href="<?php echo site_url('/login') ?>">Login to your account</a>
-                    </div>
-                </div>
-
-
             </div>
 
-
-            <div class="login_down_content login_down_content2">
+            <!-- <div class="login_down_content login_down_content2">
                 <p><span class="login_down_content_col">Protected by captcha and subject to the VHM </span> <a
                         href="#">privacy policy </a><span class="login_down_content_col">and</span> <a href="#">Terms of
                         service</a></p>
-            </div>
+            </div> -->
         </div>
     </div>
 </section>

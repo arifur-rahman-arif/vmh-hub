@@ -3,10 +3,9 @@ jQuery(document).ready(function ($) {
     let vmhLoginForm = $("#vmh-login-form");
     let userCreateForm = $("#vmh-signup-form");
     let privacyPolicyCheckbox = $("#privacy_policy");
-    let addToCartBtn = $(".vmh_add_to_cart_btn");
     let cartRemoveBtn = $(".cart_remove1");
     let favoriteBtn = $(".vmh_favorite");
-    let createRecipeBtn = $(".vmh_save_recipe_btn");
+
     let addTagName = $(".add_tag_name");
     let tagInput = $(".predefied_tag_input");
     let saveTagBtn = $(".save_tag_btn");
@@ -20,10 +19,15 @@ jQuery(document).ready(function ($) {
     let nicotineshotCartUpdateBtn = $(".nicotineshot_save_btn");
 
     // Controll the cart nicotine shot input
-
     let cartNicotineShotInput = $(".cart_nicotine_shot_value");
 
-    let recipeCreateNextBtn = $(".recipie_create_next_btn");
+    let recipeSaveBtn = $(".vmh_save_recipe_btn");
+
+    let bottleSizeSelect = $("#pa_vmh_bottle_size");
+
+    let addToCartSaveUpdateBtn = $(".save_update_add_to_cart_btn");
+
+    let discardButton = $(".vmh_discard_recipe");
 
     events();
 
@@ -31,16 +35,13 @@ jQuery(document).ready(function ($) {
         darkModeSwitch.on("click", toogleDarkMode);
         vmhLoginForm.on("submit", loginHandler);
         userCreateForm.on("submit", handleUserCreate);
-        addToCartBtn.on("click", addProductToCart);
+
         cartRemoveBtn.on("click", removeProductFromCart);
-        $(document).on(
-            "click",
-            ".vmh_previous_btn, .vmh_checkout_next_btn",
-            moveAroundCheckoutForm
-        );
+
+        $(document).on("click", ".vmh_previous_btn, .vmh_checkout_next_btn", moveAroundCheckoutForm);
         clearParameter();
         favoriteBtn.on("click", toggleFavorite);
-        createRecipeBtn.on("click", createRecipe);
+
         $(document).on("click", ".js-dgwt-wcas-enable-mobile-form", hideModal);
         initiateSelectBox();
         $(document).on("click", ".add_ingredients_icon", duplicateSelectBox);
@@ -60,6 +61,10 @@ jQuery(document).ready(function ($) {
 
         // Modify the nicotine shot value either on change of select or initial loading
         calculateNicotineShot();
+
+        // calculate the ingredients price value either on change of select or initial loading
+        calculateIngredientsPrice();
+
         nicotineShotTrigger.change(calculateNicotineShot);
 
         // Controll the cart nicotine shot value input by restricting the increase feature
@@ -68,7 +73,71 @@ jQuery(document).ready(function ($) {
         nicotineshotCartUpdateBtn.click(updateNicotineshotValue);
 
         // Show the attributes options when clicked on next button
-        recipeCreateNextBtn.click(showAttributeOptions);
+        recipeSaveBtn.click(createRecipe);
+
+        // Intitalize jquery custom date picker
+        customDatePicker();
+
+        bottleSizeSelect.on("change", showIngredientPrice);
+
+        addToCartSaveUpdateBtn.on("click", addProductToCart);
+
+        discardButton.on("click", discardRecipe);
+    }
+
+    function discardRecipe(e) {
+        e.preventDefault();
+        let target = $(e.currentTarget);
+
+        let productID = $("#created_recipe_id").val();
+
+        if (!productID || productID == "") return showRecipePopup(`Product ID is missing`, "invalid");
+
+        if (!confirm("Are you sure that you want to discard this recipe?")) {
+            return;
+        }
+
+        $.ajax({
+            url: vmhLocal.ajaxUrl,
+            data: {
+                productID,
+                action: "vmh_remove_product_action",
+            },
+            method: "post",
+            beforeSend: () => {
+                target.css({
+                    "pointer-events": "none",
+                    opacity: 0.5,
+                });
+            },
+            success: (res) => {
+                if (!res) return;
+
+                let response = JSON.parse(res);
+
+                if (response.response == "success") {
+                    location.reload();
+                } else {
+                    showRecipePopup(response.message, "invalid");
+                }
+            },
+            error: (err) => {
+                target.css({
+                    "pointer-events": "auto",
+                    opacity: 1,
+                });
+                console.error(err);
+            },
+        });
+    }
+
+    function customDatePicker() {
+        if ($("#date_of_birth").length) {
+            $("#date_of_birth").datetimepicker({
+                timepicker: false,
+                format: "m/d/Y",
+            });
+        }
     }
 
     function toggleTagIcon(e) {
@@ -82,9 +151,7 @@ jQuery(document).ready(function ($) {
             target.find("i").removeClass("fa-times");
             target.find("i").addClass("fa-edit");
 
-            let tags = $(
-                ".input_container .tag_input:not(.duplicate_tag) .vmh_tag_input:not(.predefied_tag_input)"
-            );
+            let tags = $(".input_container .tag_input:not(.duplicate_tag) .vmh_tag_input:not(.predefied_tag_input)");
 
             if (!tags.length) {
                 $(".dynamic_tags").html("");
@@ -109,8 +176,7 @@ jQuery(document).ready(function ($) {
 
         let formData = $(e.currentTarget).serialize();
 
-        if ($(".login_input #email").val() == "" || $(".login_input #password").val() == "")
-            return alert("One or more field is empty");
+        if ($(".login_input #email").val() == "" || $(".login_input #password").val() == "") return alert("One or more field is empty");
 
         $.ajax({
             url: vmhLocal.ajaxUrl,
@@ -120,15 +186,13 @@ jQuery(document).ready(function ($) {
             },
             method: "post",
             success: (res) => {
-                console.log(res);
-
                 if (!res) return;
 
                 let response = JSON.parse(res);
                 if (response.response == "success") {
                     window.location.href = vmhLocal.siteUrl;
                 } else {
-                    alert(response.message);
+                    makeAlert("Error", response.message);
                 }
             },
             error: (err) => {
@@ -148,12 +212,12 @@ jQuery(document).ready(function ($) {
 
         // check if user is over 18 years old
         if (isAgeOverEighteen($("#date_of_birth").val()) === "no") {
-            makeAlert("Age Restriction", "You age have to over 18");
+            makeAlert("Age Restriction", "You must be over 18 to create an account");
             return false;
         }
 
         if (privacyPolicyCheckbox.prop("checked") == false) {
-            makeAlert("Terms & Conditions", "Please agree to our term & conditions");
+            makeAlert("Terms & Conditions", "Please agree to our terms & conditions");
             return false;
         }
 
@@ -225,54 +289,79 @@ jQuery(document).ready(function ($) {
     // Add the product to cart
     function addProductToCart(e) {
         e.preventDefault();
+
         let target = $(e.currentTarget);
         let productID = target.attr("data-id");
+        let productName = $("#vmh_recipe_name").val();
+        let variationsValue = getAttributeOptionsValue();
+        let recipeAction = "add-to-cart";
+        let nicotineShotValue = $("#nicotine_shot_value").val();
 
-        if (!productID) return;
+        let requiredFields = showAlertOnRequiredFields(productName, variationsValue, recipeAction);
+
+        // If there are nay missing required field than show the alert popup and stop executing
+        if (requiredFields === false) {
+            return false;
+        }
+
+        if (!productID) return showRecipePopup("Product ID is missing", "invalid");
+
+        if (!variationsValue) return showRecipePopup("Variation are missing", "invalid");
+
+        if (!nicotineShotValue) return showRecipePopup("Nicotine shot value is missing", "invalid");
 
         $.ajax({
             url: vmhLocal.ajaxUrl,
+            method: "POST",
             data: {
                 productID,
+                variationsValue,
+                nicotineShotValue,
                 action: "vmh_add_product_to_cart",
             },
-            method: "post",
             beforeSend: () => {
                 $(".vmh_alert").hide();
+                $(e.currentTarget).attr("disabled", true);
+                $(e.currentTarget).addClass("disabled");
             },
-            success: (res) => {
-                console.log(res);
-                if (!res) return;
-
-                let response = JSON.parse(res);
-
-                if (response.response == "invalid") {
-                    productAlert(response.message);
+            success: (response) => {
+                if (response.data.response == "invalid") {
+                    showRecipePopup(response.data.message, response.data.response);
                 }
-                if (response.response == "success") {
-                    productAlert(response.message);
+
+                if (response.data.response == "success") {
                     let cartQuantity = $(".vmh_cart_quantity");
-                    let cartTotal = $(".vmh_total_price");
 
                     let updatedQuatity = parseInt(cartQuantity.text()) + 1;
-                    let updatedPrice = (
-                        Number(cartTotal.text()) + Number(response.productPrice)
-                    ).toFixed(2);
 
                     cartQuantity.html(updatedQuatity);
-                    cartTotal.html(updatedPrice);
+
+                    let responseMsgContainer = $(".vmh-response-msg");
+
+                    responseMsgContainer.html(`
+                        <h3>Product Added</h3>
+                        <h4>Your product added to cart. Go to your cart of continue shopping</h4>
+                        <div class="create_recipe_add_to_cart_popup">
+                            <a class="vmh_checkout_btn" href="${vmhLocal.siteUrl}/cart">Go to cart</a>
+                            <a class="vmh_checkout_btn" href="${vmhLocal.siteUrl}">Continue shopping</a>
+                        </div>
+                    `);
+
+                    $(".vmh-login-btn").hide();
+                    $(".create_acc_pages").show();
+                    $("body").addClass("popup_overly");
                 }
             },
+
+            complete: () => {
+                $(e.currentTarget).attr("disabled", false);
+                $(e.currentTarget).removeClass("disabled");
+            },
+
             error: (err) => {
-                alert("Someting went wrong try again.");
+                showRecipePopup("Someting went wrong try again", "invalid");
             },
         });
-    }
-
-    function productAlert(message) {
-        let alertBox = $(".vmh_alert");
-        alertBox.html(`<b>${message}</b>`);
-        alertBox.slideDown(500).delay(4000).slideUp();
     }
 
     // Remove the product from cart
@@ -291,46 +380,36 @@ jQuery(document).ready(function ($) {
                 action: "vmh_remove_product_from_cart",
             },
             method: "post",
-            beforeSend: () => {
-                $(".vmh_alert").hide();
-            },
-            success: (res) => {
-                console.log(res);
 
+            beforeSend: () => {
+                target.css({
+                    "pointer-events": "none",
+                });
+            },
+
+            success: (res) => {
                 if (!res) return;
 
                 let response = JSON.parse(res);
 
                 if (response.response == "invalid") {
-                    productAlert(response.message);
+                    makeAlert("Error", response.message);
                 }
 
                 if (response.response == "success") {
-                    productAlert(response.message);
-                    let cartQuantity = $(".vmh_cart_quantity");
-                    let cartTotal = $(".vmh_bottom_cart_total");
-
-                    let updatedQuatity =
-                        parseInt(cartQuantity.text()) - Number(parseInt(response.productQuantity));
-
-                    let updatedPrice = (
-                        Number(cartTotal.text()) - Number(response.productPrice)
-                    ).toFixed(2);
-
-                    cartQuantity.html(updatedQuatity);
-                    cartTotal.html(updatedPrice);
-
-                    $(".vmh_bottom_cart_total").html(updatedPrice);
-
-                    target
-                        .parents(".single_recopies_items.cart_single_item")
-                        .fadeOut(500)
-                        .delay(400)
-                        .remove();
+                    location.reload();
                 }
             },
+            complete: () => {
+                target.css({
+                    "pointer-events": "auto",
+                });
+            },
             error: (err) => {
-                alert("Someting went wrong try again.");
+                target.css({
+                    "pointer-events": "auto",
+                });
+                makeAlert("Error", "Someting went wrong try again");
             },
         });
     }
@@ -380,13 +459,12 @@ jQuery(document).ready(function ($) {
             },
             method: "post",
             success: (res) => {
-                console.log(res);
                 if (!res) return;
 
                 let response = JSON.parse(res);
 
                 if (response.response == "invalid") {
-                    productAlert(response.message);
+                    makeAlert("Error", response.message);
                 }
                 if (response.response == "success") {
                     // if the page is not from my favorite page
@@ -394,20 +472,18 @@ jQuery(document).ready(function ($) {
                         if (response.status == "added") {
                             heartBtn.removeClass("vmh_heart_grey");
                             target.attr("data-action", "unfavorite");
-                            productAlert("Product added to favorite list");
+                            makeAlert("Made favorite", "Product added to favorite list");
                         }
                         if (response.status == "removed") {
                             heartBtn.addClass("vmh_heart_grey");
                             target.attr("data-action", "favorite");
-                            productAlert("Product removed to favorite list");
+                            makeAlert("Removed", "Product removed to favorite list");
                         }
-                    } else {
-                        target.parents(".single_recopies_items").fadeOut(500).delay(400).remove();
                     }
                 }
             },
             error: (err) => {
-                alert("Someting went wrong try again.");
+                makeAlert("Error", "Someting went wrong try again");
             },
         });
     }
@@ -415,43 +491,36 @@ jQuery(document).ready(function ($) {
     // Create a simple product as new recipe
     function createRecipe(e) {
         e.preventDefault();
+
         let target = $(e.currentTarget);
         let productName = $("#vmh_recipe_name").val();
         let ingredientsValues = getIngredientsValues();
         let recipeNote = $(".vmh_recipe_create_note").val();
         let tagValues = getTagValues();
-        let optionsValue = getOptionsValue();
+        let optionsValue = getAttributeOptionsValue();
         let ingredientsPercentageValues = getIngredientsPercentageValues();
         let recipeAction = target.attr("data-action");
         let proudctID = parseInt(getSlugParameter("edit_product"));
 
         if (recipeAction == "update-recepie") {
             if (!proudctID) {
-                let recipePopup = $(".vmh_create_recipe_popup");
-                recipePopup.find(".vmh_checkbox_image").css({
-                    display: "none",
-                });
-                recipePopup.find(".vmh_checkbox_image_warning").css({
-                    display: "block",
-                });
-
-                recipePopup.find(".vmh_alert_text").text("Product name is required");
-
-                $(".save_recieved_hde").show();
-                $("body").addClass("popup_overly");
-                return false;
+                return showRecipePopup("Product name is required", "invalid");
             }
         }
 
-        let requiredFields = showAlertOnRequiredFields(productName, optionsValue);
+        let requiredFields = showAlertOnRequiredFields(productName, optionsValue, recipeAction);
 
+        // If there are nay missing required field than show the alert popup and stop executing
         if (requiredFields === false) {
             return false;
         }
 
-        let productPrice = parseFloat(
-            $(".woocommerce-variation-price bdi")?.text()?.replace(vmhLocal.currencySymbol, "")
-        );
+        let isIngredientsOk = showAlertOnEmptyIngredients();
+
+        // If all ingredients are not ok than stop executing and show a popup
+        if (isIngredientsOk === false) {
+            return false;
+        }
 
         $.ajax({
             type: "post",
@@ -463,7 +532,6 @@ jQuery(document).ready(function ($) {
                 recipeNote,
                 tagValues,
                 optionsValue,
-                productPrice,
                 action: "vmh_create_product",
                 recipeAction,
                 proudctID,
@@ -471,45 +539,38 @@ jQuery(document).ready(function ($) {
             beforeSend: () => {
                 $(e.currentTarget).attr("disabled", true);
                 $(e.currentTarget).addClass("disabled");
-                $(".vmh_discard_recipe").hide();
             },
 
             success: (res) => {
-                console.log(res);
                 if (!res) return;
 
                 let response = JSON.parse(res);
 
                 if (response.response == "invalid") {
-                    productAlert(response.message);
+                    showRecipePopup(response.message, "invalid");
                 }
 
                 if (response.response == "success") {
-                    // if the page is not from my favorite page
-                    let recipePopup = $(".vmh_create_recipe_popup");
+                    showRecipePopup(response.message, response.response);
 
-                    recipePopup.find(".vmh_checkbox_image").css({
-                        display: "block",
+                    /* Show the next part of recipe creation */
+                    $(".create_recipe_option").show();
+                    $(".recepes_btn").css({
+                        display: "flex",
                     });
+                    restrictNicotineAmountValue();
+                    target.hide();
+                    /* End of the next part of recipe creation */
 
-                    recipePopup.find(".vmh_checkbox_image_warning").css({
-                        display: "none",
+                    // Disable the product ingredients section
+                    $(".ingredients_wrapper").css({
+                        "pointer-events": "none",
+                        opacity: 0.5,
                     });
+                    $(".cut_selectbox, .add_ingredients_icon").remove();
 
-                    recipePopup
-                        .find(".vmh_alert_text")
-                        .text(
-                            recipeAction == "save-recepie"
-                                ? "Product is created. Please wait for admin to approve"
-                                : "Product is updated successfully."
-                        );
-
-                    $(".save_recieved_hde").show();
-                    $("body").addClass("popup_overly");
-
-                    setTimeout(() => {
-                        window.location.href = vmhLocal.siteUrl;
-                    }, 2000);
+                    $("#created_recipe_id").val(response.id);
+                    $(".save_update_add_to_cart_btn").attr("data-id", response.id);
                 }
             },
 
@@ -521,31 +582,19 @@ jQuery(document).ready(function ($) {
             error: (err) => {
                 $(e.currentTarget).attr("disabled", false);
                 $(e.currentTarget).removeClass("disabled");
-                alert("Someting went wrong try again.");
+                showRecipePopup("Product name is required", "invalid");
                 console.error(err);
             },
         });
     }
 
-    function showAlertOnRequiredFields(productName, optionsValue) {
+    function showAlertOnRequiredFields(productName, optionsValue, recipeAction) {
         let productAttributes = vmhLocal.vmhProductAttributes;
         let attributesLength = Object.keys(productAttributes).length;
 
-        let recipePopup = $(".vmh_create_recipe_popup");
-
+        // Check if the prodcut name exits
         if (!productName) {
-            recipePopup.find(".vmh_checkbox_image").css({
-                display: "none",
-            });
-            recipePopup.find(".vmh_checkbox_image_warning").css({
-                display: "block",
-            });
-
-            recipePopup.find(".vmh_alert_text").text("Product name is required");
-
-            $(".save_recieved_hde").show();
-            $("body").addClass("popup_overly");
-            return false;
+            return showRecipePopup("Product name is required", "invalid");
         }
 
         if (showAlertOnEmptyIngredients() === false) {
@@ -555,73 +604,17 @@ jQuery(document).ready(function ($) {
         let totalPercentage = calculatePercentage();
 
         if (totalPercentage >= 30) {
-            recipePopup.find(".vmh_checkbox_image").css({
-                display: "none",
-            });
-            recipePopup.find(".vmh_checkbox_image_warning").css({
-                display: "block",
-            });
-
-            recipePopup
-                .find(".vmh_alert_text")
-                .text("Ingredients amount is exceeded. Please keep it in 30%");
-
-            $(".save_recieved_hde").show();
-            $("body").addClass("popup_overly");
-            return false;
+            return showRecipePopup("Ingredients amount is exceeded. Please keep it in 30%", "invalid");
         }
 
-        if (optionsValue.length !== attributesLength) {
-            recipePopup.find(".vmh_checkbox_image").css({
-                display: "none",
-            });
-            recipePopup.find(".vmh_checkbox_image_warning").css({
-                display: "block",
-            });
-
-            recipePopup.find(".vmh_alert_text").text("All options needs to filled.");
-
-            $(".save_recieved_hde").show();
-            $("body").addClass("popup_overly");
-            return false;
+        if (optionsValue.length !== attributesLength && recipeAction != "save-recepie") {
+            return showRecipePopup("All options needs to filled", "invalid");
         }
 
         let stockAvailablity = $(".woocommerce-variation-availability");
 
         if (stockAvailablity.find(".out-of-stock").length > 0) {
-            recipePopup.find(".vmh_checkbox_image").css({
-                display: "none",
-            });
-            recipePopup.find(".vmh_checkbox_image_warning").css({
-                display: "block",
-            });
-
-            recipePopup.find(".vmh_alert_text").text("Product is out of stock");
-
-            $(".save_recieved_hde").show();
-            $("body").addClass("popup_overly");
-            return false;
-        }
-
-        let productPrice = parseFloat(
-            $(".woocommerce-variation-price bdi")?.text()?.replace(vmhLocal.currencySymbol, "")
-        );
-
-        if (!productPrice) {
-            recipePopup.find(".vmh_checkbox_image").css({
-                display: "none",
-            });
-            recipePopup.find(".vmh_checkbox_image_warning").css({
-                display: "block",
-            });
-
-            recipePopup
-                .find(".vmh_alert_text")
-                .text("Sorry, this product is unavailable. Please choose a different combination.");
-
-            $(".save_recieved_hde").show();
-            $("body").addClass("popup_overly");
-            return false;
+            return showRecipePopup("Product variation is out of stock", "invalid");
         }
     }
 
@@ -632,19 +625,7 @@ jQuery(document).ready(function ($) {
         let recipePopup = $(".vmh_create_recipe_popup");
 
         if (!ingredients.val() || ingredients.val() == "") {
-            recipePopup.find(".vmh_checkbox_image").css({
-                display: "none",
-            });
-
-            recipePopup.find(".vmh_checkbox_image_warning").css({
-                display: "block",
-            });
-
-            recipePopup.find(".vmh_alert_text").text("Please select 1 or more ingredients");
-
-            $(".save_recieved_hde").show();
-            $("body").addClass("popup_overly");
-            return false;
+            return showRecipePopup("Please select 1 or more ingredients", "invalid");
         }
 
         if (ingredients.length) {
@@ -654,7 +635,8 @@ jQuery(document).ready(function ($) {
                 let value = $(element).val();
                 if (value) {
                     let inputElement = $(element).parent().find(".ingredient_percentage");
-                    if (!inputElement.val()) {
+                    let percentageValue = parseFloat(inputElement.val());
+                    if (!percentageValue || percentageValue == 0) {
                         breakLoop = true;
                         return false; // breaks
                     }
@@ -669,13 +651,7 @@ jQuery(document).ready(function ($) {
                     display: "block",
                 });
 
-                recipePopup
-                    .find(".vmh_alert_text")
-                    .text("All selected ingredients percentage value needs to filled");
-
-                $(".save_recieved_hde").show();
-                $("body").addClass("popup_overly");
-                return false;
+                return showRecipePopup("All selected ingredients percentage value needs to be filled", "invalid");
             }
         }
     }
@@ -715,10 +691,7 @@ jQuery(document).ready(function ($) {
 
         $.each($(".ingredient_percentage"), function (indexInArray, valueOfElement) {
             // if both select box value and
-            if (
-                $(valueOfElement).parent().find(".product_ingredients").val() &&
-                $(valueOfElement).val()
-            ) {
+            if ($(valueOfElement).parent().find(".product_ingredients").val() && $(valueOfElement).val()) {
                 ingredientsPercentageValues.push(Number($(valueOfElement).val()));
             }
         });
@@ -727,7 +700,7 @@ jQuery(document).ready(function ($) {
     }
 
     // Get options value from selectbox
-    function getOptionsValue() {
+    function getAttributeOptionsValue() {
         let optionsValue = [];
 
         let productAttributes = vmhLocal.vmhProductAttributes;
@@ -781,11 +754,7 @@ jQuery(document).ready(function ($) {
         let totalPercentage = calculatePercentage();
 
         if (totalPercentage >= 30) {
-            productAlert("Ingredients amount is limited to 30%");
-            setTimeout(() => {
-                $(".vmh_alert").slideUp(500);
-            }, 3000);
-
+            showRecipePopup(`Ingredients amount is limited to 30%`, "invalid");
             return;
         }
 
@@ -868,9 +837,7 @@ jQuery(document).ready(function ($) {
             ingredientsPercentage.push(value);
         });
 
-        let total = ingredientsPercentage.reduce(
-            (prevValue, currentValue) => prevValue + currentValue
-        );
+        let total = ingredientsPercentage.reduce((prevValue, currentValue) => prevValue + currentValue);
 
         return total;
     }
@@ -949,9 +916,7 @@ jQuery(document).ready(function ($) {
 
     // Save all the tags upon click on save tag button
     function saveTagNames(e) {
-        let tags = $(
-            ".input_container .tag_input:not(.duplicate_tag) .vmh_tag_input:not(.predefied_tag_input)"
-        );
+        let tags = $(".input_container .tag_input:not(.duplicate_tag) .vmh_tag_input:not(.predefied_tag_input)");
 
         if (tags.length) {
             let innerHTML = "";
@@ -959,9 +924,7 @@ jQuery(document).ready(function ($) {
             $.each(tags, function (i, tag) {
                 let tagValue = $(tag).val();
                 if (tagValue) {
-                    innerHTML += `<a href="#" class="tag_name" data-target="tag_name_${
-                        i + 3
-                    }">${tagValue}</a>`;
+                    innerHTML += `<a href="#" class="tag_name" data-target="tag_name_${i + 3}">${tagValue}</a>`;
                 }
             });
             $(".dynamic_tags").html(innerHTML);
@@ -984,8 +947,7 @@ jQuery(document).ready(function ($) {
 
         let currentTarget = $(e.currentTarget);
 
-        if (currentTarget.find("input[type=email]").val() == "")
-            return alert("Email is required to subscribe");
+        if (currentTarget.find("input[type=email]").val() == "") return alert("Email is required to subscribe");
 
         let formData = currentTarget.serialize();
 
@@ -1024,16 +986,12 @@ jQuery(document).ready(function ($) {
 
         let productID = target.attr("data-id");
 
-        if (!productID || productID == "") return productAlert("Product ID is missing");
+        if (!productID || productID == "") return makeAlert("Error", `Product ID is missing`);
 
         let item = target.parents(".single_recopies_items");
         let itemTitle = item.find("h6").text();
 
-        if (
-            !confirm(
-                "Are you sure that you want to delete this product. ? If you do so you won't get any commision for this product from now on"
-            )
-        ) {
+        if (!confirm("Are you sure that you want to delete this product. ? If you do so you won't get any commision for this product from now on")) {
             return;
         }
 
@@ -1052,10 +1010,10 @@ jQuery(document).ready(function ($) {
                 let response = JSON.parse(res);
 
                 if (response.response == "success") {
-                    productAlert(`${itemTitle} is removed from your list`);
+                    makeAlert("Success", `${itemTitle} is removed from your list`);
                     item.remove();
                 } else {
-                    alert(response.message);
+                    makeAlert("Error", response.message);
                 }
             },
             error: (err) => {
@@ -1094,11 +1052,16 @@ jQuery(document).ready(function ($) {
     function updateNicotineshotValue(e) {
         let target = $(e.currentTarget);
 
-        let cartKey = target.parents(".cart_single_boxs").find(".cart_key").attr("data-key");
+        let cartKey = target.attr("data-key");
         let nicotineShot = parseInt(target.siblings(".cart_nicotine_shot_value").val());
 
         if (nicotineShot < 0) {
-            productAlert("Nicotine shot can not be negative value");
+            makeAlert("Warning", "Nicotine shot value can not be a negative number");
+            return;
+        }
+
+        if (!cartKey) {
+            makeAlert("Error", "Invalid cart key");
             return;
         }
 
@@ -1114,26 +1077,35 @@ jQuery(document).ready(function ($) {
                 cartKey,
                 nicotineShot,
             },
+            beforeSend: () => {
+                target.css({
+                    "pointer-events": "none",
+                });
+            },
             success: function (res) {
-                console.log(res);
                 if (!res) return;
 
                 let response = JSON.parse(res);
 
                 if (response.response == "invalid") {
-                    productAlert(response.message);
+                    makeAlert("Error", response.message);
                 }
 
                 if (response.response == "success") {
-                    // productAlert(response.message);
                     location.reload();
-                    // let cartTotal = response.cartTotal.toFixed(2);
-                    // $(".vmh_bottom_cart_total").html(` ${cartTotal}`);
                 }
+            },
+            complete: () => {
+                target.css({
+                    "pointer-events": "auto",
+                });
             },
             error: (err) => {
                 console.error(err);
-                alert("Something went wrong. Try again");
+                target.css({
+                    "pointer-events": "auto",
+                });
+                makeAlert("Error", "Something went wrong. Try again");
             },
         });
     }
@@ -1146,52 +1118,33 @@ jQuery(document).ready(function ($) {
         let prevValue = target.parent().find(".cart_nicotine_shot_hidden_value").val();
 
         if (value > prevValue) {
-            productAlert("You can't increase the shot value");
+            makeAlert("Warning", "You can't increase the shot value");
             target.val(prevValue);
             return;
         }
 
-        value = roundNumberTo10Times(value);
-        target.val(value);
-    }
+        // Disable the checkout button and show alert on click
+        $(".vmh_checkout_btn").addClass("vmh_button disabled");
 
-    // Show the attribute options when clicked on next button
-    function showAttributeOptions(e) {
-        e.preventDefault();
-
-        let target = $(e.currentTarget);
-
-        let isOk = showAlertOnEmptyIngredients();
-
-        if (isOk === false) {
-            return false;
-        }
-
-        $(".create_recipe_option").show();
-        $(".recepes_btn").css({
-            display: "flex",
+        $(".vmh_checkout_btn.vmh_button.disabled").click((e) => {
+            e.preventDefault();
+            makeAlert("Warning", "You have changed nicotine shot value. Please click save to update");
         });
 
-        restrictNicotineAmountValue();
-
-        target.hide();
+        value = roundNumberTo10Times(value);
+        target.val(value);
     }
 
     // Hide the nicotine amount attribute option if ingredients percentage is greater than 16.7
     function restrictNicotineAmountValue() {
         let ingredientsPercentageValues = getIngredientsPercentageValues();
 
-        let totalPercentage = ingredientsPercentageValues.reduce(
-            (prevValue, currentValue) => prevValue + currentValue
-        );
+        let totalPercentage = ingredientsPercentageValues.reduce((prevValue, currentValue) => prevValue + currentValue);
 
         let hiddenValue = vmhLocal.hideNicotineValue;
 
         if (totalPercentage > 16.7) {
-            $("#pa_vmh_nicotine_amount")
-                .find(`option:contains("${hiddenValue}")`)
-                .attr("disabled", true)
-                .hide();
+            $("#pa_vmh_nicotine_amount").find(`option:contains("${hiddenValue}")`).attr("disabled", true).hide();
         }
 
         let attributes = vmhLocal.vmhProductAttributes;
@@ -1203,23 +1156,121 @@ jQuery(document).ready(function ($) {
                 $(document).on("change", `#pa_${key}`, (e) => {
                     ingredientsPercentageValues = getIngredientsPercentageValues();
 
-                    totalPercentage = ingredientsPercentageValues.reduce(
-                        (prevValue, currentValue) => prevValue + currentValue
-                    );
+                    totalPercentage = ingredientsPercentageValues.reduce((prevValue, currentValue) => prevValue + currentValue);
 
                     if (totalPercentage > 16.7) {
-                        $("#pa_vmh_nicotine_amount")
-                            .find(`option:contains("${hiddenValue}")`)
-                            .attr("disabled", true)
-                            .hide();
+                        $("#pa_vmh_nicotine_amount").find(`option:contains("${hiddenValue}")`).attr("disabled", true).hide();
                     } else {
-                        $("#pa_vmh_nicotine_amount")
-                            .find(`option:contains("${hiddenValue}")`)
-                            .attr("disabled", false)
-                            .show();
+                        $("#pa_vmh_nicotine_amount").find(`option:contains("${hiddenValue}")`).attr("disabled", false).show();
                     }
                 });
             }
         }
+    }
+
+    // Show the ingredients total price
+    function showIngredientPrice(e) {
+        let target = $(e.currentTarget);
+        let bottleSize = target.val();
+        let productID = $("#created_recipe_id").val();
+
+        if (!bottleSize || !productID) {
+            return;
+        }
+
+        try {
+            $.ajax({
+                type: "POST",
+                url: vmhLocal.ajaxUrl,
+                data: {
+                    action: "vmh_get_ingredients_price",
+                    bottleSize,
+                    productID,
+                },
+                success: function (response) {
+                    if (!response) return;
+
+                    if (response.data.response == "success") {
+                        $(".price_box .price").html(response.data.price);
+                        $(".price_box").addClass("active");
+                    } else {
+                        showRecipePopup(response.data.message, "invalid");
+                    }
+                },
+                error: (err) => {
+                    console.log(err);
+                    showRecipePopup(JSON.parse(err.responseText).data.message, "invalid");
+                },
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    // calculate the ingredients price value either on change of select or initial loading
+    function calculateIngredientsPrice() {
+        let bottleSize = $("#pa_vmh_bottle_size").val();
+        let productID = $("#created_recipe_id").val();
+
+        if (!bottleSize || !productID) {
+            return;
+        }
+
+        try {
+            $.ajax({
+                type: "POST",
+                url: vmhLocal.ajaxUrl,
+                data: {
+                    action: "vmh_get_ingredients_price",
+                    bottleSize,
+                    productID,
+                },
+                success: function (response) {
+                    if (!response) return;
+
+                    if (response.data.response == "success") {
+                        $(".price_box .price").html(response.data.price);
+                        $(".price_box").addClass("active");
+                    } else {
+                        makeAlert("Error", response.data.message);
+                    }
+                },
+                error: (err) => {
+                    console.log(err);
+                    makeAlert("Error", JSON.parse(err.responseText).data.message);
+                },
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    // Show recipe popup in recipe create/update page
+    function showRecipePopup(message, type) {
+        let recipePopup = $(".vmh_create_recipe_popup");
+
+        if (type == "success") {
+            recipePopup.find(".vmh_checkbox_image_warning").css({
+                display: "none",
+            });
+
+            recipePopup.find(".vmh_checkbox_image").css({
+                display: "block",
+            });
+        } else {
+            recipePopup.find(".vmh_checkbox_image").css({
+                display: "none",
+            });
+
+            recipePopup.find(".vmh_checkbox_image_warning").css({
+                display: "block",
+            });
+        }
+
+        recipePopup.find(".vmh_alert_text").text(message);
+
+        $(".save_recieved_hde").show();
+        $("body").addClass("popup_overly");
+        return false;
     }
 });

@@ -66,7 +66,30 @@
             </div>
         </div>
     </div>
+
+
+    <!-- The popup -->
+    <div class="sign_in_box thank_you_mu create_acc_pages">
+        <!-- Hide Btn Overly -->
+        <div class="thank_hide_btn">
+            <a href="#"><img src="<?php echo VMH_URL . 'Assets/images/thank-you/hide.png' ?>" alt="" /></a>
+        </div>
+
+        <div class="sing_in_header sing_in_header2 vmh-response-msg">
+            <h3>Thank you</h3>
+            <p>Your account successfully created</p>
+        </div>
+
+        <div class="logon_input_btn logon_input_btn2 logon_input_btn3 logon_input_btn4 vmh-login-btn">
+            <a href="<?php echo site_url('/login') ?>">Login to your account</a>
+        </div>
+    </div>
+
+
 </footer>
+
+
+
 <!-- End Footer main area -->
 
 <!-- JS File -->

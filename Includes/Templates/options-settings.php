@@ -10,6 +10,9 @@ $createProductOption = get_option('vmh_create_product_option') ? sanitize_text_f
 $productCommission = get_option('vmh_product_commission') ? sanitize_text_field(get_option('vmh_product_commission')) : null;
 $mainAdmin = get_option('vmh_main_admin') ? sanitize_text_field(get_option('vmh_main_admin')) : null;
 $hideNicotineValue = get_option('vmh_hide_nicotine') ? sanitize_text_field(get_option('vmh_hide_nicotine')) : null;
+$priceOf10mlshot = get_option('vmh_10ml_nicotineshot_price') ? sanitize_text_field(get_option('vmh_10ml_nicotineshot_price')) : null;
+$constantPriceOF10mlBottle = get_option('vmh_10ml_bottle_size_price') ? sanitize_text_field(get_option('vmh_10ml_bottle_size_price')) : null;
+$constantPriceOF50mlBottle = get_option('vmh_50ml_bottle_size_price') ? sanitize_text_field(get_option('vmh_50ml_bottle_size_price')) : null;
 
 ?>
 
@@ -93,6 +96,42 @@ $hideNicotineValue = get_option('vmh_hide_nicotine') ? sanitize_text_field(get_o
     <td>
         <input style='width: 200px;' type="text" name="vmh_hide_nicotine" placeholder="Nicotine value to hide"
             value="<?php echo esc_attr($hideNicotineValue) ?>" />
+    </td>
+</tr>
+
+<tr>
+    <td>
+        <strong style="font-size: 15px;">
+            <label for="vmh_10ml_nicotineshot_price">10ml Nicotine shot price</label>
+        </strong>
+    </td>
+    <td>
+        <input style='width: 300px;' type="text" name="vmh_10ml_nicotineshot_price"
+            placeholder="Enter 10ml nicotine shot price" value="<?php echo esc_attr($priceOf10mlshot) ?>" />
+    </td>
+</tr>
+
+<tr>
+    <td>
+        <strong style="font-size: 15px;">
+            <label for="vmh_10ml_bottle_size_price">10ml Bottle size price</label>
+        </strong>
+    </td>
+    <td>
+        <input style='width: 300px;' type="text" name="vmh_10ml_bottle_size_price" placeholder="10ml bottle size price"
+            value="<?php echo esc_attr($constantPriceOF10mlBottle) ?>" />
+    </td>
+</tr>
+
+<tr>
+    <td>
+        <strong style="font-size: 15px;">
+            <label for="vmh_50ml_bottle_size_price">50ml Bottle size price</label>
+        </strong>
+    </td>
+    <td>
+        <input style='width: 300px;' type="text" name="vmh_50ml_bottle_size_price" placeholder="50ml bottle size price"
+            value="<?php echo esc_attr($constantPriceOF50mlBottle) ?>" />
     </td>
 </tr>
 

@@ -10,10 +10,6 @@
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
  * @version 3.5.5
- *
- *
- * @package WooCommerce\Templates
- *
  * @see https://docs.woocommerce.com/document/template-structure/
  */
 
@@ -33,8 +29,8 @@ if (isset($_GET['edit_product']) && $_GET['edit_product']) {
         $btnAttribute = 'save-recepie';
     }
 } else {
-    $btnText = 'Save Recepie';
-    $btnAttribute = 'save-recepie';
+    $btnText = 'Add to cart';
+    $btnAttribute = 'add-to-cart';
 }
 
 // If this product id is not = to production option than display the normal variable product template or else display the create
@@ -63,7 +59,7 @@ if ($product->get_id() != get_option('vmh_create_product_option')) {
         <form class="variations_form cart"
             action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product->get_permalink())); ?>"
             method="post" enctype='multipart/form-data' data-product_id="<?php echo absint($product->get_id()); ?>"
-            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                                                                                                   ?>">
+            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                                                                                                                                ?>">
             <?php do_action('woocommerce_before_variations_form');?>
 
             <?php if (empty($available_variations) && false !== $available_variations): ?>
@@ -106,10 +102,10 @@ wc_dropdown_variation_attribute_options(
 
 
             <!-- Display the nicotine shot calculation here -->
-            <div class="nicotine_shot mb-3">
+            <!-- <div class="nicotine_shot mb-3">
                 <strong class="shot_name">Nicotine Shot:</strong>
                 <strong class="shot_amount"></strong><b>ml</b>
-            </div>
+            </div> -->
             <!-- End of nicotine shot -->
 
 
@@ -152,6 +148,11 @@ do_action('woocommerce_after_add_to_cart_form');
 } else {?>
 
 
+<!-- =========================================
+Customize here
+========================================= -->
+
+
 <?php
 $attribute_keys = array_keys($attributes);
     $variations_json = wp_json_encode($available_variations);
@@ -161,7 +162,8 @@ $attribute_keys = array_keys($attributes);
     do_action('woocommerce_before_add_to_cart_form');?>
 
 <div class="recepes_right_left_input_code">
-    <div class="recepes_right_left_input_code_header">
+
+    <div class="recepes_right_left_input_code_header mt-3">
         <h5>Ingredients</h5>
     </div>
 
@@ -193,7 +195,6 @@ $attribute_keys = array_keys($attributes);
 
 
 
-
         <!-- if edit_product is set to browser url then hide this section -->
         <?php if (!(isset($_GET['edit_product']) && $_GET['edit_product'])) {?>
 
@@ -221,14 +222,12 @@ $attribute_keys = array_keys($attributes);
     </div>
 
 
-
-
     <div class="recepes_choose_option create_recipe_option">
 
         <form class="variations_form cart"
             action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product->get_permalink())); ?>"
             method="post" enctype='multipart/form-data' data-product_id="<?php echo absint($product->get_id()); ?>"
-            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                                                                                                   ?>">
+            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                                                                                                                                ?>">
             <?php do_action('woocommerce_before_variations_form');?>
 
             <?php if (empty($available_variations) && false !== $available_variations): ?>
@@ -262,10 +261,20 @@ wc_dropdown_variation_attribute_options(
             </table>
 
             <div class="single_variation_wrap">
+
+                <!-- Show custom price box -->
+
+                <div class="price_box">
+                    <input type="hidden" id="created_recipe_id">
+                    <input type="hidden" id="vmh_variation_id">
+                    <!-- <span class="symbol"><?php echo get_woocommerce_currency_symbol() ?></span>
+                    <span class="price"></span> -->
+                </div>
                 <?php
+
 /*
-     * Hook: woocommerce_before_single_variation.
-     */
+ * Hook: woocommerce_before_single_variation.
+ */
     do_action('woocommerce_before_single_variation');
 
 /*
@@ -286,18 +295,20 @@ wc_dropdown_variation_attribute_options(
             <?php endif;?>
 
             <?php do_action('woocommerce_after_variations_form');?>
+
+            <input type="hidden" name="nicotine_shot_value" id="nicotine_shot_value">
         </form>
 
     </div>
 
-    <button class="vmh_button recipie_create_next_btn">
-        Next
+    <button class="vmh_button vmh_save_recipe_btn recipie_create_next_btn" data-action="save-recepie">
+        Save Recipe
     </button>
 
     <!-- Start Button -->
     <div class="logon_input_btn logon_input_btn2 shipping_address_btn recepes_btn">
         <div class="recepes_btn_content recipes_order_btn_content">
-            <button class="vmh_button vmh_save_recipe_btn" type="submit" data-action="<?php echo $btnAttribute ?>">
+            <button class="vmh_button save_update_add_to_cart_btn" data-action="<?php echo $btnAttribute ?>">
                 <?php echo $btnText ?>
             </button>
             <br>
@@ -325,6 +336,7 @@ wc_dropdown_variation_attribute_options(
         </div>
     </div>
     <!-- End Save Recieved Popup -->
+
 
 </div>
 
