@@ -522,7 +522,7 @@ function getUserCreatedRecipe() {
     if ($recipes) {
         foreach ($recipes as $key => $recipe) {
             if (wc_get_product($recipe)->get_id() != get_option('vmh_create_product_option')) {
-                load_template(VMH_PATH . 'Includes/Templates/product.php', false, [
+                load_template(VMH_PATH . 'Includes/Templates/my-recipe-product.php', false, [
                     'postTitle'     => $recipe->post_title,
                     'postAuthorID'  => $recipe->post_author,
                     'productID'     => $recipe->ID,

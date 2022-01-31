@@ -93,41 +93,47 @@ jQuery(document).ready(function ($) {
 
         if (!productID || productID == "") return showRecipePopup(`Product ID is missing`, "invalid");
 
-        if (!confirm("Are you sure that you want to discard this recipe?")) {
-            return;
-        }
+        swal({
+            title: "Confirmation",
+            text: "Are you sure that you want to discard this recipe?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url: vmhLocal.ajaxUrl,
+                    data: {
+                        productID,
+                        action: "vmh_remove_product_action",
+                    },
+                    method: "post",
+                    beforeSend: () => {
+                        target.css({
+                            "pointer-events": "none",
+                            opacity: 0.5,
+                        });
+                    },
+                    success: (res) => {
+                        if (!res) return;
 
-        $.ajax({
-            url: vmhLocal.ajaxUrl,
-            data: {
-                productID,
-                action: "vmh_remove_product_action",
-            },
-            method: "post",
-            beforeSend: () => {
-                target.css({
-                    "pointer-events": "none",
-                    opacity: 0.5,
+                        let response = JSON.parse(res);
+
+                        if (response.response == "success") {
+                            location.reload();
+                        } else {
+                            showRecipePopup(response.message, "invalid");
+                        }
+                    },
+                    error: (err) => {
+                        target.css({
+                            "pointer-events": "auto",
+                            opacity: 1,
+                        });
+                        console.error(err);
+                    },
                 });
-            },
-            success: (res) => {
-                if (!res) return;
-
-                let response = JSON.parse(res);
-
-                if (response.response == "success") {
-                    location.reload();
-                } else {
-                    showRecipePopup(response.message, "invalid");
-                }
-            },
-            error: (err) => {
-                target.css({
-                    "pointer-events": "auto",
-                    opacity: 1,
-                });
-                console.error(err);
-            },
+            }
         });
     }
 
@@ -373,44 +379,54 @@ jQuery(document).ready(function ($) {
 
         if (!productID) return;
 
-        $.ajax({
-            url: vmhLocal.ajaxUrl,
-            data: {
-                productID,
-                action: "vmh_remove_product_from_cart",
-            },
-            method: "post",
+        swal({
+            title: "Confirmation",
+            text: "Are you sure you want to remove this product from cart",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url: vmhLocal.ajaxUrl,
+                    data: {
+                        productID,
+                        action: "vmh_remove_product_from_cart",
+                    },
+                    method: "post",
 
-            beforeSend: () => {
-                target.css({
-                    "pointer-events": "none",
+                    beforeSend: () => {
+                        target.css({
+                            "pointer-events": "none",
+                        });
+                    },
+
+                    success: (res) => {
+                        if (!res) return;
+
+                        let response = JSON.parse(res);
+
+                        if (response.response == "invalid") {
+                            makeAlert("Error", response.message);
+                        }
+
+                        if (response.response == "success") {
+                            location.reload();
+                        }
+                    },
+                    complete: () => {
+                        target.css({
+                            "pointer-events": "auto",
+                        });
+                    },
+                    error: (err) => {
+                        target.css({
+                            "pointer-events": "auto",
+                        });
+                        makeAlert("Error", "Someting went wrong try again");
+                    },
                 });
-            },
-
-            success: (res) => {
-                if (!res) return;
-
-                let response = JSON.parse(res);
-
-                if (response.response == "invalid") {
-                    makeAlert("Error", response.message);
-                }
-
-                if (response.response == "success") {
-                    location.reload();
-                }
-            },
-            complete: () => {
-                target.css({
-                    "pointer-events": "auto",
-                });
-            },
-            error: (err) => {
-                target.css({
-                    "pointer-events": "auto",
-                });
-                makeAlert("Error", "Someting went wrong try again");
-            },
+            }
         });
     }
 
@@ -991,34 +1007,38 @@ jQuery(document).ready(function ($) {
         let item = target.parents(".single_recopies_items");
         let itemTitle = item.find("h6").text();
 
-        if (!confirm("Are you sure that you want to delete this product. ? If you do so you won't get any commision for this product from now on")) {
-            return;
-        }
+        swal({
+            title: "Confirmation",
+            text: "Are you sure that you want to delete this product? If you do so you won't get any commision for this product from now on",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url: vmhLocal.ajaxUrl,
+                    data: {
+                        productID,
+                        action: "vmh_remove_product_action",
+                    },
+                    method: "post",
+                    success: (res) => {
+                        if (!res) return;
 
-        $.ajax({
-            url: vmhLocal.ajaxUrl,
-            data: {
-                productID,
-                action: "vmh_remove_product_action",
-            },
-            method: "post",
-            success: (res) => {
-                console.log(res);
+                        let response = JSON.parse(res);
 
-                if (!res) return;
-
-                let response = JSON.parse(res);
-
-                if (response.response == "success") {
-                    makeAlert("Success", `${itemTitle} is removed from your list`);
-                    item.remove();
-                } else {
-                    makeAlert("Error", response.message);
-                }
-            },
-            error: (err) => {
-                console.error(err);
-            },
+                        if (response.response == "success") {
+                            makeAlert("Success", `${itemTitle} is removed from your list`);
+                            item.remove();
+                        } else {
+                            makeAlert("Error", response.message);
+                        }
+                    },
+                    error: (err) => {
+                        console.error(err);
+                    },
+                });
+            }
         });
     }
 
@@ -1065,48 +1085,54 @@ jQuery(document).ready(function ($) {
             return;
         }
 
-        if (!confirm("Are you sure that you want to modify your nicotine shot amount ?")) {
-            return;
-        }
+        swal({
+            title: "Confirmation",
+            text: "Are you you want to modify your nicotine shot amount?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    type: "POST",
+                    url: vmhLocal.ajaxUrl,
+                    data: {
+                        action: "vmh_update_nicotineshot",
+                        cartKey,
+                        nicotineShot,
+                    },
+                    beforeSend: () => {
+                        target.css({
+                            "pointer-events": "none",
+                        });
+                    },
+                    success: function (res) {
+                        if (!res) return;
 
-        $.ajax({
-            type: "POST",
-            url: vmhLocal.ajaxUrl,
-            data: {
-                action: "vmh_update_nicotineshot",
-                cartKey,
-                nicotineShot,
-            },
-            beforeSend: () => {
-                target.css({
-                    "pointer-events": "none",
+                        let response = JSON.parse(res);
+
+                        if (response.response == "invalid") {
+                            makeAlert("Error", response.message);
+                        }
+
+                        if (response.response == "success") {
+                            location.reload();
+                        }
+                    },
+                    complete: () => {
+                        target.css({
+                            "pointer-events": "auto",
+                        });
+                    },
+                    error: (err) => {
+                        console.error(err);
+                        target.css({
+                            "pointer-events": "auto",
+                        });
+                        makeAlert("Error", "Something went wrong. Try again");
+                    },
                 });
-            },
-            success: function (res) {
-                if (!res) return;
-
-                let response = JSON.parse(res);
-
-                if (response.response == "invalid") {
-                    makeAlert("Error", response.message);
-                }
-
-                if (response.response == "success") {
-                    location.reload();
-                }
-            },
-            complete: () => {
-                target.css({
-                    "pointer-events": "auto",
-                });
-            },
-            error: (err) => {
-                console.error(err);
-                target.css({
-                    "pointer-events": "auto",
-                });
-                makeAlert("Error", "Something went wrong. Try again");
-            },
+            }
         });
     }
 
@@ -1127,8 +1153,13 @@ jQuery(document).ready(function ($) {
         $(".vmh_checkout_btn").addClass("vmh_button disabled");
 
         $(".vmh_checkout_btn.vmh_button.disabled").click((e) => {
+            let productName = target.parents(".single_recopies_items").find(".vmh_cart_product_name").text();
             e.preventDefault();
-            makeAlert("Warning", "You have changed nicotine shot value. Please click save to update");
+            makeAlert(
+                "Warning",
+                `You have changed <i>${productName}</i> nicotine shot value. 
+                Please click save <i style="font-size: 2rem;transform: translateY(4px);" class="far fa-save"></i> to update`
+            );
         });
 
         value = roundNumberTo10Times(value);

@@ -1,3 +1,11 @@
+<?php
+
+if (!is_user_logged_in()) {
+    wp_safe_redirect('/login');
+}
+
+?>
+
 <?php get_header('header.php')?>
 
 <!-- Start how it works area -->

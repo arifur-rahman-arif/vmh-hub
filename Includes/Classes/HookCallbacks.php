@@ -34,6 +34,7 @@ class HookCallbacks {
         wp_enqueue_script('vmh-bootstrap', VMH_URL . 'Assets/scripts/bootstrap.min.js', [], VMH_VERSION, true);
         wp_enqueue_script('vmh-custom', VMH_URL . 'Assets/scripts/custom.js', ['jquery'], VMH_VERSION, true);
         wp_enqueue_script('vmh-datepicker', VMH_URL . 'Assets/scripts/datetimepicker/build/jquery.datetimepicker.full.min.js', ['jquery'], VMH_VERSION, true);
+        wp_enqueue_script('vmh-sweetalert', VMH_URL . 'Assets/scripts/sweetalert.js', [], VMH_VERSION, true);
         wp_enqueue_script('vmh-main', VMH_URL . 'Assets/scripts/main.js', ['jquery'], VMH_VERSION, true);
     }
 

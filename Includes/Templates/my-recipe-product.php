@@ -3,7 +3,7 @@
 $isSubscriberRecipe = isset($args['createdRecipe']) && $args['createdRecipe'] && in_array('subscriber', wp_get_current_user()->roles);
 ?>
 
-<div class="single_recopies_items" onclick="location.href='<?php echo esc_url(get_permalink($args['productID'])) ?>'">
+<div class="single_recopies_items" style="cursor: auto;">
     <h6><?php echo vmhEscapeTranslate($args['postTitle']) ?></h6>
     <p>by <?php echo get_the_author_meta('display_name', $args['postAuthorID']); ?></p>
 
