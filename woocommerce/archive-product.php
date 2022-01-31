@@ -39,6 +39,10 @@ $productCategories = getProductCategories();
 
             <?php foreach ($productCategories as $key => $category) {?>
 
+            <?php if ($category->slug == 'pending-product') {?>
+            <?php continue;?>
+            <?php }?>
+
             <!-- Individual category products  -->
             <div class="col-md-12">
                 <!-- start recopies area -->

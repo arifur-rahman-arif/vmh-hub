@@ -246,8 +246,6 @@ trait AjaxCallbacks {
             wp_die();
         }
 
-        global $woocommerce;
-
         if (get_post_meta($productID, "_stock_status", true) !== 'instock') {
             $output['response'] = 'invalid';
             $output['message'] = vmhEscapeTranslate('Product is out of stock');
@@ -272,13 +270,21 @@ trait AjaxCallbacks {
         ]);
         $cartItemData['ingredientsTotalPrice'] = $ingredientsTotalPrice;
 
-        if ($woocommerce->cart->add_to_cart($productID, 1, $variationData['variationID'], [], $cartItemData)) {
+        $isAdded = WC()->cart->add_to_cart($productID, 1, $variationData['variationID'], [], $cartItemData);
+
+        if ($isAdded) {
             $output['response'] = 'success';
             $output['message'] = vmhEscapeTranslate('Your product is added to your cart');
             $output['productPrice'] = wc_get_product($productID)->get_price();
             wp_send_json_success($output, 200);
             wp_die();
         }
+
+        $output['response'] = 'invalid';
+        $output['message'] = vmhEscapeTranslate('Product can not be added to cart');
+        $output['productPrice'] = wc_get_product($productID)->get_price();
+        wp_send_json_error($output, 400);
+        wp_die();
 
     }
 
@@ -571,12 +577,50 @@ trait AjaxCallbacks {
 
         $postID = null;
 
+        $categoryName = 'Pending Product';
+
+        wp_insert_term(
+            'Pending Product',
+            'product_cat',
+            [
+                'description' => 'Description for category', // optional
+                'parent'      => 0, // optional
+                'slug'        => 'pending-product' // optional
+            ]
+        );
+
+        //Check if category already exists
+        $term = get_term_by('slug', 'pending-product', 'product_cat');
+
+        $categoryID = null;
+
+        if ($term) {
+            $categoryID = $term->term_id;
+        }
+
+        //If it doesn't exist create new category
+        if (!$categoryID) {
+            wp_insert_term(
+                'Pending Product',
+                'product_cat',
+                [
+                    'description' => 'Description for category', // optional
+                    'parent'      => 0, // optional
+                    'slug'        => 'pending-product' // optional
+                ]
+            );
+        }
+
+        //Get ID of category again incase a new one has been created
+        $categoryID = get_term_by('slug', 'pending-product', 'product_cat')->term_id;
+
         $postArg = [
-            'post_author'  => $userID,
-            'post_title'   => $sanitizedData['productName'],
-            'post_content' => $sanitizedData['recipeNote'],
-            'post_status'  => 'pending',
-            'post_type'    => "product"
+            'post_author'   => $userID,
+            'post_title'    => $sanitizedData['productName'],
+            'post_content'  => $sanitizedData['recipeNote'],
+            'post_status'   => 'publish',
+            'post_type'     => "product",
+            'post_category' => [$categoryID]
         ];
 
         if ($sanitizedData['recipeAction'] === 'save-recepie') {
@@ -601,7 +645,10 @@ trait AjaxCallbacks {
                 // Update the post tile after creating the variable product
                 $postArg['ID'] = $postID;
 
+                wp_set_post_terms($postID, [$categoryID], 'product_cat');
+
                 wp_update_post($postArg);
+
             }
 
         }
@@ -625,7 +672,7 @@ trait AjaxCallbacks {
 
         if (!is_wp_error($postID)) {
 
-            $productOptions = $sanitizedData['optionsValue'];
+            $productOptions = isset($sanitizedData['optionsValue']) ? $sanitizedData['optionsValue'] : null;
             $productIngredients = $sanitizedData['ingredientsValues'];
             $ingredientsPercentageValues = $sanitizedData['ingredientsPercentageValues'];
             $productTags = $sanitizedData['tagValues'];

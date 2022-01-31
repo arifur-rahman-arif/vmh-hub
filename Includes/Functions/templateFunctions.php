@@ -548,7 +548,15 @@ function getUserCreatedRecipe() {
 function getRecentProducts($postPerPage) {
     $args = array(
         'post_type'      => 'product',
-        'posts_per_page' => $postPerPage
+        'posts_per_page' => $postPerPage,
+        'tax_query'      => [
+            [
+                'taxonomy' => 'product_cat',
+                'field'    => 'slug',
+                'terms'    => 'pending-product',
+                'operator' => 'NOT IN'
+            ]
+        ]
     );
 
     $recipes = get_posts($args);
@@ -559,6 +567,7 @@ function getRecentProducts($postPerPage) {
 
             if ($timeDiff <= 10) {
                 if (wc_get_product($recipe)->get_id() != get_option('vmh_create_product_option')) {
+
                     load_template(VMH_PATH . 'Includes/Templates/product.php', false, [
                         'postTitle'    => $recipe->post_title,
                         'postAuthorID' => $recipe->post_author,

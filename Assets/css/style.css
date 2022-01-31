@@ -3159,7 +3159,7 @@ img {
 
 .save_recieved_hde {
     position: absolute;
-    top: 25%;
+    top: 35%;
     left: 50%;
     transform: translateX(-50%);
     display: none;
