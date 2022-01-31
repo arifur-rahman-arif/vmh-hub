@@ -963,14 +963,12 @@ function editProductTagsInput() {
             echo '
             <div class="tag_input">
                 <input type="text" placeholder="Type Tag Name" data-id="1"
-                    class="vmh_tag_input predefied_tag_input"
-                    value="Tag Name">
+                    class="vmh_tag_input predefied_tag_input">
             </div>
 
             <div class="tag_input">
                 <input type="text" placeholder="Type Tag Name" data-id="2"
-                    class="vmh_tag_input predefied_tag_input"
-                    value="Tag Name">
+                    class="vmh_tag_input predefied_tag_input">
             </div>
             ';
         }

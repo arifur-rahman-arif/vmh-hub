@@ -11,10 +11,6 @@
  * the readme will list any important changes.
  *
  * @version    1.6.4
- *
- *
- * @package    WooCommerce\Templates
- *
  * @see        https://docs.woocommerce.com/document/template-structure/
  */
 
@@ -28,7 +24,8 @@ if (isset($_GET['edit_product']) && $_GET['edit_product']) {
     if (isset($_GET['update_product']) && $_GET['update_product'] === '1') {
         $recipeName = get_the_title(sanitize_text_field($_GET['edit_product']));
     } else {
-        $recipeName = get_the_title(sanitize_text_field($_GET['edit_product'])) . ' modified';
+        // $recipeName = get_the_title(sanitize_text_field($_GET['edit_product'])) . ' modified';
+        $recipeName = null;
     }
 }
 
