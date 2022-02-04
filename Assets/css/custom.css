@@ -581,3 +581,34 @@ body > .wp-dark-mode-switcher {
     font-weight: bold;
     margin-top: 20px;
 }
+.swal-modal {
+    width: 512px;
+}
+.swal-title {
+    font-family: "BALOO";
+    letter-spacing: 2px;
+    text-transform: capitalize;
+    color: #324b4b !important;
+    font-weight: normal;
+}
+.swal-text {
+    color: #324b4b !important;
+    text-align: center;
+}
+.swal-button-container button {
+    background-color: #324b4b;
+    font-family: "BALOO";
+    outline: none;
+    color: #fff;
+    font-weight: normal;
+}
+.swal-button-container button:hover,
+.swal-button-container button:active,
+.swal-button-container button:focus {
+    background-color: #324b4b !important;
+    box-shadow: unset !important;
+}
+
+.vmh_wc_notice_text {
+    display: none !important;
+}

@@ -11,6 +11,11 @@
  * the readme will list any important changes.
  *
  * @version 3.5.0
+ *
+ *
+ *
+ *
+ *
  * @package WooCommerce\Templates
  *
  * @see     https://docs.woocommerce.com/document/template-structure/
@@ -25,18 +30,11 @@ defined('ABSPATH') || exit;
 
 if (wc_get_page_id('shop') > 0): ?>
 
-<div class="sign_in_box vmh_woocommerce_notice thank_you_mu create_acc_pages">
-    <!-- Hide Btn Overly -->
-    <div class="thank_hide_btn">
-        <a href="#"><img src="<?php echo VMH_URL . 'Assets/images/thank-you/hide.png' ?>" alt="" /></a>
-    </div>
+<input type="hidden" id="return-to-shop">
 
-    <div class="sing_in_header sing_in_header2 vmh-response-msg">
-        <h3>Empty cart</h3>
-        <div class="create_recipe_add_to_cart_popup">
-            <a class="button vmh_button"
-                href="<?php echo esc_url(apply_filters('woocommerce_return_to_shop_redirect', wc_get_page_permalink('shop'))); ?>">
-                <?php
+<!-- <a class="button vmh_button"
+    href="<?php echo esc_url(apply_filters('woocommerce_return_to_shop_redirect', wc_get_page_permalink('shop'))); ?>">
+    <?php
 /*
  * Filter "Return To Shop" text.
  *
@@ -46,10 +44,7 @@ if (wc_get_page_id('shop') > 0): ?>
  */
 echo esc_html(apply_filters('woocommerce_return_to_shop_text', __('Return to shop', 'woocommerce')));
 ?>
-            </a>
-        </div>
-    </div>
-</div>
+</a> -->
 
 
 <?php endif;?>

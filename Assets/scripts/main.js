@@ -29,6 +29,11 @@ jQuery(document).ready(function ($) {
 
     let discardButton = $(".vmh_discard_recipe");
 
+    let emptyCartPage = $("#return-to-shop");
+    let wcSuccesAlert = $(".vmh_wc_notice_text");
+
+    let favoriteCloseButton = $(".vmh_favorite_list_close");
+
     events();
 
     function events() {
@@ -83,6 +88,162 @@ jQuery(document).ready(function ($) {
         addToCartSaveUpdateBtn.on("click", addProductToCart);
 
         discardButton.on("click", discardRecipe);
+
+        // Redirect to shop page if cart is empty
+        redirectToshopPage();
+
+        // Show success notice alert
+        showWcSuccessAlert();
+
+        favoriteCloseButton.on("click", removeFavoriteProduct);
+    }
+
+    // Remove the product from user favorite list
+    function removeFavoriteProduct(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        let target = $(e.currentTarget);
+
+        let productID = target.attr("data-id");
+
+        if (!productID) {
+            swal({
+                title: "Invalid Request",
+                text: "Product ID is missing",
+                button: "OK",
+            });
+
+            return;
+        }
+
+        swal({
+            title: "Confirmation",
+            text: "Are you sure that you want to remove this recipe from your favorite list?",
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url: vmhLocal.ajaxUrl,
+                    data: {
+                        productID,
+                        btnAction: "unfavorite",
+                        action: "vmh_toggle_favorite_product",
+                    },
+                    method: "post",
+                    beforeSend: () => {
+                        target.css({
+                            "pointer-events": "none",
+                        });
+                    },
+                    success: (res) => {
+                        if (!res) return;
+
+                        let response = JSON.parse(res);
+
+                        if (response.response == "invalid") {
+                            swal({
+                                title: "Error",
+                                text: response.message,
+                                button: "OK",
+                            });
+                        }
+                        if (response.response == "success") {
+                            if (response.status == "removed") {
+                                swal({
+                                    title: "Removed",
+                                    text: "Product removed from favorite list",
+                                    button: "OK",
+                                });
+
+                                target.parents(".single_recopies_items").remove();
+
+                                if (!$(".recopies_content_area .single_recopies_items").length) {
+                                    $(".recopies_content_area").html(`
+                                        <div class="card">
+                                            <div class="card-body">
+                                            You have not added any products to your favorite collection.
+                                            </div>
+                                        </div>
+                                    `);
+                                }
+                            }
+                        }
+                    },
+
+                    complete: () => {
+                        target.css({
+                            "pointer-events": "auto",
+                        });
+                    },
+                    error: (err) => {
+                        target.css({
+                            "pointer-events": "auto",
+                        });
+                        swal({
+                            title: "Server Error",
+                            text: "Someting went wrong try again or contact admin",
+                            button: "OK",
+                        });
+                    },
+                });
+            }
+        });
+    }
+
+    // Redirect to shop page if cart is empty
+    function redirectToshopPage() {
+        if (!emptyCartPage.length) return;
+
+        swal("Empty Cart", "You cart is empty. Return to shop to add product in your cart", {
+            buttons: {
+                cart: {
+                    text: "Return to shop",
+                    value: "return_to_shop",
+                },
+            },
+        }).then((value) => {
+            switch (value) {
+                case "return_to_shop":
+                    window.location.href = vmhLocal.siteUrl;
+                    break;
+                default:
+                    window.location.href = vmhLocal.siteUrl;
+            }
+        });
+    }
+
+    // Show success notice alert
+    function showWcSuccessAlert() {
+        if (!wcSuccesAlert.length) return;
+
+        let text = $(".vmh_wc_notice_text").text();
+
+        swal("Thank you", text, {
+            buttons: {
+                cart: {
+                    text: "Go to cart",
+                    value: "cart",
+                },
+                shopping: {
+                    text: "Continue shopping",
+                    value: "shopping",
+                },
+            },
+        }).then((value) => {
+            switch (value) {
+                case "cart":
+                    window.location.href = vmhLocal.siteUrl + "cart";
+                    break;
+
+                case "shopping":
+                    window.location.href = vmhLocal.siteUrl;
+                    break;
+
+                default:
+                    return;
+            }
+        });
     }
 
     function discardRecipe(e) {
@@ -91,12 +252,18 @@ jQuery(document).ready(function ($) {
 
         let productID = $("#created_recipe_id").val();
 
-        if (!productID || productID == "") return showRecipePopup(`Product ID is missing`, "invalid");
+        if (!productID || productID == "") {
+            swal({
+                title: "Invalid process",
+                text: "Product ID is missing",
+                button: "OK",
+            });
+            return;
+        }
 
         swal({
             title: "Confirmation",
             text: "Are you sure that you want to discard this recipe?",
-            icon: "warning",
             buttons: true,
             dangerMode: true,
         }).then((willDelete) => {
@@ -113,6 +280,10 @@ jQuery(document).ready(function ($) {
                             "pointer-events": "none",
                             opacity: 0.5,
                         });
+                        $(".save_update_add_to_cart_btn").css({
+                            "pointer-events": "none",
+                            opacity: 0.5,
+                        });
                     },
                     success: (res) => {
                         if (!res) return;
@@ -122,7 +293,12 @@ jQuery(document).ready(function ($) {
                         if (response.response == "success") {
                             location.reload();
                         } else {
-                            showRecipePopup(response.message, "invalid");
+                            swal({
+                                title: "Error",
+                                text: response.message,
+                                button: "OK",
+                            });
+                            return;
                         }
                     },
                     error: (err) => {
@@ -182,7 +358,14 @@ jQuery(document).ready(function ($) {
 
         let formData = $(e.currentTarget).serialize();
 
-        if ($(".login_input #email").val() == "" || $(".login_input #password").val() == "") return alert("One or more field is empty");
+        if ($(".login_input #email").val() == "" || $(".login_input #password").val() == "") {
+            swal({
+                title: "Empty fields",
+                text: "One or more field is empty. Please fill up all fields",
+                button: "OK",
+            });
+            return;
+        }
 
         $.ajax({
             url: vmhLocal.ajaxUrl,
@@ -191,6 +374,9 @@ jQuery(document).ready(function ($) {
                 action: "vmh_login_action",
             },
             method: "post",
+            beforeSend: () => {
+                $("#vmh-login").addClass("disabled");
+            },
             success: (res) => {
                 if (!res) return;
 
@@ -198,13 +384,27 @@ jQuery(document).ready(function ($) {
                 if (response.response == "success") {
                     window.location.href = vmhLocal.siteUrl;
                 } else {
-                    makeAlert("Error", response.message);
+                    swal("Are you sure you want to do this?", {
+                        buttons: ["Oh noez!", "Aww yiss!"],
+                    });
+                    swal({
+                        title: "Sorry",
+                        text: response.message,
+                        button: "OK",
+                    });
+                    return;
                 }
             },
+            complete: () => {
+                $("#vmh-login").removeClass("disabled");
+            },
             error: (err) => {
-                $(".oe-warning").removeClass("oe-success");
-                $(".oe-warning").hide().slideDown().html("Something went wrong");
-                $(".reg-btn").attr("disabled", false);
+                swal({
+                    title: "Server Error",
+                    text: "Something went wrong. Try again or contact admin",
+                    button: "OK",
+                });
+                return;
             },
         });
     }
@@ -218,13 +418,21 @@ jQuery(document).ready(function ($) {
 
         // check if user is over 18 years old
         if (isAgeOverEighteen($("#date_of_birth").val()) === "no") {
-            makeAlert("Age Restriction", "You must be over 18 to create an account");
-            return false;
+            swal({
+                title: "Age Restriction",
+                text: "You must be over 18 to create an account",
+                button: "OK",
+            });
+            return;
         }
 
         if (privacyPolicyCheckbox.prop("checked") == false) {
-            makeAlert("Terms & Conditions", "Please agree to our terms & conditions");
-            return false;
+            swal({
+                title: "Terms & Conditions",
+                text: "Please agree to our terms & conditions",
+                button: "OK",
+            });
+            return;
         }
 
         $.ajax({
@@ -238,18 +446,24 @@ jQuery(document).ready(function ($) {
                 $("#vmh-user-create-submit").attr("disabled", true);
             },
             success: (res) => {
-                console.log(res);
-
                 if (!res) return;
 
                 let response = JSON.parse(res);
 
                 if (response.response == "invalid") {
-                    makeAlert("Error Occurred", response.message);
+                    swal({
+                        title: "Error Occurred",
+                        text: response.message,
+                        button: "OK",
+                    });
                     $(".vmh-login-btn").hide();
                 }
                 if (response.response == "success") {
-                    makeAlert("Thank you", response.message);
+                    swal({
+                        title: "Thank you",
+                        text: response.message,
+                        button: "OK",
+                    });
                     $(".vmh-login-btn").hide();
                     setTimeout(() => {
                         window.location.href = vmhLocal.siteUrl + "login";
@@ -259,22 +473,13 @@ jQuery(document).ready(function ($) {
                 $("#vmh-user-create-submit").attr("disabled", false);
             },
             error: (err) => {
-                alert("Someting went wrong try again.");
+                swal({
+                    title: "Server Error",
+                    text: "Someting went wrong try again or contact admin",
+                    button: "OK",
+                });
             },
         });
-    }
-
-    function makeAlert(alertTitle, alertMessage) {
-        let responseMsgContainer = $(".vmh-response-msg");
-
-        responseMsgContainer.html(`
-            <h3>${alertTitle}</h3>
-            <h4>${alertMessage}</h4>
-        `);
-
-        $(".vmh-login-btn").hide();
-        $(".create_acc_pages").show();
-        $("body").addClass("popup_overly");
     }
 
     // check if user age is over 18 or not
@@ -310,11 +515,32 @@ jQuery(document).ready(function ($) {
             return false;
         }
 
-        if (!productID) return showRecipePopup("Product ID is missing", "invalid");
+        if (!productID) {
+            swal({
+                title: "Invalid process",
+                text: "Product ID is missing",
+                button: "OK",
+            });
+            return;
+        }
 
-        if (!variationsValue) return showRecipePopup("Variation are missing", "invalid");
+        if (!variationsValue) {
+            swal({
+                title: "Invalid process",
+                text: "Variation are missing",
+                button: "OK",
+            });
+            return;
+        }
 
-        if (!nicotineShotValue) return showRecipePopup("Nicotine shot value is missing", "invalid");
+        if (!nicotineShotValue) {
+            swal({
+                title: "Invalid process",
+                text: "Nicotine shot value is missing",
+                button: "OK",
+            });
+            return;
+        }
 
         $.ajax({
             url: vmhLocal.ajaxUrl,
@@ -332,7 +558,11 @@ jQuery(document).ready(function ($) {
             },
             success: (response) => {
                 if (response.data.response == "invalid") {
-                    showRecipePopup(response.data.message, response.data.response);
+                    swal({
+                        title: "Error or invalid process",
+                        text: response.data.message,
+                        button: "OK",
+                    });
                 }
 
                 if (response.data.response == "success") {
@@ -342,20 +572,31 @@ jQuery(document).ready(function ($) {
 
                     cartQuantity.html(updatedQuatity);
 
-                    let responseMsgContainer = $(".vmh-response-msg");
+                    swal("Your product added to cart. Go to your cart of continue shopping", {
+                        buttons: {
+                            cart: {
+                                text: "Go to cart",
+                                value: "cart",
+                            },
+                            shopping: {
+                                text: "Continue shopping",
+                                value: "shopping",
+                            },
+                        },
+                    }).then((value) => {
+                        switch (value) {
+                            case "cart":
+                                window.location.href = vmhLocal.siteUrl + "cart";
+                                break;
 
-                    responseMsgContainer.html(`
-                        <h3>Product Added</h3>
-                        <h4>Your product added to cart. Go to your cart of continue shopping</h4>
-                        <div class="create_recipe_add_to_cart_popup">
-                            <a class="vmh_checkout_btn" href="${vmhLocal.siteUrl}/cart">Go to cart</a>
-                            <a class="vmh_checkout_btn" href="${vmhLocal.siteUrl}">Continue shopping</a>
-                        </div>
-                    `);
+                            case "shopping":
+                                window.location.href = vmhLocal.siteUrl;
+                                break;
 
-                    $(".vmh-login-btn").hide();
-                    $(".create_acc_pages").show();
-                    $("body").addClass("popup_overly");
+                            default:
+                                swal("Oops. Wrong button");
+                        }
+                    });
                 }
             },
 
@@ -365,7 +606,11 @@ jQuery(document).ready(function ($) {
             },
 
             error: (err) => {
-                showRecipePopup("Someting went wrong try again", "invalid");
+                swal({
+                    title: "Server Error",
+                    text: "Someting went wrong try again or contact admin",
+                    button: "OK",
+                });
             },
         });
     }
@@ -382,7 +627,6 @@ jQuery(document).ready(function ($) {
         swal({
             title: "Confirmation",
             text: "Are you sure you want to remove this product from cart",
-            icon: "warning",
             buttons: true,
             dangerMode: true,
         }).then((willDelete) => {
@@ -407,7 +651,11 @@ jQuery(document).ready(function ($) {
                         let response = JSON.parse(res);
 
                         if (response.response == "invalid") {
-                            makeAlert("Error", response.message);
+                            swal({
+                                title: "Error",
+                                text: response.message,
+                                button: "OK",
+                            });
                         }
 
                         if (response.response == "success") {
@@ -423,7 +671,11 @@ jQuery(document).ready(function ($) {
                         target.css({
                             "pointer-events": "auto",
                         });
-                        makeAlert("Error", "Someting went wrong try again");
+                        swal({
+                            title: "Error",
+                            text: "Someting went wrong try again or contact again",
+                            button: "OK",
+                        });
                     },
                 });
             }
@@ -474,13 +726,22 @@ jQuery(document).ready(function ($) {
                 action: "vmh_toggle_favorite_product",
             },
             method: "post",
+            beforeSend: () => {
+                target.css({
+                    "pointer-events": "none",
+                });
+            },
             success: (res) => {
                 if (!res) return;
 
                 let response = JSON.parse(res);
 
                 if (response.response == "invalid") {
-                    makeAlert("Error", response.message);
+                    swal({
+                        title: "Error",
+                        text: response.message,
+                        button: "OK",
+                    });
                 }
                 if (response.response == "success") {
                     // if the page is not from my favorite page
@@ -488,18 +749,39 @@ jQuery(document).ready(function ($) {
                         if (response.status == "added") {
                             heartBtn.removeClass("vmh_heart_grey");
                             target.attr("data-action", "unfavorite");
-                            makeAlert("Made favorite", "Product added to favorite list");
+                            swal({
+                                title: "Added",
+                                text: "Product added to your favorite list",
+                                button: "OK",
+                            });
                         }
                         if (response.status == "removed") {
                             heartBtn.addClass("vmh_heart_grey");
                             target.attr("data-action", "favorite");
-                            makeAlert("Removed", "Product removed to favorite list");
+                            swal({
+                                title: "Removed",
+                                text: "Product removed from favorite list",
+                                button: "OK",
+                            });
                         }
                     }
                 }
             },
+
+            complete: () => {
+                target.css({
+                    "pointer-events": "auto",
+                });
+            },
             error: (err) => {
-                makeAlert("Error", "Someting went wrong try again");
+                target.css({
+                    "pointer-events": "auto",
+                });
+                swal({
+                    title: "Server Error",
+                    text: "Someting went wrong try again or contact admin",
+                    button: "OK",
+                });
             },
         });
     }
@@ -520,7 +802,12 @@ jQuery(document).ready(function ($) {
 
         if (recipeAction == "update-recepie") {
             if (!proudctID) {
-                return showRecipePopup("Product name is required", "invalid");
+                swal({
+                    title: "Invalid process",
+                    text: "Product name is required",
+                    button: "OK",
+                });
+                return;
             }
         }
 
@@ -563,11 +850,20 @@ jQuery(document).ready(function ($) {
                 let response = JSON.parse(res);
 
                 if (response.response == "invalid") {
-                    showRecipePopup(response.message, "invalid");
+                    swal({
+                        title: "Invalid process",
+                        text: response.message,
+                        button: "OK",
+                    });
+                    return;
                 }
 
                 if (response.response == "success") {
-                    showRecipePopup(response.message, response.response);
+                    swal({
+                        title: "Created",
+                        text: response.message,
+                        button: "OK",
+                    });
 
                     /* Show the next part of recipe creation */
                     $(".create_recipe_option").show();
@@ -579,10 +875,11 @@ jQuery(document).ready(function ($) {
                     /* End of the next part of recipe creation */
 
                     // Disable the product ingredients section
-                    $(".ingredients_wrapper").css({
+                    $(".ingredients_wrapper, .vmh_product_content textarea, .recipes_order_tags, .vmh_tag_list").css({
                         "pointer-events": "none",
                         opacity: 0.5,
                     });
+
                     $(".cut_selectbox, .add_ingredients_icon").remove();
 
                     $("#created_recipe_id").val(response.id);
@@ -598,8 +895,12 @@ jQuery(document).ready(function ($) {
             error: (err) => {
                 $(e.currentTarget).attr("disabled", false);
                 $(e.currentTarget).removeClass("disabled");
-                showRecipePopup("Product name is required", "invalid");
-                console.error(err);
+                swal({
+                    title: "Server Error",
+                    text: "Something went wrong. Try again or contact admin",
+                    button: "OK",
+                });
+                return;
             },
         });
     }
@@ -610,7 +911,12 @@ jQuery(document).ready(function ($) {
 
         // Check if the prodcut name exits
         if (!productName) {
-            return showRecipePopup("Product name is required", "invalid");
+            swal({
+                title: "Invalid process",
+                text: "Product name is required",
+                button: "OK",
+            });
+            return false;
         }
 
         if (showAlertOnEmptyIngredients() === false) {
@@ -620,17 +926,32 @@ jQuery(document).ready(function ($) {
         let totalPercentage = calculatePercentage();
 
         if (totalPercentage >= 30) {
-            return showRecipePopup("Ingredients amount is exceeded. Please keep it in 30%", "invalid");
+            swal({
+                title: "Invalid process",
+                text: "Ingredients amount is exceeded. Please keep it in 30%",
+                button: "OK",
+            });
+            return false;
         }
 
         if (optionsValue.length !== attributesLength && recipeAction != "save-recepie") {
-            return showRecipePopup("All options needs to filled", "invalid");
+            swal({
+                title: "Invalid process",
+                text: "All options needs to filled",
+                button: "OK",
+            });
+            return false;
         }
 
         let stockAvailablity = $(".woocommerce-variation-availability");
 
         if (stockAvailablity.find(".out-of-stock").length > 0) {
-            return showRecipePopup("Product variation is out of stock", "invalid");
+            swal({
+                title: "Invalid process",
+                text: "Product variation is out of stock",
+                button: "OK",
+            });
+            return false;
         }
     }
 
@@ -641,7 +962,12 @@ jQuery(document).ready(function ($) {
         let recipePopup = $(".vmh_create_recipe_popup");
 
         if (!ingredients.val() || ingredients.val() == "") {
-            return showRecipePopup("Please select 1 or more ingredients", "invalid");
+            swal({
+                title: "Invalid process",
+                text: "Please select 1 or more ingredients",
+                button: "OK",
+            });
+            return false;
         }
 
         if (ingredients.length) {
@@ -667,7 +993,12 @@ jQuery(document).ready(function ($) {
                     display: "block",
                 });
 
-                return showRecipePopup("All selected ingredients percentage value needs to be filled", "invalid");
+                swal({
+                    title: "Invalid process",
+                    text: "All selected ingredients percentage value needs to be filled",
+                    button: "OK",
+                });
+                return false;
             }
         }
     }
@@ -770,8 +1101,12 @@ jQuery(document).ready(function ($) {
         let totalPercentage = calculatePercentage();
 
         if (totalPercentage >= 30) {
-            showRecipePopup(`Ingredients amount is limited to 30%`, "invalid");
-            return;
+            swal({
+                title: "Invalid process",
+                text: "Ingredients amount is limited to 30%",
+                button: "OK",
+            });
+            return false;
         }
 
         $(".vmh_alert").slideUp(500);
@@ -998,11 +1333,19 @@ jQuery(document).ready(function ($) {
     // Delete a user created recipe if the user is a subscriber
     function deleteRecipe(e) {
         e.preventDefault();
+        e.stopPropagation();
         let target = $(e.currentTarget);
 
         let productID = target.attr("data-id");
 
-        if (!productID || productID == "") return makeAlert("Error", `Product ID is missing`);
+        if (!productID || productID == "") {
+            swal({
+                title: "Invalid process",
+                text: "Product ID is missing",
+                button: "OK",
+            });
+            return false;
+        }
 
         let item = target.parents(".single_recopies_items");
         let itemTitle = item.find("h6").text();
@@ -1010,7 +1353,6 @@ jQuery(document).ready(function ($) {
         swal({
             title: "Confirmation",
             text: "Are you sure that you want to delete this product? If you do so you won't get any commision for this product from now on",
-            icon: "warning",
             buttons: true,
             dangerMode: true,
         }).then((willDelete) => {
@@ -1028,14 +1370,26 @@ jQuery(document).ready(function ($) {
                         let response = JSON.parse(res);
 
                         if (response.response == "success") {
-                            makeAlert("Success", `${itemTitle} is removed from your list`);
+                            swal({
+                                title: "Success",
+                                text: `${itemTitle} is removed from your list`,
+                                button: "OK",
+                            });
                             item.remove();
                         } else {
-                            makeAlert("Error", response.message);
+                            swal({
+                                title: "Error",
+                                text: response.message,
+                                button: "OK",
+                            });
                         }
                     },
                     error: (err) => {
-                        console.error(err);
+                        swal({
+                            title: "Server Error",
+                            text: "Something went wrong. Try again or contact admin",
+                            button: "OK",
+                        });
                     },
                 });
             }
@@ -1076,19 +1430,26 @@ jQuery(document).ready(function ($) {
         let nicotineShot = parseInt(target.siblings(".cart_nicotine_shot_value").val());
 
         if (nicotineShot < 0) {
-            makeAlert("Warning", "Nicotine shot value can not be a negative number");
-            return;
+            swal({
+                title: "Warning",
+                text: "Nicotine shot value can not be a negative number",
+                button: "OK",
+            });
+            return false;
         }
 
         if (!cartKey) {
-            makeAlert("Error", "Invalid cart key");
-            return;
+            swal({
+                title: "Error",
+                text: "Invalid cart key",
+                button: "OK",
+            });
+            return false;
         }
 
         swal({
             title: "Confirmation",
             text: "Are you you want to modify your nicotine shot amount?",
-            icon: "warning",
             buttons: true,
             dangerMode: true,
         }).then((willDelete) => {
@@ -1112,7 +1473,12 @@ jQuery(document).ready(function ($) {
                         let response = JSON.parse(res);
 
                         if (response.response == "invalid") {
-                            makeAlert("Error", response.message);
+                            swal({
+                                title: "Error",
+                                text: response.message,
+                                button: "OK",
+                            });
+                            return;
                         }
 
                         if (response.response == "success") {
@@ -1125,11 +1491,15 @@ jQuery(document).ready(function ($) {
                         });
                     },
                     error: (err) => {
-                        console.error(err);
                         target.css({
                             "pointer-events": "auto",
                         });
-                        makeAlert("Error", "Something went wrong. Try again");
+                        swal({
+                            title: "Error",
+                            text: "Something went wrong. Try again or contact admin",
+                            button: "OK",
+                        });
+                        return false;
                     },
                 });
             }
@@ -1144,9 +1514,13 @@ jQuery(document).ready(function ($) {
         let prevValue = target.parent().find(".cart_nicotine_shot_hidden_value").val();
 
         if (value > prevValue) {
-            makeAlert("Warning", "You can't increase the shot value");
             target.val(prevValue);
-            return;
+            swal({
+                title: "Warning",
+                text: "You can't increase the shot value",
+                button: "OK",
+            });
+            return false;
         }
 
         // Disable the checkout button and show alert on click
@@ -1155,11 +1529,13 @@ jQuery(document).ready(function ($) {
         $(".vmh_checkout_btn.vmh_button.disabled").click((e) => {
             let productName = target.parents(".single_recopies_items").find(".vmh_cart_product_name").text();
             e.preventDefault();
-            makeAlert(
-                "Warning",
-                `You have changed <i>${productName}</i> nicotine shot value. 
-                Please click save <i style="font-size: 2rem;transform: translateY(4px);" class="far fa-save"></i> to update`
-            );
+            swal({
+                title: "Warning",
+                text: `You have changed "${productName}" nicotine shot value. 
+                Please click save to update`,
+                button: "OK",
+            });
+            return false;
         });
 
         value = roundNumberTo10Times(value);
@@ -1225,16 +1601,31 @@ jQuery(document).ready(function ($) {
                         $(".price_box .price").html(response.data.price);
                         $(".price_box").addClass("active");
                     } else {
-                        showRecipePopup(response.data.message, "invalid");
+                        swal({
+                            title: "Error",
+                            text: response.data.message,
+                            button: "OK",
+                        });
+                        return;
                     }
                 },
                 error: (err) => {
-                    console.log(err);
-                    showRecipePopup(JSON.parse(err.responseText).data.message, "invalid");
+                    swal({
+                        title: "Server Error",
+                        text: JSON.parse(err.responseText).data.message,
+                        button: "OK",
+                    });
+                    return;
                 },
             });
         } catch (error) {
             console.error(error);
+            swal({
+                title: "Server Error",
+                text: "Something went wrong. Try again or contact admin",
+                button: "OK",
+            });
+            return false;
         }
     }
 
@@ -1263,45 +1654,26 @@ jQuery(document).ready(function ($) {
                         $(".price_box .price").html(response.data.price);
                         $(".price_box").addClass("active");
                     } else {
-                        makeAlert("Error", response.data.message);
+                        swal({
+                            title: "Error",
+                            text: response.data.message,
+                            button: "OK",
+                        });
+                        return;
                     }
                 },
                 error: (err) => {
                     console.log(err);
-                    makeAlert("Error", JSON.parse(err.responseText).data.message);
+                    swal({
+                        title: "Server Error",
+                        text: JSON.parse(err.responseText).data.message,
+                        button: "OK",
+                    });
+                    return;
                 },
             });
         } catch (error) {
             console.error(error);
         }
-    }
-
-    // Show recipe popup in recipe create/update page
-    function showRecipePopup(message, type) {
-        let recipePopup = $(".vmh_create_recipe_popup");
-
-        if (type == "success") {
-            recipePopup.find(".vmh_checkbox_image_warning").css({
-                display: "none",
-            });
-
-            recipePopup.find(".vmh_checkbox_image").css({
-                display: "block",
-            });
-        } else {
-            recipePopup.find(".vmh_checkbox_image").css({
-                display: "none",
-            });
-
-            recipePopup.find(".vmh_checkbox_image_warning").css({
-                display: "block",
-            });
-        }
-
-        recipePopup.find(".vmh_alert_text").text(message);
-
-        $(".save_recieved_hde").show();
-        $("body").addClass("popup_overly");
-        return false;
     }
 });

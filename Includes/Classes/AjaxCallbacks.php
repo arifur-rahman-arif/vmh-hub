@@ -52,7 +52,7 @@ trait AjaxCallbacks {
                 if ($res->errors['incorrect_password'][0]) {
                     return [
                         'response' => 'error',
-                        'message'  => esc_html('Incorrect credentials')
+                        'message'  => esc_html('Username or password is incorrect. Try again')
                     ];
                 }
             }
@@ -60,7 +60,7 @@ trait AjaxCallbacks {
                 if ($res->errors['invalid_username'][0]) {
                     return [
                         'response' => 'error',
-                        'message'  => esc_html('Invalid credentials')
+                        'message'  => esc_html('Username or password is incorrect. Try again')
                     ];
                 }
             }
@@ -68,7 +68,7 @@ trait AjaxCallbacks {
                 if ($res->errors['invalid_email'][0]) {
                     return [
                         'response' => 'error',
-                        'message'  => esc_html('Invalid credentials')
+                        'message'  => esc_html('Username or password is incorrect. Try again')
                     ];
                 }
             }
@@ -538,7 +538,7 @@ trait AjaxCallbacks {
                     wp_die();
                 } else {
                     $output['response'] = 'invalid';
-                    $output['message'] = vmhEscapeTranslate('Product don\'t exists to user favorite');
+                    $output['message'] = vmhEscapeTranslate('Product do not exists to user favorite');
                     echo json_encode($output);
                     wp_die();
                 }

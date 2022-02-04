@@ -266,10 +266,14 @@ function getUserFavoriteProducts() {
 
     if (is_array($favoriteProductsID) && count($favoriteProductsID) > 0) {
 
+        $hasFavorite = false;
+
         foreach ($favoriteProductsID as $key => $productID) {
 
             // If product exists and status is publish than load the favourite product template
             if (get_post($productID) && get_post_status($productID) == 'publish') {
+
+                $hasFavorite = true;
 
                 load_template(VMH_PATH . 'Includes/Templates/fav-product.php', false, [
                     'postTitle'   => get_the_title($productID),
@@ -278,7 +282,18 @@ function getUserFavoriteProducts() {
                     'productType' => wc_get_product($productID)->get_type()
                 ]);
 
+            } else {
+                $hasFavorite = false;
             }
+        }
+
+        if (!$hasFavorite) {
+            echo '
+            <div class="card">
+                <div class="card-body">
+                  You have not added any products to your favorite collection.
+                </div>
+            </div>';
         }
 
     } else {
@@ -467,12 +482,7 @@ function getOrganizedAttributes($productOptions, $key, $i) {
 
 // Show earning section html
 function showEarningSectionHtml() {
-    $userID = get_current_user_id();
-    $user = get_userdata($userID);
-    // Get all the user roles as an array.
-    $user_roles = $user->roles;
-
-    if (in_array('subscriber', $user_roles)) {
+    if (userRole('subscriber')) {
         return '
             <h4>Earned: ' . totalEarningOfUser() . '</h4>
             <p>You will be paid by end of each calendar month</p>
@@ -481,6 +491,23 @@ function showEarningSectionHtml() {
         return '
             <p>The section is only for subscribers. Create a <a style="color: white;text-decoration: underline;" href="' . wp_login_url('/login') . '">subsriber account or login to a subscriber account</a></p>
         ';
+    }
+}
+
+// check if the current user is admin
+/**
+ * @param string $role
+ */
+function userRole(string $role) {
+    $userID = get_current_user_id();
+    $user = get_userdata($userID);
+    // Get all the user roles as an array.
+    $user_roles = $user->roles;
+
+    if (in_array($role, $user_roles)) {
+        return true;
+    } else {
+        return false;
     }
 }
 

@@ -39,7 +39,7 @@
                             <!-- end mobile menu icon -->
                         </div>
                         <div class="shiping_cart_area">
-                            <?php if (is_user_logged_in()) {?>
+                            <?php if (is_user_logged_in() && !userRole('administrator')) {?>
                             <a class="top_shiping_box" href="<?php echo site_url('/earnings') ?>">
 
                                 <svg class="vmh_user_earning" xmlns="http://www.w3.org/2000/svg"
