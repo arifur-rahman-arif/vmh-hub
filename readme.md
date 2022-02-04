@@ -5,7 +5,7 @@
 **Description:** _This is a ecommerc wordpress theme fully supported by woocommerce.
 Tags: ecommerce, woocommerce, one-column, custom-background, custom-colors, custom-logo, custom-menu, editor-style, featured-images, footer-widgets, full-width-template, rtl-language-support, sticky-post, theme-options, threaded-comments, translation-ready, block-styles, wide-blocks, accessibility-ready_
 
-**Version:** 1.11.0
+**Version:** 1.11.1
 
 **Requires at least:** 5.0
 
@@ -18,6 +18,10 @@ Tags: ecommerce, woocommerce, one-column, custom-background, custom-colors, cust
 ---
 
 ### **Releases**
+
+![](https://img.shields.io/static/v1?label=Release&message=1.11.1&color=nrightgreen)
+
+-   Modified all website popup
 
 ![](https://img.shields.io/static/v1?label=Release&message=1.11.0&color=nrightgreen)
 

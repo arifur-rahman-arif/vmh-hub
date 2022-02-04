@@ -750,7 +750,7 @@ jQuery(document).ready(function ($) {
                             heartBtn.removeClass("vmh_heart_grey");
                             target.attr("data-action", "unfavorite");
                             swal({
-                                title: "Added",
+                                title: "Done",
                                 text: "Product added to your favorite list",
                                 button: "OK",
                             });
@@ -759,7 +759,7 @@ jQuery(document).ready(function ($) {
                             heartBtn.addClass("vmh_heart_grey");
                             target.attr("data-action", "favorite");
                             swal({
-                                title: "Removed",
+                                title: "Done",
                                 text: "Product removed from favorite list",
                                 button: "OK",
                             });
@@ -1530,11 +1530,18 @@ jQuery(document).ready(function ($) {
             let productName = target.parents(".single_recopies_items").find(".vmh_cart_product_name").text();
             e.preventDefault();
             swal({
-                title: "Warning",
+                title: "Wait",
                 text: `You have changed "${productName}" nicotine shot value. 
                 Please click save to update`,
                 button: "OK",
             });
+
+            $(".swal-text").html(`
+                You have changed "${productName}" nicotine shot value.
+                Please click save <i class="far fa-save" style="
+                font-size: 1.3rem;
+                transform: translateY(2px);"></i> to update
+            `);
             return false;
         });
 

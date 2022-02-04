@@ -660,7 +660,7 @@ trait AjaxCallbacks {
 
             if ($postAuthor != get_current_user_id()) {
                 $output['response'] = 'invalid';
-                $output['message'] = vmhEscapeTranslate('User don\'t have permission to edit product');
+                $output['message'] = vmhEscapeTranslate('User do not have permission to edit product');
                 echo json_encode($output);
                 wp_die();
             }
@@ -702,11 +702,11 @@ trait AjaxCallbacks {
             $output['id'] = $postID;
 
             if ($sanitizedData['recipeAction'] === 'save-recepie') {
-                $output['message'] = vmhEscapeTranslate('Product is created. You can buy it now by clicking Add to cart');
+                $output['message'] = vmhEscapeTranslate('Your recipe has been created successfully. You can purchase this recipe by selecting other required options.');
             }
 
             if ($sanitizedData['recipeAction'] === 'update-recepie') {
-                $output['message'] = vmhEscapeTranslate('Product updated successfully');
+                $output['message'] = vmhEscapeTranslate('Recipe updated successfully');
             }
 
             $this->sendEmailToAdmins($postID);
@@ -716,7 +716,7 @@ trait AjaxCallbacks {
         }
 
         $output['response'] = 'invalid';
-        $output['message'] = vmhEscapeTranslate('Product couldn\'t be created');
+        $output['message'] = vmhEscapeTranslate('Recipe could not be created');
         echo json_encode($output);
         wp_die();
 
