@@ -121,17 +121,6 @@
 
                                             <?php }?>
 
-                                            <a href="<?php echo wp_logout_url() ?>">
-                                                <i class="fas fa-user-circle"></i>
-                                                <!-- <svg width="22" height="23" viewBox="0 0 22 23" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M18.7782 3.44838C16.7006 1.37077 13.9382 0.226562 11 0.226562C8.06168 0.226562 5.29942 1.37077 3.22182 3.44838C1.14421 5.52599 0 8.28824 0 11.2266C0 14.1647 1.14421 16.9271 3.22182 19.0047C5.29942 21.0824 8.06168 22.2266 11 22.2266C13.9382 22.2266 16.7006 21.0824 18.7782 19.0047C20.8558 16.9271 22 14.1647 22 11.2266C22 8.28824 20.8558 5.52599 18.7782 3.44838ZM5.5146 19.2354C5.97467 16.5864 8.27014 14.6325 11 14.6325C13.73 14.6325 16.0253 16.5864 16.4854 19.2354C14.9236 20.3084 13.034 20.9375 11 20.9375C8.96603 20.9375 7.07642 20.3084 5.5146 19.2354ZM7.50241 9.84586C7.50241 7.91713 9.07144 6.34827 11 6.34827C12.9286 6.34827 14.4976 7.9173 14.4976 9.84586C14.4976 11.7744 12.9286 13.3434 11 13.3434C9.07144 13.3434 7.50241 11.7744 7.50241 9.84586ZM17.6019 18.3412C17.255 17.1081 16.566 15.9892 15.6002 15.1152C15.0077 14.579 14.3333 14.1558 13.6082 13.8576C14.9187 13.0027 15.7868 11.5238 15.7868 9.84586C15.7868 7.20647 13.6394 5.0592 11 5.0592C8.36061 5.0592 6.21335 7.20647 6.21335 9.84586C6.21335 11.5238 7.08145 13.0027 8.39183 13.8576C7.6669 14.1558 6.99232 14.5788 6.39983 15.1151C5.4342 15.989 4.74503 17.1079 4.39809 18.3411C2.48715 16.5664 1.28906 14.034 1.28906 11.2266C1.28906 5.87192 5.64536 1.51562 11 1.51562C16.3546 1.51562 20.7109 5.87192 20.7109 11.2266C20.7109 14.0341 19.5128 16.5666 17.6019 18.3412Z"
-                                                        fill="#FFF7EF" />
-                                                </svg> -->
-                                            </a>
-
-
                                             <a href="<?php echo site_url('/cart') ?>" class="vmh_cart_total_wrapper">
                                                 <svg width="22" height="22" viewBox="0 0 20 20" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -145,7 +134,31 @@
 
                                         </a>
                                     </li>
+
+                                    <li>
+                                        <div class="dropdown vmh_profile_dropdown">
+                                            <a class="btn btn-secondary dropdown-toggle vmh_profile" href="#"
+                                                role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <i class="fas fa-user-circle"></i>
+                                            </a>
+
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                <a class="dropdown-item" href="<?php echo wp_logout_url() ?>">
+                                                    <?php echo is_user_logged_in() ? 'Logout' : 'Login' ?>
+                                                </a>
+                                                <?php if (is_user_logged_in()) {?>
+                                                <a class="dropdown-item vmh_your_profile_link"
+                                                    href="<?php echo get_permalink(get_option('woocommerce_myaccount_page_id')); ?>/edit-account/">Your
+                                                    profile</a>
+                                                <?php }?>
+                                            </div>
+                                        </div>
+                                    </li>
                                 </ul>
+
+
+
 
                                 <!-- Start Rating Popup -->
                                 <div class="subscribe_mail_popup contact_rating_popup main_icon_ratine">
@@ -185,6 +198,8 @@
                 </div>
             </div>
         </div>
+
+
     </header>
     <!--End Header Area-->
 

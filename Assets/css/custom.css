@@ -289,7 +289,7 @@ body > .wp-dark-mode-switcher {
 
 .ingredients_wrapper .cut_selectbox {
     margin-right: 10px;
-    font-size: 20px;
+    font-size: 25px;
     cursor: pointer;
 }
 
@@ -311,8 +311,7 @@ body > .wp-dark-mode-switcher {
 }
 
 .ingredients_wrapper .add_ingredients_icon {
-    width: 30px;
-    height: 30px;
+    font-size: 25px;
     cursor: pointer;
 }
 .ingredients_wrapper .ss-value {
@@ -611,4 +610,50 @@ body > .wp-dark-mode-switcher {
 
 .vmh_wc_notice_text {
     display: none !important;
+}
+
+.shiping_icon_area ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.vmh_profile {
+    background-color: unset;
+    border-color: unset;
+    padding: unset;
+    color: #fff;
+    border: none;
+}
+.vmh_profile:hover,
+.vmh_profile:active,
+.vmh_profile:focus {
+    background-color: unset;
+    border-color: #141d1d;
+}
+
+.vmh_profile_dropdown .dropdown-menu {
+    background: #141d1d;
+}
+.vmh_profile_dropdown .dropdown-item {
+    color: #fff;
+    transition: 0.3s;
+}
+
+.vmh_profile_dropdown .dropdown-item:hover,
+.dropdown-item:focus,
+.dropdown-item:active {
+    color: #8cdad9;
+    opacity: 1;
+    background-color: unset;
+}
+
+.woocommerce-MyAccount-navigation-link.woocommerce-MyAccount-navigation-link--downloads {
+    display: none;
+}
+
+.recipes_order_tags,
+.vmh_tag_list,
+.recepes_profile {
+    display: none;
 }

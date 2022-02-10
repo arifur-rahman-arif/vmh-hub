@@ -11,6 +11,7 @@
  * the readme will list any important changes.
  *
  * @version 3.6.0
+ *
  * @package WooCommerce\Templates
  *
  * @see     https://docs.woocommerce.com/document/template-structure/
@@ -77,11 +78,11 @@ do_action('woocommerce_before_single_product');
                 <div class="recepes_main_content">
                     <div class="recepes_left">
 
-                        <?php if ($product->get_id() != get_option('vmh_create_product_option')) {?>
+                        <!-- <?php if ($product->get_id() != get_option('vmh_create_product_option')) {?>
                         <div class="recepes_title" style="margin-top: -45px">
                             <h4>Similar Recepies</h4>
                         </div>
-                        <?php }?>
+                        <?php }?> -->
 
                         <?php
 /*

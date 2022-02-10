@@ -866,7 +866,7 @@ class HookCallbacks {
 
         $metaValue = get_post_meta($post->ID, 'ingredients_price', true);
 
-        if ($metaValue <= 0) {
+        if ($metaValue == 0) {
             $metaValue = '0';
         }
 
@@ -877,7 +877,7 @@ class HookCallbacks {
                     <br/>
                 </strong>
                 <br />
-                <input type="number" name="ingredients_price" min="0" id="ingredients_price" value="' . $metaValue . '"/>
+                <input type="text" name="ingredients_price" id="ingredients_price" value="' . $metaValue . '"/>
             </div>
        ';
     }

@@ -70,7 +70,7 @@ jQuery(document).ready(function ($) {
         // calculate the ingredients price value either on change of select or initial loading
         calculateIngredientsPrice();
 
-        nicotineShotTrigger.change(calculateNicotineShot);
+        nicotineShotTrigger.on("change", calculateNicotineShot);
 
         // Controll the cart nicotine shot value input by restricting the increase feature
         cartNicotineShotInput.change(controllCartNicotineShotInput);

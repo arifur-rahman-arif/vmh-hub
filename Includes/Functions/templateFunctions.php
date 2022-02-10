@@ -675,7 +675,7 @@ function getRecommendedProducts($postPerPage) {
         echo '
         <div class="card">
             <div class="card-body">
-              No recommendation found yet. Try to bookmark a product.
+              No recommendation found yet. Try to bookmark a recipe.
             </div>
         </div>';
     }
