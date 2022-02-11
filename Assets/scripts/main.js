@@ -244,6 +244,10 @@ jQuery(document).ready(function ($) {
                     return;
             }
         });
+
+        $(".swal-title").css({
+            "text-transform": "none",
+        });
     }
 
     function discardRecipe(e) {
@@ -621,6 +625,16 @@ jQuery(document).ready(function ($) {
 
         let target = $(e.currentTarget);
         let productID = target.attr("data-id");
+        let cartKey = target.attr("data-key");
+
+        if (!cartKey) {
+            swal({
+                title: "Invalid process",
+                text: "Cart key is required",
+                button: "OK",
+            });
+            return;
+        }
 
         if (!productID) return;
 
@@ -636,6 +650,7 @@ jQuery(document).ready(function ($) {
                     data: {
                         productID,
                         action: "vmh_remove_product_from_cart",
+                        cartKey,
                     },
                     method: "post",
 
@@ -1402,7 +1417,7 @@ jQuery(document).ready(function ($) {
 
         let nictineShotValue = 0;
 
-        nictineShotValue = nicotineAmount / 100 / ((1.8 / 100) * bottleSize);
+        nictineShotValue = (nicotineAmount / 100 / (1.8 / 100)) * bottleSize;
 
         // nictineShotValue = roundNumberTo10Times(nictineShotValue);
 
@@ -1428,7 +1443,9 @@ jQuery(document).ready(function ($) {
         let target = $(e.currentTarget);
 
         let cartKey = target.attr("data-key");
-        let nicotineShot = parseInt(target.siblings(".cart_nicotine_shot_value").val());
+        let nicotineShot = Number(target.siblings(".cart_nicotine_shot_value").val());
+        let saltType = target.attr("data-type");
+        let typeCount = target.attr("data-type-count");
 
         if (nicotineShot < 0) {
             swal({
@@ -1438,15 +1455,31 @@ jQuery(document).ready(function ($) {
             });
             return false;
         }
-
-        if (!cartKey) {
+        if (!saltType) {
             swal({
                 title: "Error",
-                text: "Invalid cart key",
+                text: "Nicotine salt type is missing",
                 button: "OK",
             });
             return false;
         }
+        if (typeCount == undefined || typeCount == null) {
+            swal({
+                title: "Error",
+                text: "Salt type count is missing",
+                button: "OK",
+            });
+            return false;
+        }
+
+        // if (!cartKey) {
+        //     swal({
+        //         title: "Error",
+        //         text: "Invalid cart key",
+        //         button: "OK",
+        //     });
+        //     return false;
+        // }
 
         swal({
             title: "Confirmation",
@@ -1460,29 +1493,28 @@ jQuery(document).ready(function ($) {
                     url: vmhLocal.ajaxUrl,
                     data: {
                         action: "vmh_update_nicotineshot",
-                        cartKey,
                         nicotineShot,
+                        saltType,
+                        typeCount,
                     },
                     beforeSend: () => {
                         target.css({
                             "pointer-events": "none",
                         });
                     },
-                    success: function (res) {
-                        if (!res) return;
+                    success: function (response) {
+                        if (!response) return;
 
-                        let response = JSON.parse(res);
-
-                        if (response.response == "invalid") {
+                        if (response.data.response == "invalid") {
                             swal({
                                 title: "Error",
-                                text: response.message,
+                                text: response.data.message,
                                 button: "OK",
                             });
                             return;
                         }
 
-                        if (response.response == "success") {
+                        if (response.data.response == "success") {
                             location.reload();
                         }
                     },
@@ -1510,9 +1542,9 @@ jQuery(document).ready(function ($) {
     // Controll the shot value in by 10
     function controllCartNicotineShotInput(e) {
         let target = $(e.currentTarget);
-        let value = target.val();
+        let value = Number(target.val());
 
-        let prevValue = target.parent().find(".cart_nicotine_shot_hidden_value").val();
+        let prevValue = Number(target.parent().find(".cart_nicotine_shot_hidden_value").val());
 
         if (value > prevValue) {
             target.val(prevValue);
@@ -1547,7 +1579,11 @@ jQuery(document).ready(function ($) {
         });
 
         value = roundNumberTo10Times(value);
+
         target.val(value);
+
+        let shotPrice = ((value / 10) * Number(vmhLocal.nicotineShotPer10mlPrice)).toFixed(2);
+        target.parents(".vmh_nicotine_shot_card").find(".calculatedPrice").html(shotPrice);
     }
 
     // Hide the nicotine amount attribute option if ingredients percentage is greater than 16.7

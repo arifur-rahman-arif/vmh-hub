@@ -41,8 +41,13 @@
                 <?php }?>
             </div>
 
+            <?php $freebaseSaltCalculatedValue = $combinedNicotineShot['freebase-nicotine']['calculatedValue']?>
             <?php $freebaseSalt = $combinedNicotineShot['freebase-nicotine']['shotValue']?>
+            <?php $freebaseTypeCount = $combinedNicotineShot['freebase-nicotine']['typeCount']?>
+
+            <?php $nicotineSaltCalculatedValue = $combinedNicotineShot['nicotine-salt']['calculatedValue']?>
             <?php $nicotineSalt = $combinedNicotineShot['nicotine-salt']['shotValue']?>
+            <?php $nicotineSaltTypeCount = $combinedNicotineShot['nicotine-salt']['typeCount']?>
 
             <div class="card vmh_nicotine_shot_card">
                 <div class="card-body">
@@ -50,15 +55,20 @@
 
                     <div class="input_container">
                         <input type="hidden" class="cart_nicotine_shot_hidden_value" min="0"
-                            max="<?php echo esc_attr($freebaseSalt) ?>" value="<?php echo esc_attr($freebaseSalt) ?>">
+                            max="<?php echo esc_attr($freebaseSalt) ?>"
+                            value="<?php echo esc_attr($freebaseSaltCalculatedValue) ?>">
                         <input type="number" class="cart_nicotine_shot_value" min="0"
-                            max="<?php echo esc_attr($freebaseSalt) ?>" step="10"
+                            max="<?php echo esc_attr($freebaseSaltCalculatedValue) ?>" step="10"
                             value="<?php echo esc_attr($freebaseSalt) ?>" data-type="Freebase Nicotine">
-                        <i class="far fa-save nicotineshot_save_btn"></i>
+                        <i class="far fa-save nicotineshot_save_btn" data-type="freebase-nicotine"
+                            data-type-count="<?php echo esc_attr($freebaseTypeCount) ?>"></i>
                     </div>
 
                     <span>Price:
-                        <?php echo get_woocommerce_currency_symbol() . " " . getIndividualShotPrice($freebaseSalt) ?></span>
+                        <?php echo get_woocommerce_currency_symbol() ?>
+                        <span class="calculatedPrice"><?php echo getIndividualShotPrice($freebaseSalt) ?></span>
+                    </span>
+
                 </div>
             </div>
 
@@ -67,18 +77,24 @@
                     <label>Nicotine Salt:&nbsp;(ml)</label>
                     <div class="input_container">
                         <input type="hidden" class="cart_nicotine_shot_hidden_value" min="0"
-                            max="<?php echo esc_attr($nicotineSalt) ?>" value="<?php echo esc_attr($nicotineSalt) ?>">
+                            max="<?php echo esc_attr($nicotineSalt) ?>"
+                            value="<?php echo esc_attr($nicotineSaltCalculatedValue) ?>">
                         <input type="number" class="cart_nicotine_shot_value" min="0"
-                            max="<?php echo esc_attr($nicotineSalt) ?>" step="10"
+                            max="<?php echo esc_attr($nicotineSaltCalculatedValue) ?>" step="10"
                             value="<?php echo esc_attr($nicotineSalt) ?>" data-type="Nicotine Salt">
-                        <i class="far fa-save nicotineshot_save_btn"></i>
+                        <i class="far fa-save nicotineshot_save_btn" data-type="nicotine-salt"
+                            data-type-count="<?php echo esc_attr($nicotineSaltTypeCount) ?>"></i>
                     </div>
                     <span>Price:
-                        <?php echo get_woocommerce_currency_symbol() . " " . getIndividualShotPrice($nicotineSalt) ?></span>
+                        <?php echo get_woocommerce_currency_symbol() ?>
+                        <span class="calculatedPrice"><?php echo getIndividualShotPrice($nicotineSalt) ?></span>
+                    </span>
+
                 </div>
             </div>
 
             <div class="cart_header cart_header2 vmh_cart_total_container">
+                <input type="hidden" id="hidden_total_price" value="<?php echo getTotalCartPrice() ?>">
                 <h4>Total: <?php echo get_woocommerce_currency_symbol() ?><span class="vmh_bottom_cart_total">
                         <?php echo getTotalCartPrice() ?></span>
                 </h4>

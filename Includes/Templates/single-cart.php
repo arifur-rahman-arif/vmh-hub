@@ -9,7 +9,8 @@ $nicotineType = isset($args['variation']['attribute_pa_vmh_nicotine_type']) ? $a
               <h6 class="vmh_cart_product_name"><?php echo get_the_title($args['product_id']) ?></h6>
               <p>By <?php echo get_the_author_meta('display_name', get_post($args['product_id'])->post_author) ?></p>
           </div>
-          <div class="cart_single_item_flex_right cart_remove1" data-id="<?php echo $args['product_id'] ?>">
+          <div class="cart_single_item_flex_right cart_remove1" data-id="<?php echo $args['product_id'] ?>"
+              data-key="<?php echo esc_attr($args['cart_key']) ?>">
               <a href="#"><img src="<?php echo VMH_URL . 'Assets/images/cart/remove_icon.png' ?>" alt="images" /></a>
           </div>
       </div>
@@ -20,7 +21,7 @@ $nicotineType = isset($args['variation']['attribute_pa_vmh_nicotine_type']) ? $a
           <?php if (isset($args['nicotine_shot_value'])) {?>
 
           <div class="nicotineshot_container">
-              <p>Nicotine Shot: <?php echo esc_attr($args['nicotine_shot_value']) ?>ml</p>
+              <p class="cart_single_nicotine_shot_value">Nicotine Shot: <?php echo esc_attr($args['nicotine_shot_value']) ?>ml</p>
               <!-- <div class="input_container">
                   <input type="hidden" class="cart_nicotine_shot_hidden_value" min="0"
                       max="<?php echo esc_attr($args['nicotine_shot_calculated_value']) ?>"

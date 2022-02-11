@@ -1025,28 +1025,39 @@ function getCalculatedNicotineShots(array $cartItems) {
 
     $shotCalculationData = [
         'freebase-nicotine' => [
-            'name'      => 'Freebase Nicotine',
-            'shotValue' => 0
+            'name'            => 'Freebase Nicotine',
+            'calculatedValue' => 0,
+            'shotValue'       => 0,
+            'typeCount'       => 0
         ],
         'nicotine-salt'     => [
-            'name'      => 'Nicotine Salt',
-            'shotValue' => 0
+            'name'            => 'Nicotine Salt',
+            'calculatedValue' => 0,
+            'shotValue'       => 0,
+            'typeCount'       => 0
         ]
     ];
 
     foreach ($cartItems as $key => $item) {
         $nicotineType = isset($item["variation"]["attribute_pa_vmh_nicotine_type"]) ? $item["variation"]["attribute_pa_vmh_nicotine_type"] : null;
         $nicotineShotValue = isset($item["nicotine_shot_value"]) ? $item["nicotine_shot_value"] : null;
+        $nicotineShotCalculatedValue = isset($item["nicotine_shot_calculated_value"]) ? $item["nicotine_shot_calculated_value"] : null;
 
         if ($nicotineType && $nicotineShotValue) {
             // Add up the nicotine shot value
-            $shotCalculationData[$nicotineType]['shotValue'] += $nicotineShotValue;
+            $shotCalculationData[$nicotineType]['shotValue'] += $nicotineShotValue * $item["quantity"];
+            $shotCalculationData[$nicotineType]['calculatedValue'] += $nicotineShotCalculatedValue * $item["quantity"];
+            $shotCalculationData[$nicotineType]['typeCount'] += 1 * $item["quantity"];
         }
     }
 
     // Rounding the number to nearest integer & than rounding the number to 10 times of its value
     $shotCalculationData['freebase-nicotine']['shotValue'] = ceil($shotCalculationData['freebase-nicotine']['shotValue'] / 10) * 10;
     $shotCalculationData['nicotine-salt']['shotValue'] = ceil($shotCalculationData['nicotine-salt']['shotValue'] / 10) * 10;
+
+    // Rounding the calculated number to nearest integer & than rounding the number to 10 times of its value
+    $shotCalculationData['freebase-nicotine']['calculatedValue'] = ceil($shotCalculationData['freebase-nicotine']['calculatedValue'] / 10) * 10;
+    $shotCalculationData['nicotine-salt']['calculatedValue'] = ceil($shotCalculationData['nicotine-salt']['calculatedValue'] / 10) * 10;
 
     return $shotCalculationData;
 }
@@ -1065,7 +1076,7 @@ function getIndividualShotPrice($shotValue) {
 
     $shotPrice = ($shotValue / 10) * NICOTINE_SHOT_PRICE;
 
-    return $shotPrice;
+    return number_format($shotPrice, 2);
 }
 
 /**

@@ -41,11 +41,12 @@ class HookCallbacks {
     // Localize javascript files
     public function localizeFile() {
         wp_localize_script('vmh-main', 'vmhLocal', [
-            'ajaxUrl'              => admin_url('admin-ajax.php'),
-            'vmhProductAttributes' => vmhProductAttributes(),
-            'hideNicotineValue'    => esc_html(get_option('vmh_hide_nicotine')),
-            'currencySymbol'       => get_woocommerce_currency_symbol(),
-            'siteUrl'              => site_url('/')
+            'ajaxUrl'                  => admin_url('admin-ajax.php'),
+            'vmhProductAttributes'     => vmhProductAttributes(),
+            'hideNicotineValue'        => esc_html(get_option('vmh_hide_nicotine')),
+            'nicotineShotPer10mlPrice' => NICOTINE_SHOT_PRICE,
+            'currencySymbol'           => get_woocommerce_currency_symbol(),
+            'siteUrl'                  => site_url('/')
         ]);
     }
 
@@ -1076,8 +1077,12 @@ class HookCallbacks {
             $nicotineShotValue = $item->get_meta('Nicotine Shot Value', true);
 
             // Add up the nicotine shot value
-            $shotCalculationData[$nicotineType]['shotValue'] += $nicotineShotValue;
+            $shotCalculationData[$nicotineType]['shotValue'] += $nicotineShotValue * $item->get_quantity();
         }
+
+        // Rounding the number to nearest integer & than rounding the number to 10 times of its value
+        $shotCalculationData['freebase-nicotine']['shotValue'] = ceil($shotCalculationData['freebase-nicotine']['shotValue'] / 10) * 10;
+        $shotCalculationData['nicotine-salt']['shotValue'] = ceil($shotCalculationData['nicotine-salt']['shotValue'] / 10) * 10;
 
         echo $this->displayShotValueHtml($shotCalculationData);
     }

@@ -660,3 +660,7 @@ body > .wp-dark-mode-switcher {
 .recepes_left {
     min-width: 200px;
 }
+
+.cart_single_nicotine_shot_value {
+    display: none;
+}

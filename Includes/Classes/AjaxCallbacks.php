@@ -401,6 +401,21 @@ trait AjaxCallbacks {
         }
 
         $productID = sanitize_text_field($_POST['productID']);
+        $cartKey = sanitize_text_field($_POST['cartKey']);
+
+        if (!$productID) {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Product ID is missing');
+            echo json_encode($output);
+            wp_die();
+        }
+
+        if (!$cartKey) {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Cart item key is not found');
+            echo json_encode($output);
+            wp_die();
+        }
 
         if (!function_exists('WC')) {
             $output['response'] = 'invalid';
@@ -416,18 +431,13 @@ trait AjaxCallbacks {
 
         if ($product->get_type() == 'variable') {
             if ($items) {
-                foreach ($items as $key => $cartItem) {
-                    // if product id matches with cart item product id than retun the cart tiem key
-                    if ($cartItem['product_id'] == $productID) {
-                        $output = $this->removeCartItem([
-                            'cartItemKey' => $key,
-                            'price'       => $items[$key]['line_total'],
-                            'items'       => $items
-                        ]);
-                        echo json_encode($output);
-                        wp_die();
-                    }
-                }
+                $output = $this->removeCartItem([
+                    'cartItemKey' => $cartKey,
+                    'price'       => $items[$cartKey]['line_total'],
+                    'items'       => $items
+                ]);
+                echo json_encode($output);
+                wp_die();
             }
         }
 
@@ -1076,56 +1086,74 @@ trait AjaxCallbacks {
         if (sanitize_text_field($_POST['action']) !== 'vmh_update_nicotineshot') {
             $output['response'] = 'invalid';
             $output['message'] = vmhEscapeTranslate('Action is not valid');
-            echo json_encode($output);
-            wp_die();
-        }
-
-        if (!isset($_POST['cartKey']) || !$_POST['cartKey']) {
-            $output['response'] = 'invalid';
-            $output['message'] = vmhEscapeTranslate('Cart key is missing');
-            echo json_encode($output);
+            wp_send_json_error($output, 400);
             wp_die();
         }
 
         if (!isset($_POST['nicotineShot'])) {
             $output['response'] = 'invalid';
             $output['message'] = vmhEscapeTranslate('Nicotine shot is requried to update');
-            echo json_encode($output);
+            wp_send_json_error($output, 400);
             wp_die();
         }
 
-        $cartKey = sanitize_text_field($_POST['cartKey']);
+        if (!isset($_POST['saltType'])) {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Nicotine salt type is missing');
+            wp_send_json_error($output, 400);
+            wp_die();
+        }
+
+        if (!isset($_POST['typeCount'])) {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Salt type count is missing');
+            wp_send_json_error($output, 400);
+            wp_die();
+        }
+
+        $saltType = sanitize_text_field($_POST['saltType']);
+        $typeCount = sanitize_text_field($_POST['typeCount']);
 
         $nicotineShot = intval(sanitize_text_field($_POST['nicotineShot']));
 
         if ($nicotineShot < 0) {
             $output['response'] = 'invalid';
             $output['message'] = vmhEscapeTranslate('Nicotine shot can not be negative value');
-            echo json_encode($output);
+            wp_send_json_error($output, 400);
             wp_die();
         }
 
         try {
             $cart = WC()->cart->get_cart();
 
-            $cartItem = $cart[$cartKey];
+            if (!$cart || count($cart) < 1) {
+                $output['response'] = 'invalid';
+                $output['message'] = vmhEscapeTranslate('Cart is empty');
+                wp_send_json_error($output, 400);
+                wp_die();
+            }
 
-            $cartItem['nicotine_shot_value'] = $nicotineShot;
+            $modifiedNicotineShotValue = number_format(($nicotineShot / intval($typeCount)), 2);
 
-            WC()->cart->cart_contents[$cartKey] = $cartItem;
+            foreach ($cart as $key => $cartItem) {
+                if ($cartItem["variation"]["attribute_pa_vmh_nicotine_type"] === $saltType) {
+                    $cartItem['nicotine_shot_value'] = $modifiedNicotineShotValue;
+                    WC()->cart->cart_contents[$key] = $cartItem;
+                }
+            }
 
             WC()->cart->calculate_totals();
 
             $output['response'] = 'success';
             $output['message'] = vmhEscapeTranslate('Nicotine shot updated');
-            echo json_encode($output);
+            wp_send_json_success($output, 200);
             wp_die();
 
-        } catch (\Throwable $th) {
+        } catch (\Throwable $error) {
 
             $output['response'] = 'invalid';
-            $output['message'] = vmhEscapeTranslate($th->getMessage());
-            echo json_encode($output);
+            $output['message'] = vmhEscapeTranslate($error->getMessage());
+            wp_send_json_error($output, $error->getCode());
             wp_die();
         }
 
