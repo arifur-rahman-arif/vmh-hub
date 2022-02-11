@@ -21,7 +21,7 @@ $nicotineType = isset($args['variation']['attribute_pa_vmh_nicotine_type']) ? $a
 
           <div class="nicotineshot_container">
               <p>Nicotine Shot: <?php echo esc_attr($args['nicotine_shot_value']) ?>ml</p>
-              <div class="input_container">
+              <!-- <div class="input_container">
                   <input type="hidden" class="cart_nicotine_shot_hidden_value" min="0"
                       max="<?php echo esc_attr($args['nicotine_shot_calculated_value']) ?>"
                       value="<?php echo esc_attr($args['nicotine_shot_calculated_value']) ?>">
@@ -29,11 +29,11 @@ $nicotineType = isset($args['variation']['attribute_pa_vmh_nicotine_type']) ? $a
                       max="<?php echo esc_attr($args['nicotine_shot_calculated_value']) ?>" step="10"
                       value="<?php echo esc_attr($args['nicotine_shot_value']) ?>">
                   <i class="far fa-save nicotineshot_save_btn" data-key="<?php echo esc_attr($args['cart_key']) ?>"></i>
-              </div>
+              </div> -->
           </div>
           <?php }?>
           <p>Quantity : x<?php echo $args['quantity'] ?></p>
-          <p style="margin-top: 15px;">Ingredients Price: <?php echo get_woocommerce_currency_symbol() ?>
+          <p style="margin-top: 15px;">Recipe Price: <?php echo get_woocommerce_currency_symbol() ?>
               <?php echo $args['line_total'] ?></p>
 
           <?php if ($nicotineType) {?>

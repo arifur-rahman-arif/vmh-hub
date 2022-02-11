@@ -59,7 +59,7 @@ if ($product->get_id() != get_option('vmh_create_product_option')) {
         <form class="variations_form cart"
             action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product->get_permalink())); ?>"
             method="post" enctype='multipart/form-data' data-product_id="<?php echo absint($product->get_id()); ?>"
-            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                                                                                                                                                     ?>">
+            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                                                                                                                                                          ?>">
             <?php do_action('woocommerce_before_variations_form');?>
 
             <?php if (empty($available_variations) && false !== $available_variations): ?>
@@ -110,6 +110,19 @@ wc_dropdown_variation_attribute_options(
 
 
             <div class="single_variation_wrap">
+
+                <!-- Show custom price box -->
+                <div class="price_box">
+                    <input type="hidden" id="created_recipe_id" value="<?php echo get_the_ID() ?>">
+                    <input type="hidden" id="vmh_variation_id">
+                    <span class="extra" style="font-weight: bold">Recipe price:</span>
+                    <span class="symbol"><?php echo get_woocommerce_currency_symbol() ?></span>
+                    <span class="price"></span>
+                    <br>
+                    <span class="extra" style="font-size: 0.9em">Nicotine shot price will be calculated in the
+                        cart</span>
+                </div>
+
                 <?php
 /*
      * Hook: woocommerce_before_single_variation.
@@ -236,7 +249,7 @@ $attribute_keys = array_keys($attributes);
         <form class="variations_form cart"
             action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product->get_permalink())); ?>"
             method="post" enctype='multipart/form-data' data-product_id="<?php echo absint($product->get_id()); ?>"
-            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                                                                                                                                                     ?>">
+            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                                                                                                                                                          ?>">
             <?php do_action('woocommerce_before_variations_form');?>
 
             <?php if (empty($available_variations) && false !== $available_variations): ?>
@@ -272,15 +285,14 @@ wc_dropdown_variation_attribute_options(
             <div class="single_variation_wrap">
 
                 <!-- Show custom price box -->
-
                 <div class="price_box">
                     <input type="hidden" id="created_recipe_id">
                     <input type="hidden" id="vmh_variation_id">
-                    <span class="extra" style="font-weight: bold">Ingredients price:</span>
+                    <span class="extra" style="font-weight: bold">Recipe price:</span>
                     <span class="symbol"><?php echo get_woocommerce_currency_symbol() ?></span>
                     <span class="price"></span>
                     <br>
-                    <span class="extra" style="font-size: 0.8em">Nicotine shot price will be calculated in the
+                    <span class="extra" style="font-size: 0.9em">Nicotine shot price will be calculated in the
                         cart</span>
                 </div>
                 <?php

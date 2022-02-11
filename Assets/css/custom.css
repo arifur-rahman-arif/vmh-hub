@@ -657,3 +657,6 @@ body > .wp-dark-mode-switcher {
 .recepes_profile {
     display: none;
 }
+.recepes_left {
+    min-width: 200px;
+}

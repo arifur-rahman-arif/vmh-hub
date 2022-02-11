@@ -1044,6 +1044,10 @@ function getCalculatedNicotineShots(array $cartItems) {
         }
     }
 
+    // Rounding the number to nearest integer & than rounding the number to 10 times of its value
+    $shotCalculationData['freebase-nicotine']['shotValue'] = ceil($shotCalculationData['freebase-nicotine']['shotValue'] / 10) * 10;
+    $shotCalculationData['nicotine-salt']['shotValue'] = ceil($shotCalculationData['nicotine-salt']['shotValue'] / 10) * 10;
+
     return $shotCalculationData;
 }
 

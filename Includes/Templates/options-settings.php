@@ -90,7 +90,7 @@ $constantPriceOF50mlBottle = get_option('vmh_50ml_bottle_size_price') ? sanitize
 <tr>
     <td>
         <strong style="font-size: 15px;">
-            <label for="vmh_hide_nicotine">Hide nicotine over 16.7% :</label>
+            <label for="vmh_hide_nicotine">Hide nicotine amount over 16.7% ingredients :</label>
         </strong>
     </td>
     <td>

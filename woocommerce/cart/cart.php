@@ -46,7 +46,17 @@
 
             <div class="card vmh_nicotine_shot_card">
                 <div class="card-body">
-                    <label>Nicotine Freebase:&nbsp;<strong><?php echo esc_html($freebaseSalt) ?>ml</strong></label>
+                    <label>Freebase Nicotine:&nbsp;(ml)</label>
+
+                    <div class="input_container">
+                        <input type="hidden" class="cart_nicotine_shot_hidden_value" min="0"
+                            max="<?php echo esc_attr($freebaseSalt) ?>" value="<?php echo esc_attr($freebaseSalt) ?>">
+                        <input type="number" class="cart_nicotine_shot_value" min="0"
+                            max="<?php echo esc_attr($freebaseSalt) ?>" step="10"
+                            value="<?php echo esc_attr($freebaseSalt) ?>" data-type="Freebase Nicotine">
+                        <i class="far fa-save nicotineshot_save_btn"></i>
+                    </div>
+
                     <span>Price:
                         <?php echo get_woocommerce_currency_symbol() . " " . getIndividualShotPrice($freebaseSalt) ?></span>
                 </div>
@@ -54,7 +64,15 @@
 
             <div class="card vmh_nicotine_shot_card">
                 <div class="card-body">
-                    <label>Nicotine Salt:&nbsp;<strong><?php echo esc_html($nicotineSalt) ?>ml</strong></label>
+                    <label>Nicotine Salt:&nbsp;(ml)</label>
+                    <div class="input_container">
+                        <input type="hidden" class="cart_nicotine_shot_hidden_value" min="0"
+                            max="<?php echo esc_attr($nicotineSalt) ?>" value="<?php echo esc_attr($nicotineSalt) ?>">
+                        <input type="number" class="cart_nicotine_shot_value" min="0"
+                            max="<?php echo esc_attr($nicotineSalt) ?>" step="10"
+                            value="<?php echo esc_attr($nicotineSalt) ?>" data-type="Nicotine Salt">
+                        <i class="far fa-save nicotineshot_save_btn"></i>
+                    </div>
                     <span>Price:
                         <?php echo get_woocommerce_currency_symbol() . " " . getIndividualShotPrice($nicotineSalt) ?></span>
                 </div>

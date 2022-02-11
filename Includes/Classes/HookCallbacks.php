@@ -135,14 +135,14 @@ class HookCallbacks {
             'dashicons-tickets',
             5
         );
-        add_submenu_page(
-            'vmh-product-options',
-            __('Dashboard', 'sheetstowptable'),
-            __('Dashboard', 'sheetstowptable'),
-            'manage_options',
-            'gswpts-dashboard',
-            [$this, 'adminPage']
-        );
+        // add_submenu_page(
+        //     'vmh-product-options',
+        //     __('Dashboard', 'sheetstowptable'),
+        //     __('Dashboard', 'sheetstowptable'),
+        //     'manage_options',
+        //     'gswpts-dashboard',
+        //     [$this, 'adminPage']
+        // );
     }
 
     // Load admin page in the backend of this website

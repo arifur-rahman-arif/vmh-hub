@@ -217,9 +217,9 @@ jQuery(document).ready(function ($) {
     function showWcSuccessAlert() {
         if (!wcSuccesAlert.length) return;
 
-        let text = $(".vmh_wc_notice_text").text();
+        let title = $(".recepes_right_title h3").text();
 
-        swal("Thank you", text, {
+        swal(title, `${title} has been added to your cart`, {
             buttons: {
                 cart: {
                     text: "Go to cart",
@@ -533,14 +533,14 @@ jQuery(document).ready(function ($) {
             return;
         }
 
-        if (!nicotineShotValue) {
-            swal({
-                title: "Invalid process",
-                text: "Nicotine shot value is missing",
-                button: "OK",
-            });
-            return;
-        }
+        // if (!nicotineShotValue) {
+        //     swal({
+        //         title: "Invalid process",
+        //         text: "Nicotine shot value is missing",
+        //         button: "OK",
+        //     });
+        //     return;
+        // }
 
         $.ajax({
             url: vmhLocal.ajaxUrl,
@@ -626,7 +626,7 @@ jQuery(document).ready(function ($) {
 
         swal({
             title: "Confirmation",
-            text: "Are you sure you want to remove this product from cart",
+            text: "Are you sure you want to remove this recipe from cart",
             buttons: true,
             dangerMode: true,
         }).then((willDelete) => {
@@ -1397,20 +1397,21 @@ jQuery(document).ready(function ($) {
     }
 
     function calculateNicotineShot() {
-        let nicotineAmount = parseFloat($("#pa_vmh_nicotine_amount").val());
+        let nicotineAmount = parseFloat($("#pa_vmh_nicotine_amount option:selected").text());
         let bottleSize = parseFloat($("#pa_vmh_bottle_size").val());
-
-        if (!nicotineAmount || !bottleSize) return;
 
         let nictineShotValue = 0;
 
-        nictineShotValue = Math.round(nicotineAmount / ((1.8 / 100) * bottleSize));
+        nictineShotValue = nicotineAmount / 100 / ((1.8 / 100) * bottleSize);
 
-        nictineShotValue = roundNumberTo10Times(nictineShotValue);
+        // nictineShotValue = roundNumberTo10Times(nictineShotValue);
 
-        if (nictineShotValue) {
+        if (nictineShotValue || nictineShotValue == 0) {
+            nictineShotValue = nictineShotValue.toFixed(2);
             shotAmountElement.html(nictineShotValue);
             $("#nicotine_shot_value").val(nictineShotValue);
+        } else {
+            $("#nicotine_shot_value").val("0");
         }
     }
 
@@ -1516,7 +1517,7 @@ jQuery(document).ready(function ($) {
         if (value > prevValue) {
             target.val(prevValue);
             swal({
-                title: "Warning",
+                title: "Sorry",
                 text: "You can't increase the shot value",
                 button: "OK",
             });
@@ -1527,17 +1528,17 @@ jQuery(document).ready(function ($) {
         $(".vmh_checkout_btn").addClass("vmh_button disabled");
 
         $(".vmh_checkout_btn.vmh_button.disabled").click((e) => {
-            let productName = target.parents(".single_recopies_items").find(".vmh_cart_product_name").text();
+            let saltType = target.attr("data-type");
             e.preventDefault();
             swal({
                 title: "Wait",
-                text: `You have changed "${productName}" nicotine shot value. 
+                text: `You have changed "${saltType}" shot value. 
                 Please click save to update`,
                 button: "OK",
             });
 
             $(".swal-text").html(`
-                You have changed "${productName}" nicotine shot value.
+                You have changed "${saltType}" shot value.
                 Please click save <i class="far fa-save" style="
                 font-size: 1.3rem;
                 transform: translateY(2px);"></i> to update

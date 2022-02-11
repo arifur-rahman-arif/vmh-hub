@@ -223,12 +223,12 @@ trait AjaxCallbacks {
             wp_die();
         }
 
-        if (!$nicotineShotValue) {
-            $output['response'] = 'invalid';
-            $output['message'] = vmhEscapeTranslate('Nicotine shot is missing');
-            wp_send_json_error($output, 400);
-            wp_die();
-        }
+        // if (!$nicotineShotValue) {
+        //     $output['response'] = 'invalid';
+        //     $output['message'] = vmhEscapeTranslate('Nicotine shot is missing');
+        //     wp_send_json_error($output, 400);
+        //     wp_die();
+        // }
 
         $variationsValue = $this->sanitizeData($_POST['variationsValue']);
 
