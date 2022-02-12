@@ -23,6 +23,7 @@ Tags: ecommerce, woocommerce, one-column, custom-background, custom-colors, cust
 
 -   Fixed bugs
 -   Added combined nicotine shot value feature
+-   Added product recommendation feature
 -   Modified UI/UX
 
 ![](https://img.shields.io/static/v1?label=Release&message=1.11.1&color=nrightgreen)

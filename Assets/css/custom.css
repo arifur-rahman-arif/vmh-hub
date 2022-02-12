@@ -673,3 +673,9 @@ body > .wp-dark-mode-switcher {
 .woocommerce-info::before {
     color: #324b4b !important;
 }
+.wc-item-meta li {
+    display: flex !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    align-items: center !important;
+}

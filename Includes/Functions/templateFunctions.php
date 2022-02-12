@@ -620,65 +620,68 @@ function getRecentProducts($postPerPage) {
  */
 function getRecommendedProducts($postPerPage) {
 
-    $userID = get_current_user_id();
-    $favoriteMetaKey = '_user_favorite';
-    $favoriteProductsID = get_user_meta($userID, $favoriteMetaKey, true);
+    // $userID = get_current_user_id();
+    // $favoriteMetaKey = '_user_favorite';
+    // $favoriteProductsID = get_user_meta($userID, $favoriteMetaKey, true);
 
-    $uniqueCategories = [];
-    $products = [];
+    // $uniqueCategories = [];
+    // $products = [];
 
-    if ($favoriteProductsID) {
-        foreach ($favoriteProductsID as $key => $productID) {
-            $categories = get_the_terms($productID, 'product_cat');
-            if ($categories) {
-                foreach ($categories as $key => $cat) {
-                    // insert unquie categories to array
-                    if (!array_key_exists($cat->slug, $uniqueCategories)) {
-                        $uniqueCategories[$cat->term_id] = $cat->name;
-                    }
-                }
-            }
-        }
-    }
+    // if ($favoriteProductsID) {
+    //     foreach ($favoriteProductsID as $key => $productID) {
+    //         $categories = get_the_terms($productID, 'product_cat');
+    //         if ($categories) {
+    //             foreach ($categories as $key => $cat) {
+    //                 // insert unquie categories to array
+    //                 if (!array_key_exists($cat->slug, $uniqueCategories)) {
+    //                     $uniqueCategories[$cat->term_id] = $cat->name;
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
-    if ($uniqueCategories) {
-        foreach ($uniqueCategories as $key => $uniqueCategorie) {
-            $productsByCategorie = getProductsByCategory([
-                'taxonomy'    => 'product_cat',
-                'termID'      => $key,
-                'postPerPage' => $postPerPage
-            ]);
+    // if ($uniqueCategories) {
+    //     foreach ($uniqueCategories as $key => $uniqueCategorie) {
+    //         $productsByCategorie = getProductsByCategory([
+    //             'taxonomy'    => 'product_cat',
+    //             'termID'      => $key,
+    //             'postPerPage' => $postPerPage
+    //         ]);
 
-            if ($productsByCategorie) {
-                foreach ($productsByCategorie as $key => $value) {
-                    array_push($products, $value);
-                }
-            }
-        }
-    }
+    //         if ($productsByCategorie) {
+    //             foreach ($productsByCategorie as $key => $value) {
+    //                 array_push($products, $value);
+    //             }
+    //         }
+    //     }
+    // }
 
-    // if we have recommeded product show them
-    if ($products) {
-        foreach ($products as $key => $product) {
-            if (wc_get_product($product)->get_type() === 'simple' || wc_get_product($product)->get_type() === 'variable') {
-                if (wc_get_product($product)->get_id() != get_option('vmh_create_product_option')) {
-                    load_template(VMH_PATH . 'Includes/Templates/product.php', false, [
-                        'postTitle'    => $product->post_title,
-                        'postAuthorID' => $product->post_author,
-                        'productID'    => $product->ID,
-                        'productType'  => wc_get_product($product)->get_type()
-                    ]);
-                }
-            }
-        }
-    } else {
-        echo '
-        <div class="card">
-            <div class="card-body">
-              No recommendation found yet. Try to bookmark a recipe.
-            </div>
-        </div>';
-    }
+    // // if we have recommeded product show them
+    // if ($products) {
+    //     foreach ($products as $key => $product) {
+    //         if (wc_get_product($product)->get_type() === 'simple' || wc_get_product($product)->get_type() === 'variable') {
+    //             if (wc_get_product($product)->get_id() != get_option('vmh_create_product_option')) {
+    //                 load_template(VMH_PATH . 'Includes/Templates/product.php', false, [
+    //                     'postTitle'    => $product->post_title,
+    //                     'postAuthorID' => $product->post_author,
+    //                     'productID'    => $product->ID,
+    //                     'productType'  => wc_get_product($product)->get_type()
+    //                 ]);
+    //             }
+    //         }
+    //     }
+    // } else {
+    //     echo '
+    //     <div class="card">
+    //         <div class="card-body">
+    //           No recommendation found yet. Try to bookmark a recipe.
+    //         </div>
+    //     </div>';
+
+    // }
+
+    echo do_shortcode('[DCAS_shortcode style="1" rating="0" postsperpage="' . $postPerPage . '" columns="1"]');
 
 }
 

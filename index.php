@@ -34,7 +34,7 @@
                         <h4>Recommended for you</h4>
                     </div>
                     <div class="recopies_content_area">
-                        <?php getRecommendedProducts(10)?>
+                        <?php getRecommendedProducts(20)?>
                     </div>
                     <!-- <div class="pagiation_area">
                         <ul class="paginations">
