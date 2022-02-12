@@ -81,7 +81,7 @@ class Hooks extends HookCallbacks {
         add_action('woocommerce_before_add_to_cart_button', [$this, 'addNicotineshotfield'], 10);
 
         // Validate custom field ( nicotine shot value & ingredients price )
-        add_action('woocommerce_add_to_cart_validation', [$this, 'validatedCustomField'], 10, 4);
+        // add_action('woocommerce_add_to_cart_validation', [$this, 'validatedCustomField'], 10, 4);
 
         // Add custom nicotine shot data to cart item
         add_action('woocommerce_add_cart_item_data', [$this, 'addNicotineshotToCart'], 10, 3);
