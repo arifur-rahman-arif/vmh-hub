@@ -96,6 +96,8 @@ jQuery(document).ready(function ($) {
         showWcSuccessAlert();
 
         favoriteCloseButton.on("click", removeFavoriteProduct);
+
+        restrictNicotineAmountValue();
     }
 
     // Remove the product from user favorite list
@@ -968,6 +970,15 @@ jQuery(document).ready(function ($) {
             });
             return false;
         }
+
+        if ($(".wc-no-matching-variations.woocommerce-info").length) {
+            swal({
+                title: "Invalid process",
+                text: "Sorry your selected combination is not available. Please choose a different combination",
+                button: "OK",
+            });
+            return false;
+        }
     }
 
     // Show a alert value if all ingredients percentage value is not filled
@@ -1057,6 +1068,15 @@ jQuery(document).ready(function ($) {
                 ingredientsPercentageValues.push(Number($(valueOfElement).val()));
             }
         });
+
+        // Push ingredients on normal single recipe page
+        if (!ingredientsPercentageValues.length) {
+            $.each($(".ingredient_percentage_normal"), function (indexInArray, valueOfElement) {
+                if ($(valueOfElement).val()) {
+                    ingredientsPercentageValues.push(Number($(valueOfElement).val()));
+                }
+            });
+        }
 
         return ingredientsPercentageValues;
     }
@@ -1589,6 +1609,8 @@ jQuery(document).ready(function ($) {
     // Hide the nicotine amount attribute option if ingredients percentage is greater than 16.7
     function restrictNicotineAmountValue() {
         let ingredientsPercentageValues = getIngredientsPercentageValues();
+
+        if (ingredientsPercentageValues.length < 1) return;
 
         let totalPercentage = ingredientsPercentageValues.reduce((prevValue, currentValue) => prevValue + currentValue);
 

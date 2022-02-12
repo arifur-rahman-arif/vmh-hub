@@ -21,7 +21,8 @@ $nicotineType = isset($args['variation']['attribute_pa_vmh_nicotine_type']) ? $a
           <?php if (isset($args['nicotine_shot_value'])) {?>
 
           <div class="nicotineshot_container">
-              <p class="cart_single_nicotine_shot_value">Nicotine Shot: <?php echo esc_attr($args['nicotine_shot_value']) ?>ml</p>
+              <p class="cart_single_nicotine_shot_value">Nicotine Shot:
+                  <?php echo esc_attr($args['nicotine_shot_value']) ?>ml</p>
               <!-- <div class="input_container">
                   <input type="hidden" class="cart_nicotine_shot_hidden_value" min="0"
                       max="<?php echo esc_attr($args['nicotine_shot_calculated_value']) ?>"
@@ -35,7 +36,7 @@ $nicotineType = isset($args['variation']['attribute_pa_vmh_nicotine_type']) ? $a
           <?php }?>
           <p>Quantity : x<?php echo $args['quantity'] ?></p>
           <p style="margin-top: 15px;">Recipe Price: <?php echo get_woocommerce_currency_symbol() ?>
-              <?php echo $args['line_total'] ?></p>
+              <?php echo number_format($args['line_total'], 2) ?></p>
 
           <?php if ($nicotineType) {?>
           <p style="margin-top: 15px;">Nicotine Type: <?php echo esc_html(getFormattedNicotineType($nicotineType)) ?>

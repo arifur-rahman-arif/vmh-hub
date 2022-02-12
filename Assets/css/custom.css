@@ -664,3 +664,12 @@ body > .wp-dark-mode-switcher {
 .cart_single_nicotine_shot_value {
     display: none;
 }
+.wc-no-matching-variations.woocommerce-info {
+    margin-top: 1rem !important;
+}
+.woocommerce-info {
+    border-top-color: #324b4b !important;
+}
+.woocommerce-info::before {
+    color: #324b4b !important;
+}

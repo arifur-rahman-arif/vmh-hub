@@ -111,4 +111,14 @@ class FilterCallbacks {
         return $args;
     }
 
+    /**
+     * Increase the combination validation threshold of varitions in a variable product
+     * @param  $default
+     * @param  $product
+     * @return int
+     */
+    public function increaseCombinationThreshold($default, $product) {
+        return 500;
+    }
+
 }

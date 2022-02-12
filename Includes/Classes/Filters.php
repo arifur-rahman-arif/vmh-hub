@@ -15,5 +15,9 @@ class Filters extends FilterCallbacks {
 
         // Pre select the product options if the product is created by a user
         // add_filter('woocommerce_dropdown_variation_attribute_options_args', [$this, 'preSelectVariations']);
+
+        // Increase the combination validation threshold of varitions in a variable product
+        add_filter('woocommerce_ajax_variation_threshold', [$this, 'increaseCombinationThreshold'], 10, 2);
+
     }
 }

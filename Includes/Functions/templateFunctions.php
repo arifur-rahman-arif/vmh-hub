@@ -220,7 +220,7 @@ function ingredientsPecentage($key) {
         return '';
     }
 
-    return '<b>' . $ingredientsPercentage[$key] . '%</b>';
+    return '<b>' . $ingredientsPercentage[$key] . '%</b> <input type="hidden" class="ingredient_percentage_normal" value="' . esc_attr($ingredientsPercentage[$key]) . '" />';
 }
 
 // Get the use description from user database
@@ -1094,5 +1094,5 @@ function getFormattedNicotineType($type) {
         ]
     ];
 
-    return isset($formattedType[$type]) ? $formattedType[$type]['name'] : null;
+    return isset($formattedType[$type]) ? $formattedType[$type]['name'] : 'No nicotine';
 }
