@@ -616,7 +616,7 @@ class HookCallbacks {
                     <br/>
                 </strong>
                 <br />
-                <input type="number" name="ingredients_stock" min="0" id="ingredients_stock" value="' . $metaValue . '"/>
+                <input type="text" name="ingredients_stock" id="ingredients_stock" value="' . $metaValue . '"/>
             </div>
        ';
     }

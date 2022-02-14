@@ -484,7 +484,9 @@ body > .wp-dark-mode-switcher {
     background-color: #324b4b;
     color: #fff;
     max-width: 300px;
+    border-radius: 6px !important;
 }
+
 .vmh_nicotine_shot_card .card-body {
     display: flex;
     flex-direction: column;
@@ -648,7 +650,8 @@ body > .wp-dark-mode-switcher {
     background-color: unset;
 }
 
-.woocommerce-MyAccount-navigation-link.woocommerce-MyAccount-navigation-link--downloads {
+.woocommerce-MyAccount-navigation-link.woocommerce-MyAccount-navigation-link--downloads,
+.woocommerce-MyAccount-navigation-link.woocommerce-MyAccount-navigation-link--mwb_subscriptions {
     display: none;
 }
 
@@ -678,4 +681,9 @@ body > .wp-dark-mode-switcher {
     justify-content: flex-start !important;
     width: 100% !important;
     align-items: center !important;
+}
+
+.woocommerce-MyAccount-navigation,
+.woocommerce-MyAccount-content {
+    border-radius: 8px;
 }
