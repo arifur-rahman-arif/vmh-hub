@@ -98,6 +98,27 @@ jQuery(document).ready(function ($) {
         favoriteCloseButton.on("click", removeFavoriteProduct);
 
         restrictNicotineAmountValue();
+
+        $("#pa_vmh_nicotine_type").on("change", hideNicotineAmountSelect);
+    }
+
+    // Hide the nicotine amount select field when user choose no nicotine type value
+    function hideNicotineAmountSelect(e) {
+        let target = $(e.currentTarget);
+
+        let value = target.val();
+
+        if (value == "no-nicotine") {
+            $("#pa_vmh_nicotine_amount .enabled").prop("selected", true);
+            $("#pa_vmh_nicotine_amount").parents("tr").css({
+                display: "none",
+            });
+        } else {
+            $("#pa_vmh_nicotine_amount option:contains('Choose')").prop("selected", true);
+            $("#pa_vmh_nicotine_amount").parents("tr").css({
+                display: "table-row",
+            });
+        }
     }
 
     // Remove the product from user favorite list

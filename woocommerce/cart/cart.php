@@ -49,6 +49,8 @@
             <?php $nicotineSalt = $combinedNicotineShot['nicotine-salt']['shotValue']?>
             <?php $nicotineSaltTypeCount = $combinedNicotineShot['nicotine-salt']['typeCount']?>
 
+            <?php if ($freebaseSalt || $freebaseSaltCalculatedValue) {?>
+
             <div class="card vmh_nicotine_shot_card">
                 <div class="card-body">
                     <label>Freebase Nicotine:&nbsp;(ml)</label>
@@ -72,6 +74,11 @@
                 </div>
             </div>
 
+            <?php }?>
+
+
+            <?php if ($nicotineSalt || $nicotineSaltCalculatedValue) {?>
+
             <div class="card vmh_nicotine_shot_card">
                 <div class="card-body">
                     <label>Nicotine Salt:&nbsp;(ml)</label>
@@ -93,6 +100,8 @@
                 </div>
             </div>
 
+            <?php }?>
+
             <div class="cart_header cart_header2 vmh_cart_total_container">
                 <input type="hidden" id="hidden_total_price" value="<?php echo getTotalCartPrice() ?>">
                 <h4>Total: <?php echo get_woocommerce_currency_symbol() ?><span class="vmh_bottom_cart_total">
@@ -100,7 +109,7 @@
                 </h4>
             </div>
             <!-- Start Button -->
-            <div class="logon_input_btn logon_input_btn2 shipping_address_btn cart_btn">
+            <div class="logon_input_btn logon_input_btn2 shipping_address_btn cart_btn" style="margin-top: 10px;">
                 <div class="recepes_btn_content">
                     <a href="<?php echo esc_url(site_url('/checkout')) ?>" class="vmh_checkout_btn">Checkout</a>
                 </div>

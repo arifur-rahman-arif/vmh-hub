@@ -35,6 +35,24 @@ $productCategories = getProductCategories();
 
         <div class="row">
 
+
+            <!-- Recommendation section -->
+            <div class="col-md-12">
+                <!-- start recopies area -->
+                <div class="main_recopies_area">
+                    <div class="recopies_heading">
+                        <h4>Recommended for you</h4>
+                    </div>
+                    <div class="recopies_content_area">
+                        <?php getRecommendedProducts(20)?>
+                    </div>
+                </div>
+                <!-- End recopies area -->
+            </div>
+            <!-- End of recommendation section -->
+
+
+
             <?php if ($productCategories) {?>
 
             <?php foreach ($productCategories as $key => $category) {?>
@@ -92,6 +110,22 @@ $productCategories = getProductCategories();
 
             <?php }?>
             <?php }?>
+
+
+            <!-- New recipe section -->
+            <div class="col-md-12">
+                <!-- start recopies area -->
+                <div class="main_recopies_area">
+                    <div class="recopies_heading">
+                        <h4>New Recipes</h4>
+                    </div>
+                    <div class="recopies_content_area">
+                        <?php getRecentProducts(20)?>
+                    </div>
+
+                </div>
+            </div>
+            <!-- End of new recipe section -->
 
         </div>
     </div>
