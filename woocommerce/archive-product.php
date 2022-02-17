@@ -57,7 +57,7 @@ $productCategories = getProductCategories();
 
             <?php foreach ($productCategories as $key => $category) {?>
 
-            <?php if ($category->slug == 'pending-product') {?>
+            <?php if ($category->slug == 'pending-product' || $category->slug == 'duplicate-product') {?>
             <?php continue;?>
             <?php }?>
 

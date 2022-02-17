@@ -578,51 +578,36 @@ trait AjaxCallbacks {
         if (sanitize_text_field($_POST['action']) !== 'vmh_create_product') {
             $output['response'] = 'invalid';
             $output['message'] = vmhEscapeTranslate('Action is not valid');
-            echo json_encode($output);
+            wp_send_json_error($output, 400);
             wp_die();
         }
 
-        $userID = get_current_user_id();
         $sanitizedData = $this->sanitizeData($_POST);
+
+        if ($sanitizedData['recipeAction'] === 'check-recepie') {
+            $comparision = $this->compareRecipe([
+                'totalIngredientsAmount' => $sanitizedData['totalIngredientsAmount'],
+                'ingredientsValues'      => $sanitizedData['ingredientsValues']
+            ]);
+
+            if ($comparision['isDuplicate']) {
+                $output['response'] = 'duplicate';
+                $output['comparision'] = $comparision;
+                $output['message'] = vmhEscapeTranslate('Sorry but there is another recipe which is more than 95% similar to yours and so the creator of the original recipe will get the royalties for this recipe');
+                wp_send_json_success($output, 200);
+                wp_die();
+            }
+        }
+
+        $userID = get_current_user_id();
 
         $postID = null;
 
-        $categoryName = 'Pending Product';
-
-        wp_insert_term(
-            'Pending Product',
-            'product_cat',
-            [
-                'description' => 'Description for category', // optional
-                'parent'      => 0, // optional
-                'slug'        => 'pending-product' // optional
-            ]
-        );
-
-        //Check if category already exists
-        $term = get_term_by('slug', 'pending-product', 'product_cat');
-
-        $categoryID = null;
-
-        if ($term) {
-            $categoryID = $term->term_id;
-        }
-
-        //If it doesn't exist create new category
-        if (!$categoryID) {
-            wp_insert_term(
-                'Pending Product',
-                'product_cat',
-                [
-                    'description' => 'Description for category', // optional
-                    'parent'      => 0, // optional
-                    'slug'        => 'pending-product' // optional
-                ]
-            );
-        }
-
         //Get ID of category again incase a new one has been created
-        $categoryID = get_term_by('slug', 'pending-product', 'product_cat')->term_id;
+        $pendingCategoryID = $this->setCategory([
+            'categorySlug' => 'pending-product',
+            'categoryName' => 'Pending Product'
+        ]);
 
         $postArg = [
             'post_author'   => $userID,
@@ -630,10 +615,12 @@ trait AjaxCallbacks {
             'post_content'  => $sanitizedData['recipeNote'],
             'post_status'   => 'publish',
             'post_type'     => "product",
-            'post_category' => [$categoryID]
+            'post_category' => [$pendingCategoryID]
         ];
 
-        if ($sanitizedData['recipeAction'] === 'save-recepie') {
+        if ($sanitizedData['recipeAction'] === 'save-recepie' || $sanitizedData['recipeAction'] === 'check-recepie') {
+
+            $comparisionData = $sanitizedData['comparisionData'];
 
             $templateProductID = get_option('vmh_create_product_option');
 
@@ -643,7 +630,7 @@ trait AjaxCallbacks {
                 if (!$productObject->is_type('variable')) {
                     $output['response'] = 'invalid';
                     $output['message'] = vmhEscapeTranslate('Template product is not a variable product');
-                    echo json_encode($output);
+                    wp_send_json_error($output, 400);
                     wp_die();
                 }
 
@@ -655,7 +642,16 @@ trait AjaxCallbacks {
                 // Update the post tile after creating the variable product
                 $postArg['ID'] = $postID;
 
-                wp_set_post_terms($postID, [$categoryID], 'product_cat');
+                wp_set_post_terms($postID, [$pendingCategoryID], 'product_cat');
+
+                if ($comparisionData['isDuplicate'] === '1' && $comparisionData['originalProductID']) {
+                    update_post_meta($postID, 'original_product_id', $comparisionData['originalProductID']);
+                    $duplicateCategoryID = $this->setCategory([
+                        'categorySlug' => 'duplicate-product',
+                        'categoryName' => 'Duplicate Product'
+                    ]);
+                    wp_set_post_terms($postID, [$duplicateCategoryID], 'product_cat');
+                }
 
                 wp_update_post($postArg);
 
@@ -663,22 +659,22 @@ trait AjaxCallbacks {
 
         }
 
-        if ($sanitizedData['recipeAction'] === 'update-recepie') {
-            $productID = isset($sanitizedData['proudctID']) ? intval($sanitizedData['proudctID']) : null;
+        // if ($sanitizedData['recipeAction'] === 'update-recepie') {
+        //     $productID = isset($sanitizedData['proudctID']) ? intval($sanitizedData['proudctID']) : null;
 
-            $postAuthor = get_post($productID)->post_author;
+        //     $postAuthor = get_post($productID)->post_author;
 
-            if ($postAuthor != get_current_user_id()) {
-                $output['response'] = 'invalid';
-                $output['message'] = vmhEscapeTranslate('User do not have permission to edit product');
-                echo json_encode($output);
-                wp_die();
-            }
+        //     if ($postAuthor != get_current_user_id()) {
+        //         $output['response'] = 'invalid';
+        //         $output['message'] = vmhEscapeTranslate('User do not have permission to edit product');
+        //         wp_send_json_error($output, 403);
+        //         wp_die();
+        //     }
 
-            $postArg['ID'] = $productID;
-            $postArg['post_status'] = 'publish';
-            $postID = wp_update_post($postArg);
-        }
+        //     $postArg['ID'] = $productID;
+        //     $postArg['post_status'] = 'publish';
+        //     $postID = wp_update_post($postArg);
+        // }
 
         if (!is_wp_error($postID)) {
 
@@ -686,6 +682,7 @@ trait AjaxCallbacks {
             $productIngredients = $sanitizedData['ingredientsValues'];
             $ingredientsPercentageValues = $sanitizedData['ingredientsPercentageValues'];
             $productTags = $sanitizedData['tagValues'];
+            $totalIngredientsAmount = $sanitizedData['totalIngredientsAmount'];
 
             // add the product options to meta value
             if ($productOptions) {
@@ -695,7 +692,7 @@ trait AjaxCallbacks {
             // add product ingredients
             if ($productIngredients) {
                 update_post_meta($postID, 'product_ingredients', $productIngredients);
-
+                update_post_meta($postID, 'total_ingredients_amount', $totalIngredientsAmount);
             }
 
             // add product ingredients
@@ -711,7 +708,7 @@ trait AjaxCallbacks {
             $output['response'] = 'success';
             $output['id'] = $postID;
 
-            if ($sanitizedData['recipeAction'] === 'save-recepie') {
+            if ($sanitizedData['recipeAction'] === 'save-recepie' || $sanitizedData['recipeAction'] === 'check-recepie') {
                 $output['message'] = vmhEscapeTranslate('Your recipe has been created successfully. You can purchase this recipe by selecting other required options.');
             }
 
@@ -721,15 +718,146 @@ trait AjaxCallbacks {
 
             $this->sendEmailToAdmins($postID);
 
-            echo json_encode($output);
+            wp_send_json_success($output, 201);
             wp_die();
         }
 
         $output['response'] = 'invalid';
         $output['message'] = vmhEscapeTranslate('Recipe could not be created');
-        echo json_encode($output);
+        wp_send_json_success($output, 400);
         wp_die();
 
+    }
+
+    /**
+     * @param  $args
+     * @return mixed
+     */
+    public function setCategory($args) {
+        // $categorySlug = 'pending-product';
+        $categorySlug = $args['categorySlug'];
+        $categoryName = $args['categoryName'];
+
+        wp_insert_term(
+            $categoryName,
+            'product_cat',
+            [
+                'description' => 'Description for category', // optional
+                'parent'      => 0, // optional
+                'slug'        => $categorySlug // optional
+            ]
+        );
+
+        //Check if category already exists
+        $term = get_term_by('slug', $categorySlug, 'product_cat');
+
+        $categoryID = null;
+
+        if ($term) {
+            $categoryID = $term->term_id;
+        }
+
+        //If it doesn't exist create new category
+        if (!$categoryID) {
+            wp_insert_term(
+                'Pending Product',
+                'product_cat',
+                [
+                    'description' => 'Description for category', // optional
+                    'parent'      => 0, // optional
+                    'slug'        => $categorySlug // optional
+                ]
+            );
+        }
+
+        //Check if category already exists
+        $term = get_term_by('slug', $categorySlug, 'product_cat');
+
+        $categoryID = null;
+
+        if ($term) {
+            $categoryID = $term->term_id;
+        }
+
+        return $categoryID;
+    }
+
+    /**
+     * Check if the recipe still exits in server
+     * @param $args
+     */
+    public function compareRecipe($args) {
+
+        $comparision = [
+            'isDuplicate' => false
+        ];
+
+        $queryArgs = [
+            'post_type'      => 'product',
+            'posts_per_page' => -1,
+            'post__not_in'   => [get_option('vmh_create_product_option')],
+            'tax_query'      => [
+                [
+                    'taxonomy' => 'product_cat',
+                    'field'    => 'slug',
+                    'terms'    => 'pending-product',
+                    'operator' => 'NOT IN'
+                ],
+                [
+                    'taxonomy' => 'product_cat',
+                    'field'    => 'slug',
+                    'terms'    => 'duplicate-product',
+                    'operator' => 'NOT IN'
+                ]
+            ]
+        ];
+
+        $recipes = get_posts($queryArgs);
+
+        if (!$recipes) {
+            return $comparision;
+        }
+
+        foreach ($recipes as $key => $recipe) {
+            $postID = $recipe->ID;
+
+            $totalIngredientsAmount = (float) get_post_meta($postID, 'total_ingredients_amount', true);
+
+            // Check if total ingredients amount matches between 95%-105%
+            $comparisonValue = ($args['totalIngredientsAmount'] / $totalIngredientsAmount) * 100;
+
+            if (95 <= $comparisonValue && $comparisonValue <= 105) {
+
+                $ingredientsValues = $args['ingredientsValues'];
+                $productIngredients = get_post_meta($postID, 'product_ingredients', true);
+
+                // returns array containing only items that appear in both arrays
+                $matches = array_intersect($ingredientsValues, $productIngredients);
+
+                // total match count
+                $totalMatch = round(count($matches));
+
+                // set the largest array between 2 array
+                $largestArrCount = count($ingredientsValues) > count($productIngredients) ? count($ingredientsValues) : count($productIngredients);
+
+                $similarity = $totalMatch / $largestArrCount * 100;
+
+                // if 2 products ingredietns are 80% similar than its a duplicate product
+                if ($similarity == 100) {
+                    $comparision = [
+                        'isDuplicate'       => true,
+                        'originalProductID' => $postID,
+                        'productName'       => $recipe->post_title,
+                        'productUrl'        => get_permalink($postID)
+                    ];
+                    break;
+                }
+
+            }
+
+        }
+
+        return $comparision;
     }
 
     public function calculatedIngredientPrice() {

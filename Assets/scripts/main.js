@@ -21,8 +21,6 @@ jQuery(document).ready(function ($) {
     // Controll the cart nicotine shot input
     let cartNicotineShotInput = $(".cart_nicotine_shot_value");
 
-    let recipeSaveBtn = $(".vmh_save_recipe_btn");
-
     let bottleSizeSelect = $("#pa_vmh_bottle_size");
 
     let addToCartSaveUpdateBtn = $(".save_update_add_to_cart_btn");
@@ -77,8 +75,8 @@ jQuery(document).ready(function ($) {
 
         nicotineshotCartUpdateBtn.click(updateNicotineshotValue);
 
-        // Show the attributes options when clicked on next button
-        recipeSaveBtn.click(createRecipe);
+        // Show the attributes options when clicked on this button and create recipe
+        $(document).on("click", ".vmh_save_recipe_btn", createRecipe);
 
         // Intitalize jquery custom date picker
         customDatePicker();
@@ -109,6 +107,7 @@ jQuery(document).ready(function ($) {
         let value = target.val();
 
         if (value == "no-nicotine") {
+            $("#pa_vmh_nicotine_amount .enabled").removeClass("enabled");
             $("#pa_vmh_nicotine_amount .enabled").prop("selected", true);
             $("#pa_vmh_nicotine_amount").parents("tr").css({
                 display: "none",
@@ -838,6 +837,14 @@ jQuery(document).ready(function ($) {
         let recipeAction = target.attr("data-action");
         let proudctID = parseInt(getSlugParameter("edit_product"));
 
+        let isDuplicate = target.attr("data-duplicate");
+        let originalProductID = target.attr("data-original-product");
+
+        let comparisionData = {
+            isDuplicate,
+            originalProductID,
+        };
+
         if (recipeAction == "update-recepie") {
             if (!proudctID) {
                 swal({
@@ -863,6 +870,8 @@ jQuery(document).ready(function ($) {
             return false;
         }
 
+        let totalIngredientsAmount = calculatePercentage();
+
         $.ajax({
             type: "post",
             url: vmhLocal.ajaxUrl,
@@ -876,30 +885,47 @@ jQuery(document).ready(function ($) {
                 action: "vmh_create_product",
                 recipeAction,
                 proudctID,
+                totalIngredientsAmount,
+                comparisionData,
             },
             beforeSend: () => {
-                $(e.currentTarget).attr("disabled", true);
-                $(e.currentTarget).addClass("disabled");
+                $(e.currentTarget).addClass("disabled").attr("disabled", true);
+                target.parents(".recipes_create_buttons").children().addClass("disabled").attr("disabled", true);
             },
 
             success: (res) => {
                 if (!res) return;
 
-                let response = JSON.parse(res);
-
-                if (response.response == "invalid") {
+                if (res.data.response == "duplicate") {
                     swal({
-                        title: "Invalid process",
-                        text: response.message,
+                        title: "Information",
+                        text: res.data.message,
                         button: "OK",
                     });
+
+                    $(".swal-modal .swal-text").html(`
+                        Sorry but there is another recipe: <a href="${res.data.comparision.productUrl}" target="_blank"><b>${res.data.comparision.productName}</b></a> 
+                        which is more than 95% similar to yours and so the creator of the original recipe will get the royalties for this recipe
+                    `);
+
+                    target.parents(".recipes_create_buttons").html(`
+                        <a class="vmh_button recipie_create_next_btn reload_button" href="${vmhLocal.templateProductUrl}">Cancel</a>
+                        <button class="vmh_button vmh_save_recipe_btn recipie_create_next_btn" 
+                                data-action="save-recepie" 
+                                data-duplicate='1'
+                                data-original-product="${res.data.comparision.originalProductID}"
+                                style="width: 120px !important">
+                            Create Anyway
+                        </button>
+                    `);
+
                     return;
                 }
 
-                if (response.response == "success") {
+                if (res.data.response == "success") {
                     swal({
                         title: "Created",
-                        text: response.message,
+                        text: res.data.message,
                         button: "OK",
                     });
 
@@ -909,7 +935,7 @@ jQuery(document).ready(function ($) {
                         display: "flex",
                     });
                     restrictNicotineAmountValue();
-                    target.hide();
+                    target.parent().hide();
                     /* End of the next part of recipe creation */
 
                     // Disable the product ingredients section
@@ -920,8 +946,8 @@ jQuery(document).ready(function ($) {
 
                     $(".cut_selectbox, .add_ingredients_icon").remove();
 
-                    $("#created_recipe_id").val(response.id);
-                    $(".save_update_add_to_cart_btn").attr("data-id", response.id);
+                    $("#created_recipe_id").val(res.data.id);
+                    $(".save_update_add_to_cart_btn").attr("data-id", res.data.id);
                 }
             },
 
@@ -933,12 +959,22 @@ jQuery(document).ready(function ($) {
             error: (err) => {
                 $(e.currentTarget).attr("disabled", false);
                 $(e.currentTarget).removeClass("disabled");
-                swal({
-                    title: "Server Error",
-                    text: "Something went wrong. Try again or contact admin",
-                    button: "OK",
-                });
-                return;
+
+                try {
+                    swal({
+                        title: "Server Error",
+                        text: err.responseJSON.data.message,
+                        button: "OK",
+                    });
+                    return;
+                } catch (error) {
+                    swal({
+                        title: "Server Error",
+                        text: "Something went wrong. Try again or contact admin",
+                        button: "OK",
+                    });
+                    return;
+                }
             },
         });
     }
@@ -961,6 +997,17 @@ jQuery(document).ready(function ($) {
             return false;
         }
 
+        let ingredientsValues = getIngredientsValues();
+
+        if (new Set(ingredientsValues).size !== ingredientsValues.length) {
+            swal({
+                title: "Invalid process",
+                text: "Please remove duplicate ingredients",
+                button: "OK",
+            });
+            return false;
+        }
+
         let totalPercentage = calculatePercentage();
 
         if (totalPercentage >= 30) {
@@ -972,7 +1019,7 @@ jQuery(document).ready(function ($) {
             return false;
         }
 
-        if (optionsValue.length !== attributesLength && recipeAction != "save-recepie") {
+        if (optionsValue.length !== attributesLength && recipeAction != "save-recepie" && recipeAction != "check-recepie") {
             swal({
                 title: "Invalid process",
                 text: "All options needs to filled",
@@ -1160,6 +1207,15 @@ jQuery(document).ready(function ($) {
             swal({
                 title: "Invalid process",
                 text: "Ingredients amount is limited to 30%",
+                button: "OK",
+            });
+            return false;
+        }
+
+        if ($(".ingredients_wrapper select").length >= 11) {
+            swal({
+                title: "Sorry",
+                text: "You can only have 10 ingredients maximun",
                 button: "OK",
             });
             return false;

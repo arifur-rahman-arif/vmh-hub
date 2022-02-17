@@ -46,7 +46,8 @@ class HookCallbacks {
             'hideNicotineValue'        => esc_html(get_option('vmh_hide_nicotine')),
             'nicotineShotPer10mlPrice' => NICOTINE_SHOT_PRICE,
             'currencySymbol'           => get_woocommerce_currency_symbol(),
-            'siteUrl'                  => site_url('/')
+            'siteUrl'                  => site_url('/'),
+            'templateProductUrl'       => get_permalink(get_option('vmh_create_product_option'))
         ]);
     }
 
@@ -342,25 +343,29 @@ class HookCallbacks {
                 return;
             }
 
-            if ($product->get_type() == 'simple' || $product->get_type() == 'variable') {
-                $userID = get_post($productID)->post_author;
-                $user = get_userdata($userID);
-                // Get all the user roles as an array.
-                $user_roles = $user->roles;
-                // Check if the role you're interested in, is present in the array.
-                if (in_array('subscriber', $user_roles)) {
-                    $total = $item->get_total();
-                    $percentageValue = $this->getTotalPercentage($total);
-                    if ($order->get_status() === 'completed') {
-                        $totalCommssion = get_user_meta($userID, 'user_commision', true);
-                        $newCommission = (float) $percentageValue + (float) $totalCommssion;
-                        update_user_meta($userID, 'user_commision', $newCommission);
-                        $this->sendCommsionMailToCreator([
-                            'postID'     => $productID,
-                            'user'       => $user,
-                            'commission' => $percentageValue
-                        ]);
-                    }
+            $originalProductID = (int) get_post_meta($productID, 'original_product_id', true);
+
+            $userID = $originalProductID ? get_post($originalProductID)->post_author : get_post($productID)->post_author;
+
+            $user = get_userdata($userID);
+            // Get all the user roles as an array.
+            $user_roles = $user->roles;
+            // Check if the role you're interested in, is present in the array.
+            if (in_array('subscriber', $user_roles)) {
+                $total = $item->get_total();
+                $percentageValue = $this->getTotalPercentage($total);
+
+                if ($order->get_status() === 'completed') {
+
+                    $totalCommssion = get_user_meta($userID, 'user_commision', true);
+                    $newCommission = (float) $percentageValue + (float) $totalCommssion;
+                    update_user_meta($userID, 'user_commision', $newCommission);
+
+                    $this->sendCommsionMailToCreator([
+                        'postID'     => $productID,
+                        'user'       => $user,
+                        'commission' => $percentageValue
+                    ]);
                 }
             }
         }

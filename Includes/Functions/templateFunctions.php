@@ -582,6 +582,12 @@ function getRecentProducts($postPerPage) {
                 'field'    => 'slug',
                 'terms'    => 'pending-product',
                 'operator' => 'NOT IN'
+            ],
+            [
+                'taxonomy' => 'product_cat',
+                'field'    => 'slug',
+                'terms'    => 'duplicate-product',
+                'operator' => 'NOT IN'
             ]
         ]
     );
@@ -759,11 +765,9 @@ function getIngredientsOnProductEdit() {
             </select>
 
             <input type="number" min="0" max="30" name="ingredient_percentage" class="ingredient_percentage"
-                placeholder="5%">
+                placeholder="%">
 
-            <img class="add_ingredients_icon"
-                src="' . esc_url(VMH_URL . 'Assets/images/recipes_order/plus.png') . '" width="50px" height="50px"
-                alt="images" />
+            <i class="fa fa-plus-circle add_ingredients_icon" aria-hidden="true"></i>
         </div>
         ';
     }
@@ -777,7 +781,6 @@ function getIngredientsOnProductEdit() {
         $ingredientsHTML .= '
                 <div class="ingredients_wrapper create_ingredients_wrapper" id="create_ingredients_select' . $key . '">
 
-                    ' . showDeleteIcon($key) . '
 
                     <select data-seleted_val="' . esc_attr($ingredient) . '" name="product_ingredients" style="width: 300px" class="product_ingredients"
                         <option data-placeholder="true"></option>
@@ -788,6 +791,7 @@ function getIngredientsOnProductEdit() {
                     <input type="number" min="0" max="30" name="ingredient_percentage" class="ingredient_percentage" value="' . showIngredientsPercentageValues($key, $ingredientsPercentage) . '" >
 
                    ' . showCreateIcon($key) . '
+                   ' . showDeleteIcon($key) . '
 
                 </div>
         ';
@@ -804,9 +808,7 @@ function getIngredientsOnProductEdit() {
  */
 function showCreateIcon($i) {
     if ($i == 0) {
-        return '<img class="add_ingredients_icon"
-        src="' . esc_url(VMH_URL . 'Assets/images/recipes_order/plus.png') . '" width="50px" height="50px"
-        alt="images" />';
+        return '<i class="fa fa-plus-circle add_ingredients_icon" aria-hidden="true"></i>';
     } else {
         return null;
     }
@@ -817,7 +819,7 @@ function showCreateIcon($i) {
  */
 function showDeleteIcon($i) {
     if ($i != 0) {
-        return '<i class="fas fa-times cut_selectbox"></i>';
+        return '<i class="fas fa-times-circle cut_selectbox"></i>';
     } else {
         return null;
     }

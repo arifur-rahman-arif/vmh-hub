@@ -686,3 +686,15 @@ body > .wp-dark-mode-switcher {
 .woocommerce-MyAccount-content {
     border-radius: 8px;
 }
+
+.recipes_create_buttons {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 15px;
+}
+.reload_button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
