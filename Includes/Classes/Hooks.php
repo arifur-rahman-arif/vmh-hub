@@ -98,6 +98,10 @@ class Hooks extends HookCallbacks {
         // Action hook after order details in woocomerce order edit page
         add_action('woocommerce_admin_order_data_after_order_details', [$this, 'displayCalculatedNicotineShot'], 10);
 
+        add_action('woocommerce_save_account_details', [$this, 'saveUserDescriptionField'], 10, 1);
+
+        add_action('woocommerce_save_account_details', [$this, 'redirectToEditAccountPage'], 90, 1);
+
     }
 
     public function sessionStart() {

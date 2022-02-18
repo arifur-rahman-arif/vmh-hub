@@ -28,3 +28,4 @@ require_once VMH_PATH . 'Includes/Functions/generalFunctions.php';
 
 new \VmhHub\Includes\Classes\Hooks();
 new \VmhHub\Includes\Classes\Filters();
+new \VmhHub\Includes\Classes\ShortCode();

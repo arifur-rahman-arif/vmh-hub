@@ -149,7 +149,7 @@
                                                 </a>
                                                 <?php if (is_user_logged_in()) {?>
                                                 <a class="dropdown-item vmh_your_profile_link"
-                                                    href="<?php echo get_permalink(get_option('woocommerce_myaccount_page_id')); ?>/edit-account/">Your
+                                                    href="<?php echo get_author_posts_url(get_current_user_id()); ?>">Your
                                                     profile</a>
                                                 <?php }?>
                                             </div>

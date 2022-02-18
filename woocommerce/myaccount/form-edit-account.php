@@ -49,6 +49,14 @@ do_action('woocommerce_before_edit_account_form');?>
     <div class="clear"></div>
 
     <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide login_input_left">
+        <label for="description"><?php esc_html_e('Short Description', 'woocommerce');?>&nbsp;<span
+                class="required">*</span></label>
+        <textarea name="description" id="description" rows="20" style="height: 10em"
+            class="woocommerce-Input woocommerce-Input--text input-text"><?php echo esc_html($user->description) ?></textarea>
+    </p>
+    <div class="clear"></div>
+
+    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide login_input_left">
         <label for="account_email"><?php esc_html_e('Email address', 'woocommerce');?>&nbsp;<span
                 class="required">*</span></label>
         <input type="email" class="woocommerce-Input woocommerce-Input--email input-text" name="account_email"
@@ -56,7 +64,6 @@ do_action('woocommerce_before_edit_account_form');?>
     </p>
 
     <fieldset>
-        <legend><?php esc_html_e('Password change', 'woocommerce');?></legend>
 
         <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide login_input_left">
             <label

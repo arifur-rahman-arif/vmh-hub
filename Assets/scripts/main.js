@@ -239,6 +239,8 @@ jQuery(document).ready(function ($) {
     function showWcSuccessAlert() {
         if (!wcSuccesAlert.length) return;
 
+        if (!$(".vmh_single_add_to_cart").length) return;
+
         let title = $(".recepes_right_title h3").text();
 
         swal(title, `${title} has been added to your cart`, {

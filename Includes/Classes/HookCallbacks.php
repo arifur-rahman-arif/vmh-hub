@@ -1113,4 +1113,24 @@ class HookCallbacks {
 
         return $shotHtml;
     }
+
+    /**
+     * Save user description field
+     * @param $userID
+     */
+    public function saveUserDescriptionField($userID) {
+
+        if (isset($_POST['description'])) {
+            update_user_meta($userID, 'description', sanitize_text_field($_POST['description']));
+        }
+    }
+
+    /**
+     * Redirect the user into same edit account page
+     * @param $ID
+     */
+    public function redirectToEditAccountPage($ID) {
+        wp_safe_redirect(wc_get_endpoint_url('edit-account'));
+        exit();
+    }
 }

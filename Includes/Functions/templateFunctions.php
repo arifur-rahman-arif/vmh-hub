@@ -1101,3 +1101,56 @@ function getFormattedNicotineType($type) {
 
     return isset($formattedType[$type]) ? $formattedType[$type]['name'] : 'No nicotine';
 }
+
+// Get user created post
+function getUserRecipes() {
+
+    $author = get_queried_object();
+
+    $args = [
+        'author'         => $author->post_author,
+        'posts_per_page' => -1,
+        'post_type'      => 'product',
+        'tax_query'      => [
+            [
+                'taxonomy' => 'product_cat',
+                'field'    => 'slug',
+                'terms'    => 'pending-product',
+                'operator' => 'NOT IN'
+            ],
+            [
+                'taxonomy' => 'product_cat',
+                'field'    => 'slug',
+                'terms'    => 'duplicate-product',
+                'operator' => 'NOT IN'
+            ]
+        ]
+    ];
+
+    if (is_user_logged_in() && $author->post_author == get_current_user_id()) {
+        unset($args['tax_query']);
+    }
+
+    $recipes = get_posts($args);
+
+    if ($recipes) {
+        foreach ($recipes as $key => $recipe) {
+            if (wc_get_product($recipe)->get_id() != get_option('vmh_create_product_option')) {
+                load_template(VMH_PATH . 'Includes/Templates/my-recipe-product.php', false, [
+                    'postTitle'     => $recipe->post_title,
+                    'postAuthorID'  => $recipe->post_author,
+                    'productID'     => $recipe->ID,
+                    'productType'   => wc_get_product($recipe)->get_type(),
+                    'createdRecipe' => true
+                ]);
+            }
+        }
+    } else {
+        echo '
+        <div class="card">
+            <div class="card-body">
+              Oops. You have not created any products. <a href="' . esc_url(get_permalink(get_option('vmh_create_product_option'))) . '">Create a recipe</a>
+            </div>
+        </div>';
+    }
+}

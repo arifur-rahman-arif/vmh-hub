@@ -93,7 +93,8 @@ body > .wp-dark-mode-switcher {
 }
 
 .vmh_single_add_to_cart,
-.vmh_button {
+.vmh_button,
+.um-button {
     height: 41px !important;
     width: 160px !important;
     border-radius: 4px !important;
@@ -113,7 +114,8 @@ body > .wp-dark-mode-switcher {
 }
 
 .vmh_single_add_to_cart:hover,
-.vmh_button:hover {
+.vmh_button:hover,
+.um-button:hover {
     background: transparent !important;
     border: 1px solid #324b4b !important;
     color: #324b4b !important;
@@ -697,4 +699,54 @@ body > .wp-dark-mode-switcher {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.um-profile-body {
+    max-width: 100% !important;
+}
+
+.vmh_inside_profile {
+    margin-top: 40px;
+    justify-content: center;
+}
+
+.um-profile-nav {
+    background-color: #324b4b;
+}
+
+.um-profile-nav-item.active a {
+    background-color: #63d7d694 !important;
+}
+@media screen and (max-width: 560px) {
+    .vmh_inside_profile {
+        padding-right: 40px !important;
+    }
+}
+
+.um-button.um-button.um-button {
+    font-weight: bold !important;
+    border: 1px solid #324b4b !important;
+}
+
+.um-dropdown {
+    border: none !important;
+}
+
+.um-dropdown ul {
+    background: #324b4b !important;
+    border-radius: 6px !important;
+}
+.um-dropdown ul a {
+    color: #fff !important;
+    transition: 0.3s;
+    border: none !important;
+}
+
+.um-dropdown ul a:hover {
+    color: #8cdad9 !important;
+}
+
+.um-profile-edit {
+    margin-right: -10px !important;
+    display: none !important;
 }

@@ -62,7 +62,12 @@ if (isset($_GET['edit_product']) && $_GET['edit_product']) {
 <?php if (get_the_ID() != get_option('vmh_create_product_option')) {?>
 <div class="recepes_right_left_content">
     <p>By
-        <?php echo get_the_author_meta('display_name', get_post(get_the_ID())->post_author); ?>
+
+        <a href="<?php echo get_author_posts_url(get_post(get_the_ID())->post_author) ?>"
+            style="font-size: 15px; font-weight: bold">
+            <?php echo get_the_author_meta('display_name', get_post(get_the_ID())->post_author); ?>
+        </a>
+
     </p>
 </div>
 <?php }?>
