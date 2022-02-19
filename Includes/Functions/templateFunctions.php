@@ -562,7 +562,7 @@ function getUserCreatedRecipe() {
         echo '
         <div class="card">
             <div class="card-body">
-              Oops. You have not created any products. <a href="' . esc_url(get_permalink(get_option('vmh_create_product_option'))) . '">Create a recipe</a>
+              Oops. You have not created any recipe. <a href="' . esc_url(get_permalink(get_option('vmh_create_product_option'))) . '">Create a recipe</a>
             </div>
         </div>';
     }
@@ -1170,7 +1170,7 @@ function getUserRecipes() {
             echo '
             <div class="card">
                 <div class="card-body">
-                  Oops. You have not created any products. <a href="' . esc_url(get_permalink(get_option('vmh_create_product_option'))) . '">Create a recipe</a>
+                  Oops. You have not created any recipe. <a href="' . esc_url(get_permalink(get_option('vmh_create_product_option'))) . '">Create a recipe</a>
                 </div>
             </div>';
             return;
