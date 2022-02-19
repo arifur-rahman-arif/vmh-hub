@@ -68,7 +68,8 @@
                             <label for="privacy_policy"></label>
                         </div>
                         <div class="create_chekbox_content mt-1">
-                            <p>I accept <?php echo get_bloginfo() ?> terms and conditions terms & conditions</p>
+                            <p>I accept <?php echo get_bloginfo() ?> terms and conditions <a
+                                    href="<?php echo get_privacy_policy_url() ?>">terms & conditions</a> </p>
                         </div>
                     </div>
                     <!-- <div class="create_chekbox_item">

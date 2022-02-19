@@ -10,7 +10,7 @@ $isSubscriberRecipe = isset($args['createdRecipe']) && $args['createdRecipe'] &&
     <?php echo getProductIngrediants($args['productID']) ?>
 
 
-    <?php if ($isSubscriberRecipe) {?>
+    <?php if ($isSubscriberRecipe && $args['postAuthorID'] == get_current_user_id()) {?>
 
     <a href="#" class="my_orh2 vmh_delete_recipe vmh_recipie_close_btn" data-id="<?php echo $args['productID'] ?>">
         <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -23,8 +23,6 @@ $isSubscriberRecipe = isset($args['createdRecipe']) && $args['createdRecipe'] &&
     <?php }?>
 
     <!-- <div class="single_recopies_items_overly">
-
-
         <div class="single_recopies_items_overly_item">
             <?php if ($args['productType'] !== 'variable') {?>
                 <a href="#" class="vmh_add_to_cart_btn" data-id="<?php echo $args['productID'] ?>">Add To Cart</a>

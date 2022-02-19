@@ -21,8 +21,7 @@
                     </div>
                     <div class="footer_right_area">
                         <h2>Subscribe</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ultrices mauris vitae lacus
-                            consectetur vestibulum.</p>
+                        <p>Get subscribed for our latest news & products</p>
                         <div class="subscribe_mail home_page_subscribe_popup_main">
                             <form action="#" method="POST" id="vmh_subscriber_form">
                                 <div class="single_form">
@@ -53,7 +52,11 @@
             <div class="col-md-12">
                 <div class="footer_btm_area">
                     <div class="copyright_txt">
-                        <p>Copy Right MHV all Rigr Rsereved</p>
+                        <p>
+                            &copy; Copyright <script>
+                            document.write(new Date().getFullYear())
+                            </script>. All rights reserved.
+                        </p>
                     </div>
                     <div class="privacy_area">
                         <ul>

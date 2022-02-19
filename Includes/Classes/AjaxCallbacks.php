@@ -620,7 +620,7 @@ trait AjaxCallbacks {
 
         if ($sanitizedData['recipeAction'] === 'save-recepie' || $sanitizedData['recipeAction'] === 'check-recepie') {
 
-            $comparisionData = $sanitizedData['comparisionData'];
+            $comparisionData = isset($sanitizedData['comparisionData']) ? $sanitizedData['comparisionData'] : null;
 
             $templateProductID = get_option('vmh_create_product_option');
 
@@ -644,7 +644,7 @@ trait AjaxCallbacks {
 
                 wp_set_post_terms($postID, [$pendingCategoryID], 'product_cat');
 
-                if ($comparisionData['isDuplicate'] === '1' && $comparisionData['originalProductID']) {
+                if ($comparisionData && $comparisionData['isDuplicate'] === '1' && $comparisionData['originalProductID']) {
                     update_post_meta($postID, 'original_product_id', $comparisionData['originalProductID']);
                     $duplicateCategoryID = $this->setCategory([
                         'categorySlug' => 'duplicate-product',
@@ -903,13 +903,23 @@ trait AjaxCallbacks {
             if ($ingredientsTotalPrice) {
                 $ingredientsTotalPrice = number_format($ingredientsTotalPrice, 2);
 
+                $bottleSizeInteger = null;
+
+                if ($bottleSize == '10ml') {
+                    $bottleSizeInteger = 10;
+                }
+
+                if ($bottleSize == '50ml') {
+                    $bottleSizeInteger = 50;
+                }
+
                 $output['response'] = 'success';
                 $output['message'] = vmhEscapeTranslate('Total price of ingredients: ' . get_woocommerce_currency_symbol() . $ingredientsTotalPrice);
                 $output['price'] = $ingredientsTotalPrice;
                 $output['ingredientsAvailability'] = $this->checkIngredientsAvailability([
                     'productIngredients'          => $productIngredients,
                     'ingredientsPercentageValues' => $ingredientsPercentageValues,
-                    'bottleSize'                  => $bottleSize
+                    'bottleSize'                  => $bottleSizeInteger
                 ]);
                 wp_send_json_success($output, 200);
                 wp_die();
@@ -947,7 +957,7 @@ trait AjaxCallbacks {
 
             $ingredientPercentage = $ingredientsPercentageValues[$key];
 
-            $stockValue = $bottleSize * ($ingredientPercentage / 100);
+            $stockValue = (float) $bottleSize * ((float) $ingredientPercentage / 100);
 
             if ($stockValue > $ingredientStock) {
                 $ingredientsAvailability = false;

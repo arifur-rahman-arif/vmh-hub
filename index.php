@@ -60,6 +60,9 @@ $productCategories = getProductCategories();
             <?php if ($category->slug == 'pending-product') {?>
             <?php continue;?>
             <?php }?>
+            <?php if ($category->slug == 'duplicate-product') {?>
+            <?php continue;?>
+            <?php }?>
 
             <!-- Individual category products  -->
             <div class="col-md-12">

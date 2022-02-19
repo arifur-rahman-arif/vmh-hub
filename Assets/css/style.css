@@ -1269,7 +1269,7 @@ img {
 =========== START LOGIN PAGES  CSS ================
 ==================================================*/
 .login_main > div {
-    padding: 100px 0px 120px 0px;
+    padding: 150px 0px 120px 0px;
     /* background: url(../images/personlisation-1/circle.png) no-repeat scroll 0 0 / contain; */
     position: relative;
 }

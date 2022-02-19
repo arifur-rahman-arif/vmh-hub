@@ -113,6 +113,10 @@ body > .wp-dark-mode-switcher {
     cursor: not-allowed !important;
 }
 
+a.disabled {
+    pointer-events: none !important;
+}
+
 .vmh_single_add_to_cart:hover,
 .vmh_button:hover,
 .um-button:hover {
@@ -162,7 +166,7 @@ body > .wp-dark-mode-switcher {
     width: 90%;
 }
 .vmh_cart {
-    min-height: 50vh;
+    min-height: 55vh;
     margin-top: 100px;
 }
 .vmh_product_content {
@@ -474,6 +478,7 @@ body > .wp-dark-mode-switcher {
 
 .woocommerce-notices-wrapper {
     margin-bottom: 60px;
+    display: none;
 }
 
 .vmh_cart_total_container {

@@ -1052,8 +1052,14 @@ class HookCallbacks {
     public function addNicotineshotToItem($item, $cart_item_key, $values, $order) {
         if (isset($values['nicotine_shot_value'])) {
             $item->add_meta_data(
-                'Nicotine Shot Value',
+                '_nicotine_shot_value',
                 $values['nicotine_shot_value'],
+                false
+            );
+
+            $item->add_meta_data(
+                'Nicotine Shot (ml)',
+                (ceil($values['nicotine_shot_value'] / 10) * 10),
                 false
             );
         }
@@ -1079,7 +1085,7 @@ class HookCallbacks {
         foreach ($order->get_items() as $item_id => $item) {
 
             $nicotineType = $item->get_meta('pa_vmh_nicotine_type', true);
-            $nicotineShotValue = $item->get_meta('Nicotine Shot Value', true);
+            $nicotineShotValue = $item->get_meta('_nicotine_shot_value', true);
 
             // Add up the nicotine shot value
             $shotCalculationData[$nicotineType]['shotValue'] += $nicotineShotValue * $item->get_quantity();

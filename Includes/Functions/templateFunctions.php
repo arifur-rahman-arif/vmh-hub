@@ -1105,13 +1105,26 @@ function getFormattedNicotineType($type) {
     return isset($formattedType[$type]) ? $formattedType[$type]['name'] : 'No nicotine';
 }
 
-// Get user created post
+/**
+ * Get user created post
+ * @return null
+ */
 function getUserRecipes() {
 
-    $author = get_queried_object();
+    $userID = getUserIDFromUrl(sanitize_url($_SERVER['REQUEST_URI']));
+
+    if (!$userID) {
+        echo '
+        <div class="card">
+            <div class="card-body">
+              User did not created any recipe yet.
+            </div>
+        </div>';
+        return;
+    }
 
     $args = [
-        'author'         => $author->post_author,
+        'author'         => $userID,
         'posts_per_page' => -1,
         'post_type'      => 'product',
         'tax_query'      => [
@@ -1130,7 +1143,7 @@ function getUserRecipes() {
         ]
     ];
 
-    if (is_user_logged_in() && $author->post_author == get_current_user_id()) {
+    if (is_user_logged_in() && $userID == get_current_user_id()) {
         unset($args['tax_query']);
     }
 
@@ -1149,11 +1162,41 @@ function getUserRecipes() {
             }
         }
     } else {
-        echo '
-        <div class="card">
-            <div class="card-body">
-              Oops. You have not created any products. <a href="' . esc_url(get_permalink(get_option('vmh_create_product_option'))) . '">Create a recipe</a>
-            </div>
-        </div>';
+
+        if (is_user_logged_in() && $userID == get_current_user_id()) {
+            echo '
+            <div class="card">
+                <div class="card-body">
+                  Oops. You have not created any products. <a href="' . esc_url(get_permalink(get_option('vmh_create_product_option'))) . '">Create a recipe</a>
+                </div>
+            </div>';
+            return;
+        } else {
+            echo '
+            <div class="card">
+                <div class="card-body">
+                  User did not created any recipe yet.
+                </div>
+            </div>';
+            return;
+        }
     }
+}
+
+/**
+ * @param  $url
+ * @return mixed
+ */
+function getUserIDFromUrl($url) {
+    $pattern = "/profile\/\d+/i";
+    $isMatched = preg_match($pattern, $url, $matches);
+
+    if ($isMatched) {
+        $userID = (int) explode("/", $matches[0])[1];
+
+        return $userID;
+    }
+
+    return false;
+    print_r($matches);
 }

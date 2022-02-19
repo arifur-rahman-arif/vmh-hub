@@ -11,7 +11,7 @@ if (!is_user_logged_in()) {
 
 <!--======================== Start Mixxer Earning Popup Page ========================-->
 <section class="login_main">
-    <div class="container">
+    <div class="container" style="min-height: 65vh;display: flex;justify-content: center;align-items: center;">
         <!-- Start Background Overly -->
         <div class="mixxer_learning_popup_background">
             <img src="<?php echo esc_url(VMH_URL . 'Assets/images/mixxer_earning_popup/circle.png') ?>" alt="images" />
