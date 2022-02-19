@@ -769,3 +769,7 @@ a.disabled {
     -moz-box-shadow: -2px 2px 19px -3px rgba(130, 122, 122, 0.76);
     border-radius: 8px;
 }
+
+.um-profile.um-viewing {
+    padding-bottom: 15px !important;
+}

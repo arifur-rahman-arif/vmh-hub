@@ -1117,16 +1117,19 @@ function getUserRecipes() {
         echo '
         <div class="card">
             <div class="card-body">
-              User did not created any recipe yet.
+              User don\'t have any recipe yet.
             </div>
         </div>';
         return;
     }
 
+    $userInfo = get_userdata($userID);
+
     $args = [
         'author'         => $userID,
         'posts_per_page' => -1,
         'post_type'      => 'product',
+        'post__not_in'   => [get_option('vmh_create_product_option')],
         'tax_query'      => [
             [
                 'taxonomy' => 'product_cat',
@@ -1175,7 +1178,7 @@ function getUserRecipes() {
             echo '
             <div class="card">
                 <div class="card-body">
-                  User did not created any recipe yet.
+                  ' . $userInfo->display_name . ' don\'t have any recipe yet.
                 </div>
             </div>';
             return;
