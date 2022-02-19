@@ -121,4 +121,16 @@ class FilterCallbacks {
         return 500;
     }
 
+    /**
+     * Modify the Ultimate member plugin dropdown menu
+     * @param  $items
+     * @return mixed
+     */
+    public function modifyUltimateMemberPluginDropdown($items) {
+        $items['logout'] = '<a href="' . wp_logout_url() . '" class="real_url">Logout</a>';
+        $items['myaccount'] = '<a href="' . wc_get_page_permalink('myaccount') . 'edit-account" class="real_url">Edit Account Details</a>';
+
+        return $items;
+    }
+
 }

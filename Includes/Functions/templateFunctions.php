@@ -291,7 +291,7 @@ function getUserFavoriteProducts() {
             echo '
             <div class="card">
                 <div class="card-body">
-                  You have not added any products to your favorite collection.
+                  You have not added any recipe to your favorite collection.
                 </div>
             </div>';
         }
@@ -300,7 +300,7 @@ function getUserFavoriteProducts() {
         echo '
         <div class="card">
             <div class="card-body">
-              You have not added any products to your favorite collection.
+              You have not added any recipe to your favorite collection.
             </div>
         </div>';
     }
@@ -711,8 +711,11 @@ function getAllIngredients($args = []) {
     $options = '<option data-placeholder="true"></option>';
 
     foreach ($ingredients as $key => $ingredient) {
-        $options .= '<option class="' . addDisableAttr($ingredient->ID) . '" ' . addDisableAttr($ingredient->ID) . ' value="' . esc_attr($ingredient->ID) . '" >
-                        ' . esc_html($ingredient->post_title) . ' (' . ingredientInStock($ingredient->ID) . ')
+        // $options .= '<option class="' . addDisableAttr($ingredient->ID) . '" ' . addDisableAttr($ingredient->ID) . ' value="' . esc_attr($ingredient->ID) . '" >
+        //                 ' . esc_html($ingredient->post_title) . ' (' . ingredientInStock($ingredient->ID) . ')
+        //             </option>';
+        $options .= '<option value="' . esc_attr($ingredient->ID) . '" >
+                        ' . esc_html($ingredient->post_title) . '
                     </option>';
     }
 

@@ -19,5 +19,8 @@ class Filters extends FilterCallbacks {
         // Increase the combination validation threshold of varitions in a variable product
         add_filter('woocommerce_ajax_variation_threshold', [$this, 'increaseCombinationThreshold'], 10, 2);
 
+        // Modify the Ultimate member plugin dropdown menu
+        add_filter('um_myprofile_edit_menu_items', [$this, 'modifyUltimateMemberPluginDropdown'], 10, 2);
+
     }
 }

@@ -583,8 +583,15 @@ body > .wp-dark-mode-switcher {
     font-weight: bold;
     margin-top: 20px;
 }
+
+.swal-overlay.swal-overlay--show-modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .swal-modal {
-    width: 512px;
+    max-width: 512px;
 }
 .swal-title {
     font-family: "BALOO";
@@ -747,6 +754,13 @@ body > .wp-dark-mode-switcher {
 }
 
 .um-profile-edit {
-    margin-right: -10px !important;
-    display: none !important;
+    margin-right: -5px !important;
+}
+
+.vmh_profile_container {
+    padding-top: 18px;
+    box-shadow: -2px 2px 19px -3px rgba(130, 122, 122, 0.76);
+    -webkit-box-shadow: -2px 2px 19px -3px rgba(130, 122, 122, 0.76);
+    -moz-box-shadow: -2px 2px 19px -3px rgba(130, 122, 122, 0.76);
+    border-radius: 8px;
 }

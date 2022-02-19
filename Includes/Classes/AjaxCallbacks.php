@@ -861,57 +861,101 @@ trait AjaxCallbacks {
     }
 
     public function calculatedIngredientPrice() {
-        $output = [];
 
-        if (sanitize_text_field($_POST['action']) !== 'vmh_get_ingredients_price') {
+        try {
+            $output = [];
+
+            if (sanitize_text_field($_POST['action']) !== 'vmh_get_ingredients_price') {
+                $output['response'] = 'invalid';
+                $output['message'] = vmhEscapeTranslate('Action is not valid');
+                wp_send_json_error($output, 400);
+                wp_die();
+            }
+
+            $sanitizedData = $this->sanitizeData($_POST);
+
+            $productID = $sanitizedData['productID'];
+            $bottleSize = $sanitizedData['bottleSize'];
+
+            if (!$productID) {
+                $output['response'] = 'invalid';
+                $output['message'] = vmhEscapeTranslate('Product ID is missing or invalid product ID');
+                wp_send_json_error($output, 400);
+                wp_die();
+            }
+
+            if (!$bottleSize) {
+                $output['response'] = 'invalid';
+                $output['message'] = vmhEscapeTranslate('Bottle size is a required field');
+                wp_send_json_error($output, 400);
+                wp_die();
+            }
+
+            $productIngredients = get_post_meta($productID, 'product_ingredients', true);
+            $ingredientsPercentageValues = get_post_meta($productID, 'ingredients_percentage_values', true);
+
+            $ingredientsTotalPrice = getIngredientsTotalPrice([
+                'productIngredients'          => $productIngredients,
+                'ingredientsPercentageValues' => $ingredientsPercentageValues,
+                'bottleSize'                  => $bottleSize
+            ]);
+
+            if ($ingredientsTotalPrice) {
+                $ingredientsTotalPrice = number_format($ingredientsTotalPrice, 2);
+
+                $output['response'] = 'success';
+                $output['message'] = vmhEscapeTranslate('Total price of ingredients: ' . get_woocommerce_currency_symbol() . $ingredientsTotalPrice);
+                $output['price'] = $ingredientsTotalPrice;
+                $output['ingredientsAvailability'] = $this->checkIngredientsAvailability([
+                    'productIngredients'          => $productIngredients,
+                    'ingredientsPercentageValues' => $ingredientsPercentageValues,
+                    'bottleSize'                  => $bottleSize
+                ]);
+                wp_send_json_success($output, 200);
+                wp_die();
+            }
+
             $output['response'] = 'invalid';
-            $output['message'] = vmhEscapeTranslate('Action is not valid');
+            $output['message'] = vmhEscapeTranslate('Unable to get ingredients price');
             wp_send_json_error($output, 400);
             wp_die();
-        }
 
-        $sanitizedData = $this->sanitizeData($_POST);
-
-        $productID = $sanitizedData['productID'];
-        $bottleSize = $sanitizedData['bottleSize'];
-
-        if (!$productID) {
+        } catch (\Throwable $error) {
             $output['response'] = 'invalid';
-            $output['message'] = vmhEscapeTranslate('Product ID is missing or invalid product ID');
-            wp_send_json_error($output, 400);
+            $output['message'] = vmhEscapeTranslate($error->getMessage());
+            wp_send_json_error($output, $error->getCode());
             wp_die();
         }
 
-        if (!$bottleSize) {
-            $output['response'] = 'invalid';
-            $output['message'] = vmhEscapeTranslate('Bottle size is a required field');
-            wp_send_json_error($output, 400);
-            wp_die();
+    }
+
+    /**
+     * @param  $args
+     * @return mixed
+     */
+    public function checkIngredientsAvailability($args) {
+        $ingredientsAvailability = true;
+
+        extract($args);
+
+        if (!$productIngredients) {
+            return false;
         }
 
-        $productIngredients = get_post_meta($productID, 'product_ingredients', true);
-        $ingredientsPercentageValues = get_post_meta($productID, 'ingredients_percentage_values', true);
+        foreach ($productIngredients as $key => $ingredientID) {
+            $ingredientStock = (float) get_post_meta($ingredientID, 'ingredients_stock', true);
 
-        $ingredientsTotalPrice = getIngredientsTotalPrice([
-            'productIngredients'          => $productIngredients,
-            'ingredientsPercentageValues' => $ingredientsPercentageValues,
-            'bottleSize'                  => $bottleSize
-        ]);
+            $ingredientPercentage = $ingredientsPercentageValues[$key];
 
-        if ($ingredientsTotalPrice) {
-            $ingredientsTotalPrice = number_format($ingredientsTotalPrice, 2);
+            $stockValue = $bottleSize * ($ingredientPercentage / 100);
 
-            $output['response'] = 'success';
-            $output['message'] = vmhEscapeTranslate('Total price of ingredients: ' . get_woocommerce_currency_symbol() . $ingredientsTotalPrice);
-            $output['price'] = $ingredientsTotalPrice;
-            wp_send_json_success($output, 200);
-            wp_die();
+            if ($stockValue > $ingredientStock) {
+                $ingredientsAvailability = false;
+                break;
+            }
         }
 
-        $output['response'] = 'invalid';
-        $output['message'] = vmhEscapeTranslate('Unable to get ingredients price');
-        wp_send_json_error($output, 400);
-        wp_die();
+        return $ingredientsAvailability;
 
     }
 

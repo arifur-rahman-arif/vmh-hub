@@ -617,7 +617,7 @@ class HookCallbacks {
         echo '
             <div>
                 <strong>
-                    <label for="ingredients_stock">Stock Quantity :</label>
+                    <label for="ingredients_stock">Stock Quantity/ml :</label>
                     <br/>
                 </strong>
                 <br />

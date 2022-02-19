@@ -780,9 +780,9 @@ img {
     margin-bottom: 93px;
 }
 .comon_section_area {
-    margin-top: 150px;
+    margin-top: 110px;
     margin-bottom: 60px;
-    min-height: 400px;
+    min-height: 450px;
 }
 .comon_section_area .main_recopies_area {
     margin-bottom: 60px;
@@ -1848,7 +1848,7 @@ img {
 .my_favorite_area {
     position: relative;
     padding-top: 60px;
-    min-height: 400px;
+    min-height: 450px;
 }
 .my_favorite_area:after {
     content: "";

@@ -217,7 +217,7 @@ jQuery(document).ready(function ($) {
     function redirectToshopPage() {
         if (!emptyCartPage.length) return;
 
-        swal("Empty Cart", "You cart is empty. Return to shop to add product in your cart", {
+        swal("Empty Cart", "You cart is empty. Return to shop to add recipe in your cart", {
             buttons: {
                 cart: {
                     text: "Return to shop",
@@ -1739,13 +1739,22 @@ jQuery(document).ready(function ($) {
                     bottleSize,
                     productID,
                 },
+                beforeSend: () => {
+                    $(".vmh_single_add_to_cart, .save_update_add_to_cart_btn").addClass("disabled").attr("disabled", true);
+                },
                 success: function (response) {
                     if (!response) return;
 
                     if (response.data.response == "success") {
                         $(".price_box .price").html(response.data.price);
                         $(".price_box").addClass("active");
+
+                        if (!response.data.ingredientsAvailability || !response.data.price) {
+                            $(".vmh_single_add_to_cart, .save_update_add_to_cart_btn").addClass("disabled").attr("disabled", true);
+                        }
                     } else {
+                        $(".vmh_single_add_to_cart, .save_update_add_to_cart_btn").addClass("disabled").attr("disabled", true);
+
                         swal({
                             title: "Error",
                             text: response.data.message,
@@ -1754,7 +1763,16 @@ jQuery(document).ready(function ($) {
                         return;
                     }
                 },
+                complete: (response) => {
+                    if (!response.responseJSON.data.ingredientsAvailability || !response.responseJSON.data.price) {
+                        $(".vmh_single_add_to_cart, .save_update_add_to_cart_btn").addClass("disabled").attr("disabled", true);
+                    } else {
+                        $(".vmh_single_add_to_cart, .save_update_add_to_cart_btn").removeClass("disabled").attr("disabled", false);
+                    }
+                },
                 error: (err) => {
+                    $(".vmh_single_add_to_cart, .save_update_add_to_cart_btn").removeClass("disabled").attr("disabled", false);
+
                     swal({
                         title: "Server Error",
                         text: JSON.parse(err.responseText).data.message,
