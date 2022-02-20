@@ -98,6 +98,20 @@ jQuery(document).ready(function ($) {
         restrictNicotineAmountValue();
 
         $("#pa_vmh_nicotine_type").on("change", hideNicotineAmountSelect);
+
+        $(".ingredient_percentage, .product_ingredients").on("change", reChecktheRecipe);
+        $(document).on("click", ".add_ingredients_icon, .cut_selectbox", reChecktheRecipe);
+    }
+
+    // After clicking save recipe if the recipe is duplicate and user change ingredients bring back the previous button
+    function reChecktheRecipe() {
+        if ($(".create_anyway").length && $(".reload_button").length) {
+            $(".recipes_create_buttons").html(`
+                <button class="vmh_button vmh_save_recipe_btn recipie_create_next_btn" data-action="check-recepie">
+                    Save Recipe
+                </button>
+            `);
+        }
     }
 
     // Hide the nicotine amount select field when user choose no nicotine type value
@@ -600,7 +614,7 @@ jQuery(document).ready(function ($) {
 
                     cartQuantity.html(updatedQuatity);
 
-                    swal("Your product added to cart. Go to your cart of continue shopping", {
+                    swal("Your recipe added to cart. Go to your cart of continue shopping", {
                         buttons: {
                             cart: {
                                 text: "Go to cart",
@@ -622,7 +636,7 @@ jQuery(document).ready(function ($) {
                                 break;
 
                             default:
-                                swal("Oops. Wrong button");
+                                return;
                         }
                     });
                 }
@@ -912,7 +926,7 @@ jQuery(document).ready(function ($) {
 
                     target.parents(".recipes_create_buttons").html(`
                         <a class="vmh_button recipie_create_next_btn reload_button" href="${vmhLocal.templateProductUrl}">Cancel</a>
-                        <button class="vmh_button vmh_save_recipe_btn recipie_create_next_btn" 
+                        <button class="vmh_button vmh_save_recipe_btn recipie_create_next_btn create_anyway" 
                                 data-action="save-recepie" 
                                 data-duplicate='1'
                                 data-original-product="${res.data.comparision.originalProductID}"
@@ -1071,6 +1085,7 @@ jQuery(document).ready(function ($) {
 
             $.each(ingredients, function (i, element) {
                 let value = $(element).val();
+
                 if (value) {
                     let inputElement = $(element).parent().find(".ingredient_percentage");
                     let percentageValue = parseFloat(inputElement.val());
@@ -1078,6 +1093,8 @@ jQuery(document).ready(function ($) {
                         breakLoop = true;
                         return false; // breaks
                     }
+                } else {
+                    $(element).parent().remove();
                 }
             });
 
@@ -1217,7 +1234,7 @@ jQuery(document).ready(function ($) {
         if ($(".ingredients_wrapper select").length >= 11) {
             swal({
                 title: "Sorry",
-                text: "You can only have 10 ingredients maximun",
+                text: "You can have only maximum of 10 ingredients",
                 button: "OK",
             });
             return false;

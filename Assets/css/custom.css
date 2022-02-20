@@ -152,7 +152,7 @@ a.disabled {
     -moz-user-select: none !important;
     -ms-user-select: none !important;
     user-select: none !important;
-    width: 71px !important;
+    width: 135px !important;
     font-size: 12px !important;
     font-weight: 700 !important;
     background: #324b4b !important;
@@ -772,4 +772,16 @@ a.disabled {
 
 .um-profile.um-viewing {
     padding-bottom: 15px !important;
+}
+
+.woocommerce div.product form.cart .variations select {
+    width: 100% !important;
+}
+
+.header_main_area {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 99;
 }

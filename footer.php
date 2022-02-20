@@ -58,13 +58,6 @@
                             </script>. All rights reserved.
                         </p>
                     </div>
-                    <div class="privacy_area">
-                        <ul>
-                            <li><a href="#">Privacy</a></li>
-                            <li><a href="#">|</a></li>
-                            <li><a href="#">Cookies</a></li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </div>

@@ -4,6 +4,9 @@
     }
 }
 @media all and (max-width: 1199px) {
+    .recepes_right {
+        padding: 77px 80px 83px 30px;
+    }
     .menu_area {
         -webkit-box-flex: 0;
         -ms-flex: 0 0 42%;
@@ -102,6 +105,14 @@
     }
 }
 @media all and (max-width: 991px) {
+    .recepes_right {
+        padding: 30px 80px 83px 30px;
+    }
+
+    .recepes_right_site_right {
+        margin-top: 0;
+    }
+
     .header_content_area {
         -webkit-box-pack: justify;
         -ms-flex-pack: justify;
@@ -315,8 +326,13 @@
         -ms-flex-direction: column-reverse;
         flex-direction: column-reverse;
     }
-    .recepes_right_site_right {
-        margin-top: 50px;
+
+    .recepes_right_site_right_content p {
+        line-height: 60%;
+    }
+
+    .recepes_right_site_right_content {
+        margin-top: 0;
     }
     .recipes_order_single_tag_plus {
         -webkit-box-orient: horizontal;
@@ -345,6 +361,10 @@
     }
 }
 @media all and (max-width: 767px) {
+    .login_main > div {
+        padding: 0px 0px 120px 0px;
+    }
+
     .single_recopies_items {
         -webkit-box-flex: 0;
         -ms-flex: 0 0 calc((100% / 2) - 30px);
@@ -527,9 +547,7 @@
         width: 100%;
         padding: 50px 80px 60px 80px;
     }
-    .recepes_right_site_right_content {
-        margin-top: 40px;
-    }
+
     .userdash_profile {
         margin: -30px 0px 25px -30px;
     }
@@ -586,6 +604,10 @@
     }
 }
 @media all and (max-width: 575px) {
+    .comon_section_area {
+        padding: 80px 10px 0 10px;
+    }
+
     h3 {
         font-size: 32px;
     }
