@@ -453,6 +453,18 @@ a.disabled {
     cursor: pointer;
 }
 
+.tooltip {
+    left: 20px !important;
+}
+.tooltip-arrow::before {
+    border-right-color: #324b4b !important;
+}
+
+.tooltip-inner {
+    background-color: #324b4b !important;
+    font-size: 1rem;
+}
+
 .cart .quantity {
     display: none;
 }

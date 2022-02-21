@@ -62,8 +62,11 @@
                         <input type="number" class="cart_nicotine_shot_value" min="0"
                             max="<?php echo esc_attr($freebaseSaltCalculatedValue) ?>" step="10"
                             value="<?php echo esc_attr($freebaseSalt) ?>" data-type="Freebase Nicotine">
-                        <i class="far fa-save nicotineshot_save_btn" data-type="freebase-nicotine"
+
+                        <i class="far fa-save nicotineshot_save_btn" title="Click save to update" data-toggle="tooltip"
+                            data-placement="right" data-type="freebase-nicotine"
                             data-type-count="<?php echo esc_attr($freebaseTypeCount) ?>"></i>
+
                     </div>
 
                     <span>Price:
@@ -89,8 +92,11 @@
                         <input type="number" class="cart_nicotine_shot_value" min="0"
                             max="<?php echo esc_attr($nicotineSaltCalculatedValue) ?>" step="10"
                             value="<?php echo esc_attr($nicotineSalt) ?>" data-type="Nicotine Salt">
-                        <i class="far fa-save nicotineshot_save_btn" data-type="nicotine-salt"
+
+                        <i class="far fa-save nicotineshot_save_btn" title="Click save to update" data-toggle="tooltip"
+                            data-placement="right" data-type="nicotine-salt"
                             data-type-count="<?php echo esc_attr($nicotineSaltTypeCount) ?>"></i>
+
                     </div>
                     <span>Price:
                         <?php echo get_woocommerce_currency_symbol() ?>

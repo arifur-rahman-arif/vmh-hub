@@ -1,27 +1,12 @@
 <?php
 $products = getProductsByCategory([
-    'taxonomy'     => $args->taxonomy,
-    'termID'       => $args->term_id,
-    'postPerPage'  => -1,
-    'post__not_in' => [get_option('vmh_create_product_option')],
-    'tax_query'    => [
-        [
-            'taxonomy' => 'product_cat',
-            'field'    => 'slug',
-            'terms'    => 'pending-product',
-            'operator' => 'NOT IN'
-        ],
-        [
-            'taxonomy' => 'product_cat',
-            'field'    => 'slug',
-            'terms'    => 'duplicate-product',
-            'operator' => 'NOT IN'
-        ]
-    ]
+    'taxonomy'    => $args->taxonomy,
+    'termID'      => $args->term_id,
+    'postPerPage' => -1
 ]);
 ?>
 
-<?php if (!$products) {?>
+<?php if ($products) {?>
 
 <?php foreach ($products as $key => $product) {?>
 <?php if (wc_get_product($product)->get_type() === 'simple' || wc_get_product($product)->get_type() === 'variable') {?>

@@ -103,6 +103,15 @@ jQuery(document).ready(function ($) {
         $(document).on("click", ".add_ingredients_icon, .cut_selectbox", reChecktheRecipe);
 
         hideEmptyCategory();
+
+        $(document).on("click", ".reset_variations", clearPriceOnVariationClear);
+
+        $(".nicotineshot_save_btn").tooltip();
+    }
+
+    // Clear price box on clicking of clear button
+    function clearPriceOnVariationClear() {
+        $(".price_box").removeClass("active");
     }
 
     // Hide category container if there are no recipe inside of that element
@@ -1450,21 +1459,32 @@ jQuery(document).ready(function ($) {
             },
             method: "post",
             success: (res) => {
-                console.log(res);
-
                 if (!res) return;
 
                 let response = JSON.parse(res);
 
                 if (response.response == "success") {
-                    $(".subscribe_mail_popup").css({
-                        display: "block",
+                    swal({
+                        title: "Thank you",
+                        text: "You have successfully subscribed",
+                        button: "OK",
                     });
+                    return false;
                 } else {
-                    alert(response.message);
+                    swal({
+                        title: "Sorry",
+                        text: response.message,
+                        button: "OK",
+                    });
+                    return false;
                 }
             },
             error: (err) => {
+                swal({
+                    title: "Error",
+                    text: "Something went wrong. Please try again",
+                    button: "OK",
+                });
                 console.error(err);
             },
         });
@@ -1680,6 +1700,8 @@ jQuery(document).ready(function ($) {
             });
             return false;
         }
+
+        target.parent().find(".nicotineshot_save_btn").tooltip("show");
 
         // Disable the checkout button and show alert on click
         $(".vmh_checkout_btn").addClass("vmh_button disabled");

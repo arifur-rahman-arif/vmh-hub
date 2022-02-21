@@ -38,13 +38,26 @@ function getProductsByCategory(array $taxonomyArgs) {
     $args = [
         'post_type'      => 'product',
         'posts_per_page' => $taxonomyArgs['postPerPage'],
-        'tax_query'      => array(
-            array(
+        'post__not_in'   => [get_option('vmh_create_product_option')],
+        'tax_query'      => [
+            [
                 'taxonomy' => $taxonomyArgs['taxonomy'],
                 'field'    => 'term_id',
                 'terms'    => $taxonomyArgs['termID']
-            )
-        )
+            ],
+            [
+                'taxonomy' => 'product_cat',
+                'field'    => 'slug',
+                'terms'    => 'pending-product',
+                'operator' => 'NOT IN'
+            ],
+            [
+                'taxonomy' => 'product_cat',
+                'field'    => 'slug',
+                'terms'    => 'duplicate-product',
+                'operator' => 'NOT IN'
+            ]
+        ]
     ];
     $products = new WP_Query($args);
 
