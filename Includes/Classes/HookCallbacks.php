@@ -155,9 +155,9 @@ class HookCallbacks {
     // Register settings for product options
     public function addOptionSettings() {
 
-        $settinsKey = vmhProductAttributes();
+        $settingsKey = vmhProductAttributes();
 
-        foreach ($settinsKey as $key => $settingKey) {
+        foreach ($settingsKey as $key => $settingKey) {
             register_setting(
                 'vmh_options_key',
                 $key
@@ -351,22 +351,29 @@ class HookCallbacks {
             // Get all the user roles as an array.
             $user_roles = $user->roles;
             // Check if the role you're interested in, is present in the array.
-            if (in_array('subscriber', $user_roles)) {
-                $total = $item->get_total();
+            if (in_array('subscriber', $user_roles) && $order->get_status() === 'completed') {
+
+                // $originalShotValue = (float) $item->get_meta('_nicotine_shot_value');
+
+                // $shotValue = (ceil($originalShotValue / 10) * 10);
+
+                // $nicotineShotPrice = (float) getIndividualShotPrice($shotValue) * $item->get_quantity();
+
+                $total = (float) $item->get_total();
+
                 $percentageValue = $this->getTotalPercentage($total);
 
-                if ($order->get_status() === 'completed') {
+                $oldCommission = get_user_meta($userID, 'user_commission', true) ? get_user_meta($userID, 'user_commission', true) : 0;
 
-                    $totalCommssion = get_user_meta($userID, 'user_commision', true);
-                    $newCommission = (float) $percentageValue + (float) $totalCommssion;
-                    update_user_meta($userID, 'user_commision', $newCommission);
+                $newCommission = (float) $percentageValue + (float) $oldCommission;
 
-                    $this->sendCommsionMailToCreator([
-                        'postID'     => $productID,
-                        'user'       => $user,
-                        'commission' => $percentageValue
-                    ]);
-                }
+                update_user_meta($userID, 'user_commission', $newCommission);
+
+                $this->sendCommissionMailToCreator([
+                    'postID'     => $productID,
+                    'user'       => $user,
+                    'commission' => $percentageValue
+                ]);
             }
         }
     }
@@ -375,7 +382,7 @@ class HookCallbacks {
      * @param string  $mail
      * @param $user
      */
-    public function sendCommsionMailToCreator($args) {
+    public function sendCommissionMailToCreator($args) {
 
         if (!isset($args['postID']) || !isset($args['user']) || !isset($args['commission'])) {
             return;

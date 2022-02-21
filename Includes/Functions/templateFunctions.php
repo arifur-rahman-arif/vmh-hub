@@ -524,8 +524,8 @@ function totalEarningOfUser() {
     $earnings = '';
 
     if (in_array('subscriber', $user_roles)) {
-        if (get_user_meta($userID, 'user_commision', true)) {
-            $earnings = get_woocommerce_currency_symbol() . ' ' . number_format(get_user_meta($userID, 'user_commision', true), 2);
+        if (get_user_meta($userID, 'user_commission', true)) {
+            $earnings = get_woocommerce_currency_symbol() . ' ' . number_format(get_user_meta($userID, 'user_commission', true), 2);
         } else {
             $earnings = get_woocommerce_currency_symbol() . " " . '0.00';
         }
