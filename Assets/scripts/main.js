@@ -101,6 +101,15 @@ jQuery(document).ready(function ($) {
 
         $(".ingredient_percentage, .product_ingredients").on("change", reChecktheRecipe);
         $(document).on("click", ".add_ingredients_icon, .cut_selectbox", reChecktheRecipe);
+
+        hideEmptyCategory();
+    }
+
+    // Hide category container if there are no recipe inside of that element
+    function hideEmptyCategory() {
+        $(".vmh_hidden_no_product_cat").parents(".category_container").css({
+            display: "none",
+        });
     }
 
     // After clicking save recipe if the recipe is duplicate and user change ingredients bring back the previous button

@@ -62,7 +62,7 @@ $productCategories = getProductCategories();
             <?php }?>
 
             <!-- Individual category products  -->
-            <div class="col-md-12">
+            <div class="col-md-12 category_container">
                 <!-- start recopies area -->
                 <div class="main_recopies_area">
                     <div class="recopies_heading">
