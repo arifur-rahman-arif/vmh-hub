@@ -35,11 +35,12 @@ $nicotineType = isset($args['variation']['attribute_pa_vmh_nicotine_type']) ? $a
           </div>
           <?php }?>
           <p>Quantity : x<?php echo $args['quantity'] ?></p>
-          <p style="margin-top: 15px;">Recipe Price: <?php echo get_woocommerce_currency_symbol() ?>
+          <p style="margin-top: 15px; line-height: 20px">Recipe Price: <?php echo get_woocommerce_currency_symbol() ?>
               <?php echo number_format($args['line_total'], 2) ?></p>
 
           <?php if ($nicotineType) {?>
-          <p style="margin-top: 15px;">Nicotine Type: <?php echo esc_html(getFormattedNicotineType($nicotineType)) ?>
+          <p style="margin-top: 15px; line-height: 20px">Nicotine Type:
+              <?php echo esc_html(getFormattedNicotineType($nicotineType)) ?>
           </p>
           <?php }?>
       </div>

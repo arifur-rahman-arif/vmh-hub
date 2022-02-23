@@ -151,6 +151,10 @@ class Hooks extends HookCallbacks {
         /* Create post type for subscriber mail list */
         add_action('wp_ajax_vmh_get_ingredients_price', [$this, 'calculatedIngredientPrice']);
         add_action('wp_ajax_nopriv_vmh_get_ingredients_price', [$this, 'calculatedIngredientPrice']);
+
+        /* Create post type for subscriber mail list */
+        add_action('wp_ajax_vmh_first_time_visit', [$this, 'unsetUserFirstTimeVisit']);
+        add_action('wp_ajax_nopriv_vmh_first_time_visit', [$this, 'unsetUserFirstTimeVisit']);
     }
 
     // Remove functions that are hooked with these hooks

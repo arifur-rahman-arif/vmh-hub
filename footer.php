@@ -5,13 +5,13 @@
             <div class="col-md-12">
                 <div class="footer_content_area">
                     <div class="footer_left_area">
-                        <a href="#"><img src="<?php echo VMH_URL . 'Assets/images/footer-logo.png' ?>" alt="" /></a>
+                        <!-- <a href="#"><img src="<?php echo VMH_URL . 'Assets/images/footer-logo.png' ?>" alt="" /></a>
                         <p>
                             All our e-liquid recipes are created by users like you. You too can create your own
                             recipe and get paid doing so. Or sit back and relax, and let our recommendation engine
                             find your favourite recipes for
                             you.
-                        </p>
+                        </p> -->
                     </div>
                     <div class="footer_middle_area">
                         <div class="usefull_link">
@@ -58,6 +58,17 @@
                             </script>. All rights reserved.
                         </p>
                     </div>
+
+                    <!-- <div class="privacy_area">
+                        <ul>
+                            <li><a href="#">Privacy</a></li>
+                            <li><a href="#">|</a></li>
+                            <li><a href="#">Terms</a></li>
+                            <li><a href="#">|</a></li>
+                            <li><a href="#">Cookies</a></li>
+                        </ul>
+                    </div> -->
+
                 </div>
             </div>
         </div>

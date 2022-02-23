@@ -11,8 +11,7 @@ if (!is_user_logged_in()) {
 <section class="comon_section_area" style="min-height: 60vh;">
     <div class="container">
         <!-- Start Background Overly -->
-        <div class="login_background"
-            style="background-image: url(<?php echo VMH_URL . 'Assets/images/login/circle.png' ?>); height: 100%">
+        <div class="login_background" style="height: 100%">
         </div>
         <!-- End Background Overly -->
         <?php the_content()?>

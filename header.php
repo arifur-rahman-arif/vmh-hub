@@ -11,6 +11,9 @@
 </head>
 
 <body <?php is_home() ? '' : body_class()?>>
+
+    <?php setUserSession()?>
+
     <!--Start Header Area-->
     <header class="header_main_area">
         <div class="container">
@@ -19,7 +22,8 @@
                     <div class="header_content_area">
                         <div class="logo_area">
                             <a href="<?php echo site_url('/') ?>"><img
-                                    src="<?php echo VMH_URL . 'Assets/images/logo.png' ?>" alt="" /></a>
+                                    src="<?php echo wp_get_attachment_url(get_post_meta(get_page_by_title('Shop')->ID, 'site_menu_icon', true)) ?>"
+                                    alt="site-logo" /></a>
                         </div>
                         <div class="menu_area">
                             <div class="menu">

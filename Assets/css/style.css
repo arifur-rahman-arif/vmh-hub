@@ -213,6 +213,7 @@ img {
 .logo_area a img {
     max-width: 88px;
     width: 100%;
+    max-height: 20px;
 }
 .header_content_area {
     display: -webkit-box;
@@ -751,8 +752,11 @@ img {
 =========== START HOME PAGE S================
 =============================================*/
 .banner_main_area {
-    background: url(../images/home/home_bg.png) no-repeat scroll 0 0 / cover;
+    /* background: url(../images/home/home_bg.png) no-repeat scroll 0 0 / cover; */
+    background: -webkit-linear-gradient(top, #324b4b 0%, #89d9d8 100%);
+    background: linear-gradient(180deg, #324b4b 0%, #89d9d8 100%);
 }
+
 .banner_content_area {
     padding-top: 180px;
 }
@@ -781,7 +785,6 @@ img {
 }
 .comon_section_area {
     margin-top: 110px;
-    margin-bottom: 60px;
     min-height: 450px;
 }
 .comon_section_area .main_recopies_area {
@@ -796,7 +799,9 @@ img {
 =========== START ABOUT US PAGE   ================
 =============================================*/
 .about_us_banner {
-    background: url(../images/about/about_bg.png) no-repeat scroll 0 0 / cover;
+    /* background: url(../images/about/about_bg.png) no-repeat scroll 0 0 / cover; */
+    background: -webkit-linear-gradient(top, #324b4b 0%, #89d9d8 100%);
+    background: linear-gradient(180deg, #324b4b 0%, #89d9d8 100%);
     padding-top: 150px;
 }
 .about_banner_text {
@@ -1056,7 +1061,7 @@ img {
     height: 350.7px;
     left: 44%;
     top: -230px;
-    background: url(../images/contact/Circles.png) no-repeat scroll 0 0 / cover;
+    /* background: url(../images/contact/Circles.png) no-repeat scroll 0 0 / cover; */
 }
 .contact_pages_form_data {
     margin-bottom: 60px;
@@ -1269,7 +1274,7 @@ img {
 =========== START LOGIN PAGES  CSS ================
 ==================================================*/
 .login_main > div {
-    padding: 150px 0px 120px 0px;
+    padding: 110px 0px 80px 0px;
     /* background: url(../images/personlisation-1/circle.png) no-repeat scroll 0 0 / contain; */
     position: relative;
 }
@@ -1848,9 +1853,9 @@ img {
 .my_favorite_area {
     position: relative;
     padding-top: 60px;
-    min-height: 450px;
+    min-height: 500px;
 }
-.my_favorite_area:after {
+/* .my_favorite_area:after {
     content: "";
     position: absolute;
     width: 648px;
@@ -1859,7 +1864,7 @@ img {
     top: 0;
     background: url(../images/favorite/shape.png) no-repeat scroll 0 0 / cover;
     z-index: -1;
-}
+} */
 /*.my_favorite_close a {
   text-align: right;
   display: block;
@@ -1884,10 +1889,9 @@ img {
 ===========     START MY RECIPES PAGES  CSS      =============
 ==============================================================*/
 .my_recipes_area {
-    padding-top: 60px;
     position: relative;
 }
-.my_recipes_area:after {
+/* .my_recipes_area:after {
     content: "";
     position: absolute;
     width: 902px;
@@ -1896,7 +1900,7 @@ img {
     top: 295px;
     background: url(../images/recipes/recep_bg.png) no-repeat scroll 0 0 / cover;
     z-index: -1;
-}
+} */
 .my_recipes_area .main_recopies_area {
     margin-bottom: 40px;
 }

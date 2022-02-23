@@ -8,9 +8,9 @@
 <section class="login_main create_account shopping_method_main_padd">
     <div class="container">
         <!-- Start Background Overly -->
-        <div class="shipping_background">
+        <!-- <div class="shipping_background">
             <img src="<?php echo VMH_URL . 'Assets/images/shipping_address/circle.png' ?>" alt="images" />
-        </div>
+        </div> -->
         <!-- End Background Overly -->
 
         <div class="shipping_menu">

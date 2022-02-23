@@ -167,7 +167,7 @@ a.disabled {
 }
 .vmh_cart {
     min-height: 55vh;
-    margin-top: 100px;
+    margin-top: 45px;
 }
 .vmh_product_content {
     word-break: break-all;
@@ -455,6 +455,7 @@ a.disabled {
 
 .tooltip {
     left: 20px !important;
+    pointer-events: none !important;
 }
 .tooltip-arrow::before {
     border-right-color: #324b4b !important;
@@ -463,6 +464,7 @@ a.disabled {
 .tooltip-inner {
     background-color: #324b4b !important;
     font-size: 1rem;
+    pointer-events: none !important;
 }
 
 .cart .quantity {
@@ -796,4 +798,12 @@ a.disabled {
     left: 0;
     width: 100%;
     z-index: 999;
+}
+
+.cart_main {
+    padding: 0px 30px;
+}
+
+.wpcf7-spinner {
+    margin: 20px 0 !important;
 }

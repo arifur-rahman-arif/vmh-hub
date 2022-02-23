@@ -1383,4 +1383,29 @@ trait AjaxCallbacks {
 
     }
 
+    /* Unset user first time visit session */
+    public function unsetUserFirstTimeVisit() {
+        $output = [];
+
+        if (sanitize_text_field($_POST['action']) !== 'vmh_first_time_visit') {
+            $output['response'] = 'invalid';
+            $output['message'] = vmhEscapeTranslate('Action is not valid');
+            wp_send_json_error($output, 400);
+            wp_die();
+        }
+
+        if ($_POST['setSession'] == 'true') {
+            $_SESSION["set_user_session"] = true;
+        } else {
+            $_SESSION["set_user_session"] = false;
+            unset($_SESSION["set_user_session"]);
+            session_destroy();
+        }
+
+        $output['response'] = 'success';
+        $output['message'] = vmhEscapeTranslate('User session deleted');
+        wp_send_json_success($output, 200);
+        wp_die();
+    }
+
 }

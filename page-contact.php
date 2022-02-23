@@ -8,14 +8,14 @@
                 <div class="banner_headign">
                     <div class="section_heading">
                         <h2>CONTACT</h2>
-                        <p>Lorem Ipsum is simply dummy text of the printing and</p>
+                        <!-- <p>Lorem Ipsum is simply dummy text of the printing and</p> -->
                     </div>
                     <div class="about_banner_text">
                         <div class="left_work_txt">
                             <h3>How can we help</h3>
-                            <p>
+                            <!-- <p>
                                 Lorem Ipsum is simply dummy text of the printing and done.
-                            </p>
+                            </p> -->
                         </div>
                     </div>
                 </div>
@@ -118,7 +118,7 @@
 <!-- End contact us pages body area -->
 
 <!-- Start maps main area -->
-<div class="contact_maps_main_area">
+<!-- <div class="contact_maps_main_area">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -150,7 +150,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <!-- Start maps main area -->
 
 <?php get_footer('header.php')?>

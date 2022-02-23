@@ -12,6 +12,7 @@
  *
  * @version 3.6.0
  *
+ *
  * @package WooCommerce\Templates
  *
  * @see     https://docs.woocommerce.com/document/template-structure/
@@ -55,9 +56,9 @@ do_action('woocommerce_before_single_product');
 ?>
 
             <!-- Start Background Overly -->
-            <div class="recepes_background_img">
+            <!-- <div class="recepes_background_img">
                 <img src="<?php echo esc_url(VMH_URL . 'Assets/images/thank_you2/circle.png') ?>" alt="images" />
-            </div>
+            </div> -->
             <!-- End Background Overly -->
             <?php if ($product->get_id() == get_option('vmh_create_product_option')) {?>
 

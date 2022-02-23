@@ -507,8 +507,8 @@ function showEarningSectionHtml() {
     }
 }
 
-// check if the current user is admin
 /**
+ * check if the current user is admin
  * @param string $role
  */
 function userRole(string $role) {

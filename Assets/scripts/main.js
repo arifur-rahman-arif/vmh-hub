@@ -18,7 +18,7 @@ jQuery(document).ready(function ($) {
     let shotAmountElement = $(".shot_amount");
     let nicotineshotCartUpdateBtn = $(".nicotineshot_save_btn");
 
-    // Controll the cart nicotine shot input
+    // Control the cart nicotine shot input
     let cartNicotineShotInput = $(".cart_nicotine_shot_value");
 
     let bottleSizeSelect = $("#pa_vmh_bottle_size");
@@ -107,6 +107,71 @@ jQuery(document).ready(function ($) {
         $(document).on("click", ".reset_variations", clearPriceOnVariationClear);
 
         $(".nicotineshot_save_btn").tooltip();
+
+        navigateUserOnSiteOpening();
+    }
+
+    // Navigate the user for first time opening the site
+    function navigateUserOnSiteOpening() {
+        if ($("#first_time_opening").length) {
+            swal("Are you over 18", "", {
+                buttons: {
+                    no: {
+                        text: "No",
+                        value: "no",
+                    },
+                    yes: {
+                        text: "Yes",
+                        value: "yes",
+                    },
+                },
+            }).then((value) => {
+                switch (value) {
+                    case "no":
+                        setUserSession(false);
+                        break;
+                    case "yes":
+                        setUserSession(true);
+                        break;
+                    default:
+                        window.location.href = "https://www.google.com/";
+                }
+            });
+        }
+    }
+
+    function setUserSession(sessionValue) {
+        $.ajax({
+            url: vmhLocal.ajaxUrl,
+            data: {
+                action: "vmh_first_time_visit",
+                setSession: sessionValue,
+            },
+            method: "post",
+            beforeSend: () => {
+                if (!sessionValue) {
+                    window.location.href = "https://www.google.com/";
+                }
+            },
+            success: (res) => {
+                if (!res) return;
+
+                if (res.data.response == "invalid") {
+                    swal({
+                        title: "Error",
+                        text: response.message,
+                        button: "OK",
+                    });
+                }
+            },
+            error: (err) => {
+                swal({
+                    title: "Server Error",
+                    text: "Someting went wrong try again or contact admin",
+                    button: "OK",
+                });
+            },
+        });
     }
 
     // Clear price box on clicking of clear button
@@ -932,14 +997,14 @@ jQuery(document).ready(function ($) {
 
                 if (res.data.response == "duplicate") {
                     swal({
-                        title: "Information",
+                        // title: "Information",
                         text: res.data.message,
                         button: "OK",
                     });
 
                     $(".swal-modal .swal-text").html(`
                         Sorry but there is another recipe: <a href="${res.data.comparision.productUrl}" target="_blank"><b>${res.data.comparision.productName}</b></a> 
-                        which is more than 95% similar to yours and so the creator of the original recipe will get the royalties for this recipe
+                        which is more than 95% similar to yours and so the creator of the original recipe will get the royalties for this recipe & this recipe will be only visible to you
                     `);
 
                     target.parents(".recipes_create_buttons").html(`
@@ -1342,7 +1407,7 @@ jQuery(document).ready(function ($) {
         return total;
     }
 
-    // initate ingredients select box when existing create product is active
+    // Initiate ingredients select box when existing create product is active
     function initializeSelectCreateSelectBox() {
         if (!getSlugParameter("edit_product")) return;
 
@@ -1512,7 +1577,7 @@ jQuery(document).ready(function ($) {
 
         swal({
             title: "Confirmation",
-            text: "Are you sure that you want to delete this product? If you do so you won't get any commision for this product from now on",
+            text: "Are you sure that you want to delete this product? If you do so you won't get any commission for this product from now on",
             buttons: true,
             dangerMode: true,
         }).then((willDelete) => {
