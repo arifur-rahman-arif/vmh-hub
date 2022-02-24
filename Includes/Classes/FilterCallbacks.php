@@ -127,10 +127,37 @@ class FilterCallbacks {
      * @return mixed
      */
     public function modifyUltimateMemberPluginDropdown($items) {
-        $items['logout'] = '<a href="' . wp_logout_url() . '" class="real_url">Logout</a>';
-        $items['myaccount'] = '<a href="' . wc_get_page_permalink('myaccount') . 'edit-account" class="real_url">Edit Account Details</a>';
 
-        return $items;
+        $items['logout'] = '<a href="' . wp_logout_url() . '" class="real_url">Logout</a>';
+        $items['orders'] = '<a href="' . wc_get_page_permalink('myaccount') . 'orders" class="real_url">My Orders</a>';
+        $items['address'] = '<a href="' . wc_get_page_permalink('myaccount') . 'edit-address" class="real_url">My Address</a>';
+
+        $newItems = [
+            'editprofile' => $items['editprofile'],
+            'myaccount'   => $items['myaccount'],
+            'orders'      => $items['orders'],
+            'address'     => $items['address'],
+            'logout'      => $items['logout'],
+            'cancel'      => $items['cancel']
+        ];
+
+        return $newItems;
+    }
+
+    /**
+     * @param $array
+     * @param $index
+     * @param $val
+     */
+    public function insertIntoSpecificPosition($array, $index, $val) {
+        $size = count($array); //because I am going to use this more than one time
+        if (!is_int($index) || $index < 0 || $index > $size) {
+            return -1;
+        } else {
+            $temp = array_slice($array, 0, $index);
+            $temp[] = $val;
+            return array_merge($temp, array_slice($array, $index, $size));
+        }
     }
 
 }

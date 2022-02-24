@@ -1216,3 +1216,55 @@ function getUserIDFromUrl($url) {
     return false;
     print_r($matches);
 }
+
+/**
+ * Get product on user serach
+ * @param $postPerPage
+ */
+function getSearchResults($postPerPage) {
+
+    $searchText = sanitize_text_field($_GET['s']);
+
+    $args = [
+        'posts_per_page' => $postPerPage,
+        'post_type'      => 'product',
+        'post__not_in'   => [get_option('vmh_create_product_option')],
+        's'              => $searchText,
+        'tax_query'      => [
+            [
+                'taxonomy' => 'product_cat',
+                'field'    => 'slug',
+                'terms'    => 'pending-product',
+                'operator' => 'NOT IN'
+            ],
+            [
+                'taxonomy' => 'product_cat',
+                'field'    => 'slug',
+                'terms'    => 'duplicate-product',
+                'operator' => 'NOT IN'
+            ]
+        ]
+    ];
+
+    $recipes = get_posts($args);
+
+    if (!$recipes) {
+
+        echo "
+        <div class='card'>
+            <div class='card-body'>
+              Sorry, could not find any results for your <b>" . $searchText . "</b> search.
+            </div>
+        </div>";
+    }
+
+    foreach ($recipes as $key => $recipe) {
+        load_template(VMH_PATH . 'Includes/Templates/product.php', false, [
+            'postTitle'    => $recipe->post_title,
+            'postAuthorID' => $recipe->post_author,
+            'productID'    => $recipe->ID,
+            'productType'  => wc_get_product($recipe)->get_type()
+        ]);
+    }
+
+}

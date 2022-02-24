@@ -66,7 +66,7 @@ jQuery(document).ready(function ($) {
         calculateNicotineShot();
 
         // calculate the ingredients price value either on change of select or initial loading
-        calculateIngredientsPrice();
+        // calculateIngredientsPrice();
 
         nicotineShotTrigger.on("change", calculateNicotineShot);
 
@@ -107,6 +107,11 @@ jQuery(document).ready(function ($) {
         $(document).on("click", ".reset_variations", clearPriceOnVariationClear);
 
         $(".nicotineshot_save_btn").tooltip();
+
+        // Add tooltip on add to cart button
+        $(".save_update_add_to_cart_btn, .vmh_single_add_to_cart").tooltip({
+            trigger: "manual",
+        });
 
         navigateUserOnSiteOpening();
     }
@@ -990,6 +995,12 @@ jQuery(document).ready(function ($) {
             beforeSend: () => {
                 $(e.currentTarget).addClass("disabled").attr("disabled", true);
                 target.parents(".recipes_create_buttons").children().addClass("disabled").attr("disabled", true);
+
+                // Disable the product ingredients section
+                $(".ingredients_wrapper, .vmh_product_content textarea, .recipes_order_tags, .vmh_tag_list, #vmh_recipe_name").css({
+                    "pointer-events": "none",
+                    opacity: 0.5,
+                });
             },
 
             success: (res) => {
@@ -1038,7 +1049,7 @@ jQuery(document).ready(function ($) {
                     /* End of the next part of recipe creation */
 
                     // Disable the product ingredients section
-                    $(".ingredients_wrapper, .vmh_product_content textarea, .recipes_order_tags, .vmh_tag_list").css({
+                    $(".ingredients_wrapper, .vmh_product_content textarea, .recipes_order_tags, .vmh_tag_list, #vmh_recipe_name").css({
                         "pointer-events": "none",
                         opacity: 0.5,
                     });
@@ -1853,7 +1864,10 @@ jQuery(document).ready(function ($) {
                     productID,
                 },
                 beforeSend: () => {
-                    $(".vmh_single_add_to_cart, .save_update_add_to_cart_btn").addClass("disabled").attr("disabled", true);
+                    $(".vmh_single_add_to_cart, .save_update_add_to_cart_btn").attr("disabled", true);
+                    $(".save_update_add_to_cart_btn").addClass("disabled");
+                    $(".save_update_add_to_cart_btn, .vmh_single_add_to_cart").tooltip("dispose");
+                    $(".save_update_add_to_cart_btn, .vmh_single_add_to_cart").tooltip("hide");
                 },
                 success: function (response) {
                     if (!response) return;
@@ -1863,10 +1877,21 @@ jQuery(document).ready(function ($) {
                         $(".price_box").addClass("active");
 
                         if (!response.data.ingredientsAvailability || !response.data.price) {
-                            $(".vmh_single_add_to_cart, .save_update_add_to_cart_btn").addClass("disabled").attr("disabled", true);
+                            $(".vmh_single_add_to_cart, .save_update_add_to_cart_btn").attr("disabled", true);
+                            $(".save_update_add_to_cart_btn").addClass("disabled");
+
+                            $(".save_update_add_to_cart_btn, .vmh_single_add_to_cart").tooltip("dispose");
+                            $(".save_update_add_to_cart_btn, .vmh_single_add_to_cart").tooltip("show");
+                        } else {
+                            $(".save_update_add_to_cart_btn, .vmh_single_add_to_cart").tooltip("dispose");
+                            $(".save_update_add_to_cart_btn, .vmh_single_add_to_cart").tooltip("hide");
                         }
                     } else {
-                        $(".vmh_single_add_to_cart, .save_update_add_to_cart_btn").addClass("disabled").attr("disabled", true);
+                        $(".vmh_single_add_to_cart, .save_update_add_to_cart_btn").attr("disabled", true);
+                        $(".save_update_add_to_cart_btn").addClass("disabled");
+
+                        $(".save_update_add_to_cart_btn, .vmh_single_add_to_cart").tooltip("dispose");
+                        $(".save_update_add_to_cart_btn, .vmh_single_add_to_cart").tooltip("show");
 
                         swal({
                             title: "Error",
@@ -1878,13 +1903,16 @@ jQuery(document).ready(function ($) {
                 },
                 complete: (response) => {
                     if (!response.responseJSON.data.ingredientsAvailability || !response.responseJSON.data.price) {
-                        $(".vmh_single_add_to_cart, .save_update_add_to_cart_btn").addClass("disabled").attr("disabled", true);
+                        $(".vmh_single_add_to_cart, .save_update_add_to_cart_btn").attr("disabled", true);
+                        $(".save_update_add_to_cart_btn").addClass("disabled");
                     } else {
-                        $(".vmh_single_add_to_cart, .save_update_add_to_cart_btn").removeClass("disabled").attr("disabled", false);
+                        $(".vmh_single_add_to_cart, .save_update_add_to_cart_btn").attr("disabled", false);
+                        $(".save_update_add_to_cart_btn").removeClass("disabled");
                     }
                 },
                 error: (err) => {
-                    $(".vmh_single_add_to_cart, .save_update_add_to_cart_btn").removeClass("disabled").attr("disabled", false);
+                    $(".vmh_single_add_to_cart, .save_update_add_to_cart_btn").attr("disabled", false);
+                    $(".save_update_add_to_cart_btn").removeClass("disabled");
 
                     swal({
                         title: "Server Error",

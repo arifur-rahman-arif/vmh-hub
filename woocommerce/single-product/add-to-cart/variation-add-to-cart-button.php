@@ -4,6 +4,7 @@
  *
  * @version 3.4.0
  *
+ *
  * @package WooCommerce\Templates
  *
  * @see https://docs.woocommerce.com/document/template-structure/
@@ -36,8 +37,9 @@ do_action('woocommerce_after_add_to_cart_quantity');
     <div class="logon_input_btn logon_input_btn2 shipping_address_btn recepes_btn">
         <div class="recepes_btn_content">
             <!-- <button data-id="<?php echo get_the_ID() ?>" class="vmh_single_add_to_cart">Add To Cart</button> -->
-            <button type="submit"
-                class="vmh_single_add_to_cart single_add_to_cart_button button alt"><?php echo esc_html($product->single_add_to_cart_text()); ?></button>
+            <button type="submit" class="vmh_single_add_to_cart single_add_to_cart_button button alt"
+                data-toggle="tooltip" data-placement="top"
+                title="Recipe is out of stock. Please select another bottle size"><?php echo esc_html($product->single_add_to_cart_text()); ?></button>
             <!-- <a href="#">Add To Subscription</a> -->
         </div>
     </div>

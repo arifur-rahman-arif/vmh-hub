@@ -14,6 +14,8 @@
 
     <?php setUserSession()?>
 
+    <?php $logoIcon = wp_get_attachment_url(get_post_meta(get_page_by_title('Shop')->ID, 'site_menu_icon', true)) ? wp_get_attachment_url(get_post_meta(get_page_by_title('Shop')->ID, 'site_menu_icon', true)) : VMH_URL . 'Assets/images/logo.png'?>
+
     <!--Start Header Area-->
     <header class="header_main_area">
         <div class="container">
@@ -21,8 +23,7 @@
                 <div class="col-md-12">
                     <div class="header_content_area">
                         <div class="logo_area">
-                            <a href="<?php echo site_url('/') ?>"><img
-                                    src="<?php echo wp_get_attachment_url(get_post_meta(get_page_by_title('Shop')->ID, 'site_menu_icon', true)) ?>"
+                            <a href="<?php echo site_url('/') ?>"><img src="<?php echo $logoIcon ?>"
                                     alt="site-logo" /></a>
                         </div>
                         <div class="menu_area">
