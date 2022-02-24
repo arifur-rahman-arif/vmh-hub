@@ -1590,7 +1590,7 @@ jQuery(document).ready(function ($) {
 
         swal({
             title: "Confirmation",
-            text: "Are you sure that you want to delete this product? If you do so you won't get any commission for this product from now on",
+            text: "Are you sure that you want to delete this recipe? If you do so you won't get any royalty for this recipe from now on",
             buttons: true,
             dangerMode: true,
         }).then((willDelete) => {
