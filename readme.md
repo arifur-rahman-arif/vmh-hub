@@ -9,9 +9,9 @@ Tags: e-commerce, woocommerce, one-column, custom-background, custom-colors, cus
 
 **Requires at least:** 5.0
 
-**Tested up to:** 5.8
+**Tested up to:** 5.9
 
-**Requires PHP:** 7.0
+**Requires PHP:** 7.4
 
 **Text Domain:** vmh-hub
 
