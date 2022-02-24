@@ -785,7 +785,7 @@ img {
 }
 .comon_section_area {
     margin-top: 110px;
-    min-height: 450px;
+    min-height: 50vh;
 }
 .comon_section_area .main_recopies_area {
     margin-bottom: 60px;

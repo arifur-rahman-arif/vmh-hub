@@ -169,7 +169,7 @@ a.disabled {
     width: 90%;
 }
 .vmh_cart {
-    min-height: 55vh;
+    min-height: 60vh;
     margin-top: 45px;
 }
 .vmh_product_content {
@@ -793,17 +793,20 @@ a.disabled {
 
 .um-account-side ul li {
     background: #324b4b !important;
+    border-radius: 5px;
 }
 
 .vmh_profile_container,
 .vmh_um_account_container {
-    padding-top: 18px;
+    padding: 2rem;
     box-shadow: -2px 2px 19px -3px rgba(130, 122, 122, 0.76);
     -webkit-box-shadow: -2px 2px 19px -3px rgba(130, 122, 122, 0.76);
     -moz-box-shadow: -2px 2px 19px -3px rgba(130, 122, 122, 0.76);
     border-radius: 8px;
 }
-
+.vmh_um_account_container .um-account {
+    margin-bottom: 0 !important;
+}
 .um-profile.um-viewing {
     padding-bottom: 15px !important;
 }
@@ -835,4 +838,7 @@ a.disabled {
 
 .footer_left_area {
     display: none;
+}
+.table.woocommerce-orders-table.account-orders-table {
+    margin: 0 !important;
 }

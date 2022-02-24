@@ -182,6 +182,8 @@ jQuery(document).ready(function ($) {
     // Clear price box on clicking of clear button
     function clearPriceOnVariationClear() {
         $(".price_box").removeClass("active");
+        $(".save_update_add_to_cart_btn, .vmh_single_add_to_cart").tooltip("dispose");
+        $(".save_update_add_to_cart_btn, .vmh_single_add_to_cart").tooltip("hide");
     }
 
     // Hide category container if there are no recipe inside of that element
