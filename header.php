@@ -12,9 +12,34 @@
 
 <body <?php is_home() ? '' : body_class()?>>
 
-    <?php setUserSession()?>
+    <?php echo is_user_logged_in() ? null : '<input type="hidden" id="first_time_opening"/>' ?>
 
     <?php $logoIcon = wp_get_attachment_url(get_post_meta(get_page_by_title('Shop')->ID, 'site_menu_icon', true)) ? wp_get_attachment_url(get_post_meta(get_page_by_title('Shop')->ID, 'site_menu_icon', true)) : VMH_URL . 'Assets/images/logo.png'?>
+
+
+    <?php $bannerImage = wp_get_attachment_url(get_post_meta(get_page_by_title('Shop')->ID, 'banner_image', true))?>
+
+
+
+    <?php if (!$bannerImage) {?>
+    <style>
+    .banner_main_area {
+        background: -webkit-linear-gradient(top, #324b4b 0%, #89d9d8 100%);
+        background: linear-gradient(180deg, #324b4b 0%, #89d9d8 100%);
+        min-height: 50vh;
+    }
+    </style>
+
+    <?php } else {?>
+    <style>
+    .banner_main_area {
+        background: url(<?php echo $bannerImage ?>);
+        background-size: cover;
+        min-height: 50vh;
+    }
+    </style>
+
+    <?php }?>
 
     <!--Start Header Area-->
     <header class="header_main_area">

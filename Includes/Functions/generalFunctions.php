@@ -181,15 +181,3 @@ function getIngredientsTotalPrice($args) {
 
     return $price;
 }
-
-// Set user session for first time of opening the website
-function setUserSession() {
-
-    if (!isset($_SESSION["set_user_session"]) && !is_user_logged_in()) {
-        echo '<input type="hidden" id="first_time_opening"/>';
-        $_SESSION["set_user_session"] = true;
-    }
-
-    session_destroy();
-
-}

@@ -154,7 +154,7 @@ h3 {
     font-family: Baloo;
     font-style: normal;
     font-weight: normal;
-    font-size: 36px;
+    font-size: 2.6rem;
     color: #141d1d;
 }
 h4 {
@@ -182,7 +182,7 @@ p {
     font-weight: 600;
     font-size: 13px;
     line-height: 170%;
-    color: rgba(20, 29, 29, 0.5);
+    color: #000;
 }
 .section_heading p {
     margin-top: 20px;
@@ -211,9 +211,7 @@ img {
     z-index: 9;
 }
 .logo_area a img {
-    max-width: 88px;
     width: 100%;
-    max-height: 20px;
 }
 .header_content_area {
     display: -webkit-box;
@@ -231,6 +229,7 @@ img {
     -ms-flex: 0 0 20%;
     flex: 0 0 20%;
     padding: 10px 0;
+    margin-right: 40px;
 }
 .menu ul {
     display: -webkit-box;
@@ -751,11 +750,6 @@ img {
 /*===========================================
 =========== START HOME PAGE S================
 =============================================*/
-.banner_main_area {
-    /* background: url(../images/home/home_bg.png) no-repeat scroll 0 0 / cover; */
-    background: -webkit-linear-gradient(top, #324b4b 0%, #89d9d8 100%);
-    background: linear-gradient(180deg, #324b4b 0%, #89d9d8 100%);
-}
 
 .banner_content_area {
     padding-top: 180px;
@@ -764,7 +758,7 @@ img {
     font-size: 60px;
     line-height: 88px;
     text-transform: uppercase;
-    color: rgba(20, 29, 29, 0.2);
+    color: #000;
     position: relative;
     display: inline-block;
 }
@@ -799,9 +793,6 @@ img {
 =========== START ABOUT US PAGE   ================
 =============================================*/
 .about_us_banner {
-    /* background: url(../images/about/about_bg.png) no-repeat scroll 0 0 / cover; */
-    background: -webkit-linear-gradient(top, #324b4b 0%, #89d9d8 100%);
-    background: linear-gradient(180deg, #324b4b 0%, #89d9d8 100%);
     padding-top: 150px;
 }
 .about_banner_text {
@@ -1046,8 +1037,6 @@ img {
 =================================================*/
 .contact_us_banner {
     padding-top: 144px;
-    background: -webkit-linear-gradient(top, #324b4b 0%, #89d9d8 100%);
-    background: linear-gradient(180deg, #324b4b 0%, #89d9d8 100%);
 }
 .contact_us_banner .about_banner_text {
     margin-top: 210px;

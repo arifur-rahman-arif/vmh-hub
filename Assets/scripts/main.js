@@ -118,7 +118,7 @@ jQuery(document).ready(function ($) {
 
     // Navigate the user for first time opening the site
     function navigateUserOnSiteOpening() {
-        if ($("#first_time_opening").length) {
+        if (localStorage.getItem("overAge") == null && $("#first_time_opening").length) {
             swal("Are you over 18", "", {
                 buttons: {
                     no: {
@@ -133,50 +133,16 @@ jQuery(document).ready(function ($) {
             }).then((value) => {
                 switch (value) {
                     case "no":
-                        setUserSession(false);
+                        window.location.href = "https://www.google.com/";
                         break;
                     case "yes":
-                        setUserSession(true);
+                        localStorage.setItem("overAge", Date.now());
                         break;
                     default:
                         window.location.href = "https://www.google.com/";
                 }
             });
         }
-    }
-
-    function setUserSession(sessionValue) {
-        $.ajax({
-            url: vmhLocal.ajaxUrl,
-            data: {
-                action: "vmh_first_time_visit",
-                setSession: sessionValue,
-            },
-            method: "post",
-            beforeSend: () => {
-                if (!sessionValue) {
-                    window.location.href = "https://www.google.com/";
-                }
-            },
-            success: (res) => {
-                if (!res) return;
-
-                if (res.data.response == "invalid") {
-                    swal({
-                        title: "Error",
-                        text: response.message,
-                        button: "OK",
-                    });
-                }
-            },
-            error: (err) => {
-                swal({
-                    title: "Server Error",
-                    text: "Someting went wrong try again or contact admin",
-                    button: "OK",
-                });
-            },
-        });
     }
 
     // Clear price box on clicking of clear button

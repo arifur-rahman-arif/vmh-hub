@@ -4,18 +4,28 @@
 
 <?php
 $productCategories = getProductCategories();
+$bannerHeaderText = get_post_meta(get_page_by_title('Shop')->ID, 'banner_header', true) ? get_post_meta(get_page_by_title('Shop')->ID, 'banner_header', true) : 'WE MIX
+YOUR TASTE';
+
+$bannerDescription = get_post_meta(get_page_by_title('Shop')->ID, 'banner_description', true);
+
 ?>
+
+<!-- Banner section -->
 <section class="banner_main_area">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <div class="banner_content_area">
-                    <h2>we mix</h2>
-                    <h1>your taste</h1>
+                    <h3><?php echo $bannerHeaderText ?></h3>
                     <p>
+                        <?php if ($bannerDescription) {?>
+                        <?php echo $bannerDescription ?>
+                        <?php } else {?>
                         All our e-liquid recipes are created by users like you. You too can create your own recipe and
                         get paid doing so. Or sit back and relax, and let our recommendation engine find your favourite
                         recipes for you.
+                        <?php }?>
                     </p>
                 </div>
             </div>
@@ -25,7 +35,7 @@ $productCategories = getProductCategories();
 <!-- End Banner main area -->
 
 <!-- Start how it works area -->
-<section class="comon_section_area">
+<section class="comon_section_area vmh_shop_page">
 
     <div class="container">
 

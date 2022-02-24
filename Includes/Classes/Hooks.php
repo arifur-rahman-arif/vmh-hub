@@ -51,7 +51,7 @@ class Hooks extends HookCallbacks {
         // update post on order status update
         add_action('save_post', [$this, 'sendMailOnProductApprove'], 10, 2);
 
-        add_action('init', [$this, 'sessionStart']);
+        // add_action('init', [$this, 'sessionStart']);
 
         // Intitialize custom post type for ingredients
         add_action('init', [$this, 'ingredientsPostType']);
@@ -152,9 +152,6 @@ class Hooks extends HookCallbacks {
         add_action('wp_ajax_vmh_get_ingredients_price', [$this, 'calculatedIngredientPrice']);
         add_action('wp_ajax_nopriv_vmh_get_ingredients_price', [$this, 'calculatedIngredientPrice']);
 
-        /* Create post type for subscriber mail list */
-        add_action('wp_ajax_vmh_first_time_visit', [$this, 'unsetUserFirstTimeVisit']);
-        add_action('wp_ajax_nopriv_vmh_first_time_visit', [$this, 'unsetUserFirstTimeVisit']);
     }
 
     // Remove functions that are hooked with these hooks

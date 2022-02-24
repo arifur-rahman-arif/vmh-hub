@@ -59,7 +59,7 @@ if ($product->get_id() != get_option('vmh_create_product_option')) {
         <form class="variations_form cart"
             action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product->get_permalink())); ?>"
             method="post" enctype='multipart/form-data' data-product_id="<?php echo absint($product->get_id()); ?>"
-            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                                                                                                                                                                    ?>">
+            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                                                                                                                                                                      ?>">
             <?php do_action('woocommerce_before_variations_form');?>
 
             <?php if (empty($available_variations) && false !== $available_variations): ?>
@@ -241,7 +241,7 @@ $attribute_keys = array_keys($attributes);
         <form class="variations_form cart"
             action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product->get_permalink())); ?>"
             method="post" enctype='multipart/form-data' data-product_id="<?php echo absint($product->get_id()); ?>"
-            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                                                                                                                                                                    ?>">
+            data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.                                                                                                                                                                                                                                                                      ?>">
             <?php do_action('woocommerce_before_variations_form');?>
 
             <?php if (empty($available_variations) && false !== $available_variations): ?>
@@ -329,10 +329,9 @@ wc_dropdown_variation_attribute_options(
         <div class="recepes_btn_content recipes_order_btn_content">
             <button class="vmh_button save_update_add_to_cart_btn" data-action="<?php echo $btnAttribute ?>"
                 data-toggle="tooltip" data-placement="top"
-                title="Recipe is out of stock. Please select another bottle size">
+                title="Recipe is out of stock for this bottle size">
                 <?php echo $btnText ?>
             </button>
-            <br>
             <a class="vmh_discard_recipe" href="<?php echo esc_url(get_permalink(get_the_ID())) ?>">Discard</a>
 
         </div>
