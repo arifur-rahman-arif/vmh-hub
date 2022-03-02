@@ -98,6 +98,7 @@ jQuery(document).ready(function ($) {
         restrictNicotineAmountValue();
 
         $("#pa_vmh_nicotine_type").on("change", hideNicotineAmountSelect);
+        hideNicotineAmountSelect();
 
         $(".ingredient_percentage, .product_ingredients").on("change", reChecktheRecipe);
         $(document).on("click", ".add_ingredients_icon, .cut_selectbox", reChecktheRecipe);
@@ -172,7 +173,7 @@ jQuery(document).ready(function ($) {
 
     // Hide the nicotine amount select field when user choose no nicotine type value
     function hideNicotineAmountSelect(e) {
-        let target = $(e.currentTarget);
+        let target = $("#pa_vmh_nicotine_type");
 
         let value = target.val();
 
