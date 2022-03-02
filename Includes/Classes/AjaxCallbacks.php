@@ -146,7 +146,7 @@ trait AjaxCallbacks {
         if ($userData['password'] !== $userData['confirm_password']) {
             return [
                 'response' => 'invalid',
-                'message'  => vmhEscapeTranslate('Password didn\'t matched')
+                'message'  => vmhEscapeTranslate('Password do not match')
             ];
         }
 
@@ -169,9 +169,8 @@ trait AjaxCallbacks {
         ];
     }
 
-    // Create the user into database
-
     /**
+     * Create the user into database
      * @param $userData
      */
     public function createUser($userData) {

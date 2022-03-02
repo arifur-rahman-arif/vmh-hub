@@ -65,7 +65,7 @@ if (isset($_GET['edit_product']) && $_GET['edit_product']) {
 
         <a href="<?php echo get_author_posts_url(get_post(get_the_ID())->post_author) ?>"
             style="font-size: 15px; font-weight: bold">
-            <?php echo get_the_author_meta('display_name', get_post(get_the_ID())->post_author); ?>
+            <?php echo get_the_author_meta('user_login', get_post(get_the_ID())->post_author); ?>
         </a>
 
     </p>

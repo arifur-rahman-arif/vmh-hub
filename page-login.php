@@ -3,9 +3,9 @@
 <section class="login_main">
     <div class="container">
         <!-- Start Background Overly -->
-        <div class="login_background">
+        <!-- <div class="login_background">
             <img src="<?php echo VMH_URL . 'Assets/images/login/circle.png' ?>" alt="" />
-        </div>
+        </div> -->
         <!-- End Background Overly -->
 
         <div class="sign_in_box">

@@ -178,7 +178,7 @@ jQuery(document).ready(function ($) {
 
         if (value == "no-nicotine") {
             $("#pa_vmh_nicotine_amount .enabled").removeClass("enabled");
-            $("#pa_vmh_nicotine_amount .enabled").prop("selected", true);
+            $("#pa_vmh_nicotine_amount option[value='no-nicotine']").prop("selected", true);
             $("#pa_vmh_nicotine_amount").parents("tr").css({
                 display: "none",
             });
@@ -431,7 +431,9 @@ jQuery(document).ready(function ($) {
             target.find("i").removeClass("fa-times");
             target.find("i").addClass("fa-edit");
 
-            let tags = $(".input_container .tag_input:not(.duplicate_tag) .vmh_tag_input:not(.predefied_tag_input)");
+            let tags = $(
+                ".input_container .tag_input:not(.duplicate_tag) .vmh_tag_input:not(.predefied_tag_input)"
+            );
 
             if (!tags.length) {
                 $(".dynamic_tags").html("");
@@ -962,10 +964,16 @@ jQuery(document).ready(function ($) {
             },
             beforeSend: () => {
                 $(e.currentTarget).addClass("disabled").attr("disabled", true);
-                target.parents(".recipes_create_buttons").children().addClass("disabled").attr("disabled", true);
+                target
+                    .parents(".recipes_create_buttons")
+                    .children()
+                    .addClass("disabled")
+                    .attr("disabled", true);
 
                 // Disable the product ingredients section
-                $(".ingredients_wrapper, .vmh_product_content textarea, .recipes_order_tags, .vmh_tag_list, #vmh_recipe_name").css({
+                $(
+                    ".ingredients_wrapper, .vmh_product_content textarea, .recipes_order_tags, .vmh_tag_list, #vmh_recipe_name"
+                ).css({
                     "pointer-events": "none",
                     opacity: 0.5,
                 });
@@ -1017,7 +1025,9 @@ jQuery(document).ready(function ($) {
                     /* End of the next part of recipe creation */
 
                     // Disable the product ingredients section
-                    $(".ingredients_wrapper, .vmh_product_content textarea, .recipes_order_tags, .vmh_tag_list, #vmh_recipe_name").css({
+                    $(
+                        ".ingredients_wrapper, .vmh_product_content textarea, .recipes_order_tags, .vmh_tag_list, #vmh_recipe_name"
+                    ).css({
                         "pointer-events": "none",
                         opacity: 0.5,
                     });
@@ -1097,7 +1107,11 @@ jQuery(document).ready(function ($) {
             return false;
         }
 
-        if (optionsValue.length !== attributesLength && recipeAction != "save-recepie" && recipeAction != "check-recepie") {
+        if (
+            optionsValue.length !== attributesLength &&
+            recipeAction != "save-recepie" &&
+            recipeAction != "check-recepie"
+        ) {
             swal({
                 title: "Invalid process",
                 text: "All options needs to filled",
@@ -1460,7 +1474,9 @@ jQuery(document).ready(function ($) {
 
     // Save all the tags upon click on save tag button
     function saveTagNames(e) {
-        let tags = $(".input_container .tag_input:not(.duplicate_tag) .vmh_tag_input:not(.predefied_tag_input)");
+        let tags = $(
+            ".input_container .tag_input:not(.duplicate_tag) .vmh_tag_input:not(.predefied_tag_input)"
+        );
 
         if (tags.length) {
             let innerHTML = "";
@@ -1468,7 +1484,9 @@ jQuery(document).ready(function ($) {
             $.each(tags, function (i, tag) {
                 let tagValue = $(tag).val();
                 if (tagValue) {
-                    innerHTML += `<a href="#" class="tag_name" data-target="tag_name_${i + 3}">${tagValue}</a>`;
+                    innerHTML += `<a href="#" class="tag_name" data-target="tag_name_${
+                        i + 3
+                    }">${tagValue}</a>`;
                 }
             });
             $(".dynamic_tags").html(innerHTML);
@@ -1491,7 +1509,8 @@ jQuery(document).ready(function ($) {
 
         let currentTarget = $(e.currentTarget);
 
-        if (currentTarget.find("input[type=email]").val() == "") return alert("Email is required to subscribe");
+        if (currentTarget.find("input[type=email]").val() == "")
+            return alert("Email is required to subscribe");
 
         let formData = currentTarget.serialize();
 
@@ -1783,12 +1802,17 @@ jQuery(document).ready(function ($) {
 
         if (ingredientsPercentageValues.length < 1) return;
 
-        let totalPercentage = ingredientsPercentageValues.reduce((prevValue, currentValue) => prevValue + currentValue);
+        let totalPercentage = ingredientsPercentageValues.reduce(
+            (prevValue, currentValue) => prevValue + currentValue
+        );
 
         let hiddenValue = vmhLocal.hideNicotineValue;
 
         if (totalPercentage > 16.7) {
-            $("#pa_vmh_nicotine_amount").find(`option:contains("${hiddenValue}")`).attr("disabled", true).hide();
+            $("#pa_vmh_nicotine_amount")
+                .find(`option:contains("${hiddenValue}")`)
+                .attr("disabled", true)
+                .hide();
         }
 
         let attributes = vmhLocal.vmhProductAttributes;
@@ -1800,12 +1824,20 @@ jQuery(document).ready(function ($) {
                 $(document).on("change", `#pa_${key}`, (e) => {
                     ingredientsPercentageValues = getIngredientsPercentageValues();
 
-                    totalPercentage = ingredientsPercentageValues.reduce((prevValue, currentValue) => prevValue + currentValue);
+                    totalPercentage = ingredientsPercentageValues.reduce(
+                        (prevValue, currentValue) => prevValue + currentValue
+                    );
 
                     if (totalPercentage > 16.7) {
-                        $("#pa_vmh_nicotine_amount").find(`option:contains("${hiddenValue}")`).attr("disabled", true).hide();
+                        $("#pa_vmh_nicotine_amount")
+                            .find(`option:contains("${hiddenValue}")`)
+                            .attr("disabled", true)
+                            .hide();
                     } else {
-                        $("#pa_vmh_nicotine_amount").find(`option:contains("${hiddenValue}")`).attr("disabled", false).show();
+                        $("#pa_vmh_nicotine_amount")
+                            .find(`option:contains("${hiddenValue}")`)
+                            .attr("disabled", false)
+                            .show();
                     }
                 });
             }
@@ -1870,7 +1902,10 @@ jQuery(document).ready(function ($) {
                     }
                 },
                 complete: (response) => {
-                    if (!response.responseJSON.data.ingredientsAvailability || !response.responseJSON.data.price) {
+                    if (
+                        !response.responseJSON.data.ingredientsAvailability ||
+                        !response.responseJSON.data.price
+                    ) {
                         $(".vmh_single_add_to_cart, .save_update_add_to_cart_btn").attr("disabled", true);
                         $(".save_update_add_to_cart_btn").addClass("disabled");
                     } else {

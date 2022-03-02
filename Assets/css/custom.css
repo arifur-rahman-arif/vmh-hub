@@ -842,3 +842,11 @@ a.disabled {
 .table.woocommerce-orders-table.account-orders-table {
     margin: 0 !important;
 }
+
+.login_main .container {
+    padding: 150px 0px 80px 0px;
+}
+
+.banner_content_area h3 {
+    max-width: 400px;
+}
