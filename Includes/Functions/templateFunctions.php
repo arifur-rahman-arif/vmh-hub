@@ -290,7 +290,7 @@ function getUserFavoriteProducts() {
 
                 load_template(VMH_PATH . 'Includes/Templates/fav-product.php', false, [
                     'postTitle'   => get_the_title($productID),
-                    'postAuthor'  => get_the_author_meta('display_name', get_post($productID)->post_author),
+                    'postAuthor'  => get_the_author_meta('user_login', get_post($productID)->post_author),
                     'productID'   => $productID,
                     'productType' => wc_get_product($productID)->get_type()
                 ]);

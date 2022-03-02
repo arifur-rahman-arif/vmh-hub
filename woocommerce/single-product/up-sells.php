@@ -12,6 +12,7 @@
  *
  * @version     3.0.0
  *
+ *
  * @package     WooCommerce\Templates
  *
  * @see         https://docs.woocommerce.com/document/template-structure/
@@ -34,9 +35,10 @@ setup_postdata($GLOBALS['post'] = &$post_object); // phpcs:ignore WordPress.WP.G
 ?>
 
 <?php if (isset($related_product)) {?>
-<div class="single_recopies_items recepes_single_left_item" onclick="location.href='<?php echo esc_url(get_permalink($post_object->ID)) ?>'">
+<div class="single_recopies_items recepes_single_left_item"
+    onclick="location.href='<?php echo esc_url(get_permalink($post_object->ID)) ?>'">
     <h6><?php echo vmhEscapeTranslate($post_object->post_title) ?></h6>
-    <p>By <?php echo get_the_author_meta('display_name', $post_object->post_author); ?></p>
+    <p>By <?php echo get_the_author_meta('user_login', $post_object->post_author); ?></p>
     <?php echo getProductIngrediants($post_object->ID) ?>
     <!-- <div class="single_recopies_items_overly">
         <div class="single_recopies_items_overly_item">

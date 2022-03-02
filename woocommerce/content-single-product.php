@@ -13,6 +13,7 @@
  * @version 3.6.0
  *
  *
+ *
  * @package WooCommerce\Templates
  *
  * @see     https://docs.woocommerce.com/document/template-structure/
@@ -125,7 +126,7 @@ do_action('woocommerce_single_product_summary');
                                 <?php if (get_the_ID() != get_option('vmh_create_product_option')) {?>
                                 <div class="recepes_right_site_right_content">
                                     <h6>Note By
-                                        <?php echo get_the_author_meta('display_name', get_post(get_the_ID())->post_author); ?>
+                                        <?php echo get_the_author_meta('user_login', get_post(get_the_ID())->post_author); ?>
                                     </h6>
 
                                     <p class="vmh_product_content">

@@ -7,7 +7,7 @@ $nicotineType = isset($args['variation']['attribute_pa_vmh_nicotine_type']) ? $a
       <div class="cart_single_item_flex">
           <div class="cart_single_item_flex_left">
               <h6 class="vmh_cart_product_name"><?php echo get_the_title($args['product_id']) ?></h6>
-              <p>By <?php echo get_the_author_meta('display_name', get_post($args['product_id'])->post_author) ?></p>
+              <p>By <?php echo get_the_author_meta('user_login', get_post($args['product_id'])->post_author) ?></p>
           </div>
           <div class="cart_single_item_flex_right cart_remove1" data-id="<?php echo $args['product_id'] ?>"
               data-key="<?php echo esc_attr($args['cart_key']) ?>">

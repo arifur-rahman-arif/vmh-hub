@@ -5,7 +5,7 @@ $isSubscriberRecipe = isset($args['createdRecipe']) && $args['createdRecipe'] &&
 
 <div class="single_recopies_items" onclick="location.href='<?php echo esc_url(get_permalink($args['productID'])) ?>'">
     <h6><?php echo vmhEscapeTranslate($args['postTitle']) ?></h6>
-    <p>by <?php echo get_the_author_meta('display_name', $args['postAuthorID']); ?></p>
+    <p>by <?php echo get_the_author_meta('user_login', $args['postAuthorID']); ?></p>
 
     <?php echo getProductIngrediants($args['productID']) ?>
 

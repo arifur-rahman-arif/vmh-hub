@@ -41,7 +41,7 @@ $post_object = get_post($related_product->get_id());
 
     <h6><?php echo vmhEscapeTranslate($post_object->post_title) ?></h6>
 
-    <p>By <?php echo get_the_author_meta('display_name', $post_object->post_author); ?></p>
+    <p>By <?php echo get_the_author_meta('user_login', $post_object->post_author); ?></p>
 
     <?php echo getProductIngrediants($post_object->ID) ?>
 

@@ -25,7 +25,7 @@ if (!is_user_logged_in()) {
                             src="<?php echo get_avatar_url(get_current_user_id()) ?>" alt="images" /></a>
                 </div>
                 <div class="userdash_profile_title mixxer_earning_popup_title">
-                    <a><?php echo get_the_author_meta('display_name', get_current_user_id()); ?></a>
+                    <a><?php echo get_the_author_meta('user_login', get_current_user_id()); ?></a>
                 </div>
             </div>
             <div class="mixxer_earning_popup_content">
