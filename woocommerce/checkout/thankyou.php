@@ -46,11 +46,11 @@ if ($order):
     <?php else: ?>
 
     <section class="login_main">
-        <div class="container vmh_thankyoucontainer">
+        <div class="container vmh_thankyoucontainer" style="padding-top: 50px;">
 
-            <div class="thank_you2_main_background_img">
+            <!-- <div class="thank_you2_main_background_img">
                 <img src="<?php echo esc_url(VMH_URL . 'Assets/images/thank_you2/circle.png') ?>" alt="images" />
-            </div>
+            </div> -->
 
 
             <div class="mixxer_earning_popup thank_you2">
@@ -67,7 +67,7 @@ if ($order):
 
 
                 <div class="mixxer_earning_popup_overly thank_you2_overly_background">
-                    <img src="<?php echo esc_url(VMH_URL . 'Assets/images/thank_you2/lab.png') ?>" alt="images" />
+                    <!-- <img src="<?php echo esc_url(VMH_URL . 'Assets/images/thank_you2/lab.png') ?>" alt="images" /> -->
                 </div>
             </div>
 
@@ -81,7 +81,7 @@ if ($order):
             <?php else: ?>
 
             <p class="woocommerce-notice woocommerce-notice--success woocommerce-thankyou-order-received">
-                <?php echo apply_filters('woocommerce_thankyou_order_received_text', esc_html__('Thank you. Your order has been received.', 'woocommerce'), null); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped                   ?>
+                <?php echo apply_filters('woocommerce_thankyou_order_received_text', esc_html__('Thank you. Your order has been received.', 'woocommerce'), null); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped                        ?>
             </p>
 
             <?php endif;?>
@@ -90,3 +90,9 @@ if ($order):
     </section>
 
 </div>
+
+<script>
+setTimeout(() => {
+    window.location.href = "<?php echo site_url('/') ?>";
+}, 4000)
+</script>

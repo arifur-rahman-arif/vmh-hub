@@ -43,7 +43,7 @@ class Hooks extends HookCallbacks {
         add_action('woocommerce_order_status_completed', [$this, 'addCommisionToUser']);
 
         // Reduce the ingredients stock on successfull order complete
-        // add_action('woocommerce_order_status_completed', [$this, 'reduceIngredientsStock']);
+        add_action('woocommerce_thankyou', [$this, 'reduceIngredientsStock']);
 
         // update post on order status update
         // add_action('save_post', [$this, 'addCommisionToUser'], 10, 1);

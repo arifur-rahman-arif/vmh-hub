@@ -25,13 +25,13 @@ if (!is_ajax()) {
 
 <section id="payment"
     class="woocommerce-checkout-payment login_main create_account shopping_method_main_padd vmh_payment_container vmh_checkout_form">
-    <div class="container">
+    <div class="container" style="padding-top: 50px;">
 
         <?php if (WC()->cart->needs_payment()): ?>
 
-        <div class="shipping_background">
+        <!-- <div class="shipping_background">
             <img src="<?php echo esc_url(VMH_URL . 'Assets/images/shipping_address/circle.png') ?>" alt="images">
-        </div>
+        </div> -->
 
         <div class="shipping_menu">
             <ul>
@@ -80,7 +80,7 @@ printf(esc_html__('Since your browser does not support JavaScript, or it is disa
                 <div class="logon_input_btn logon_input_btn2 shipping_address_btn">
                     <a href="#" class="vmh_previous_btn" data-target="vmh_review_container"><i
                             class="fas fa-less-than"></i>Back to Cart</a>
-                    <?php echo apply_filters('woocommerce_order_button_html', '<button type="submit" class="button alt woocommerce_checkout_place_order" name="woocommerce_checkout_place_order" id="place_order" value="' . esc_attr($order_button_text) . '" data-value="' . esc_attr($order_button_text) . '">' . esc_html($order_button_text) . '</button>'); // @codingStandardsIgnoreLine                                 ?>
+                    <?php echo apply_filters('woocommerce_order_button_html', '<button type="submit" class="button alt woocommerce_checkout_place_order" name="woocommerce_checkout_place_order" id="place_order" value="' . esc_attr($order_button_text) . '" data-value="' . esc_attr($order_button_text) . '">' . esc_html($order_button_text) . '</button>'); // @codingStandardsIgnoreLine                                  ?>
                 </div>
 
 

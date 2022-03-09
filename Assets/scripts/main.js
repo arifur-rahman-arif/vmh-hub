@@ -794,12 +794,50 @@ jQuery(document).ready(function ($) {
         });
     }
 
+    // Get the URL parameter
+    function getUrlParameter(sParam) {
+        let sPageURL = window.location.search.substring(1),
+            sURLVariables = sPageURL.split("&"),
+            sParameterName,
+            i;
+
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split("=");
+
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+            }
+        }
+        return false;
+    }
+
     function moveAroundCheckoutForm(e) {
         e.preventDefault();
         let target = $(e.currentTarget);
-        let parantContainer = target.parents(".vmh_checkout_form");
+
+        let requiredFields = target.parents(".sign_in_box").find(".form-row .required");
+
+        let allFieldOk = true;
+
+        $.each(requiredFields, function (i, requiredField) {
+            if (
+                !$(requiredField).parents(".form-row").find("input, select").val() &&
+                target.hasClass("vmh_checkout_next_btn")
+            ) {
+                swal({
+                    text: `${$(requiredField).parent().text().replace("*", " ").trim()} is a required field`,
+                    button: "OK",
+                });
+                allFieldOk = false;
+                return false;
+            }
+        });
+
+        if (!allFieldOk) return;
+
+        let parentContainer = target.parents(".vmh_checkout_form");
         let nextCheckoutTarget = target.attr("data-target");
-        parantContainer.removeClass("checkout_form_active");
+        parentContainer.removeClass("checkout_form_active");
         $(`.${nextCheckoutTarget}`).addClass("checkout_form_active");
         pushParameter(nextCheckoutTarget);
     }

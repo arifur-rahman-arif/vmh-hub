@@ -32,11 +32,11 @@ if (retrieveParam == 'vmh_review_container') {
 <section
     class="shop_table woocommerce-checkout-review-order-table login_main create_account shopping_method_main_padd vmh_review_container vmh_checkout_form">
 
-    <div class="container">
+    <div class="container" style="padding-top: 50px;">
 
-        <div class="shipping_background">
+        <!-- <div class="shipping_background">
             <img src="<?php echo esc_url(VMH_URL . 'Assets/images/shipping_address/circle.png') ?>" alt="images">
-        </div>
+        </div> -->
         <div class="shipping_menu">
             <ul>
                 <li><a href="#">Cart ></a></li>
@@ -81,11 +81,11 @@ if (retrieveParam == 'vmh_review_container') {
             <?php if (wc_tax_enabled() && !WC()->cart->display_prices_including_tax()): ?>
             <?php if ('itemized' === get_option('woocommerce_tax_total_display')): ?>
             <?php foreach (WC()->cart->get_tax_totals() as $code => $tax): // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited ?>
-            <div class="tax-rate tax-rate-<?php echo esc_attr(sanitize_title($code)); ?>">
-                <th><?php echo esc_html($tax->label); ?></th>
-                <td><?php echo wp_kses_post($tax->formatted_amount); ?></td>
-            </div>
-            <?php endforeach;?>
+	            <div class="tax-rate tax-rate-<?php echo esc_attr(sanitize_title($code)); ?>">
+	                <th><?php echo esc_html($tax->label); ?></th>
+	                <td><?php echo wp_kses_post($tax->formatted_amount); ?></td>
+	            </div>
+	            <?php endforeach;?>
             <?php else: ?>
             <div class="tax-total">
                 <th><?php echo esc_html(WC()->countries->tax_or_vat()); ?></th>

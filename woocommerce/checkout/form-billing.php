@@ -23,11 +23,11 @@ defined('ABSPATH') || exit;
 <!--======================== Start Billing Address Page ========================-->
 <section
     class="login_main create_account shopping_method_main_padd vmh_billing_address_container checkout_form_active vmh_checkout_form">
-    <div class="container">
+    <div class="container" style="padding-top: 50px;">
         <!-- Start Background Overly -->
-        <div class="shipping_background">
+        <!-- <div class="shipping_background">
             <img src="<?php echo esc_url(VMH_URL . 'Assets/images/shipping_address/circle.png') ?>" alt="images">
-        </div>
+        </div> -->
         <!-- End Background Overly -->
 
         <div class="shipping_menu">

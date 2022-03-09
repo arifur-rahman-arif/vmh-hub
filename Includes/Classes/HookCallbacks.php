@@ -424,19 +424,40 @@ class HookCallbacks {
             return;
         }
 
-        foreach ($items as $item) {
+        foreach ($items as $itemID => $item) {
             $productID = $item->get_product_id();
 
             $productIngredients = get_post_meta($productID, 'product_ingredients', true);
+            $ingredientsPercentageValues = get_post_meta($productID, 'ingredients_percentage_values', true);
 
             if (!$productIngredients) {
                 return;
             }
 
-            foreach ($productIngredients as $key => $ingredientID) {
-                $ingredientStock = get_post_meta($ingredientID, 'ingredients_stock', true);
+            $bottleSize = wc_get_order_item_meta($itemID, 'pa_vmh_bottle_size', true);
 
-                $newStock = $ingredientStock - 1;
+            $bottleSizeInteger = null;
+
+            if ($bottleSize == '10ml') {
+                $bottleSizeInteger = 10;
+            }
+
+            if ($bottleSize == '50ml') {
+                $bottleSizeInteger = 50;
+            }
+
+            if (!$bottleSizeInteger) {
+                continue;
+            }
+
+            foreach ($productIngredients as $key => $ingredientID) {
+                $ingredientStock = (float) get_post_meta($ingredientID, 'ingredients_stock', true);
+
+                $ingredientPercentage = $ingredientsPercentageValues[$key];
+
+                $stockValue = (float) $bottleSizeInteger * ((float) $ingredientPercentage / 100);
+
+                $newStock = $ingredientStock - $stockValue;
 
                 update_post_meta($ingredientID, 'ingredients_stock', $newStock);
             }

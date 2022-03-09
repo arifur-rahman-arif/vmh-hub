@@ -24,10 +24,10 @@ defined('ABSPATH') || exit;
 
 <!--======================== Start Shipping Address Page ========================-->
 <section class="login_main create_account shopping_method_main_padd vmh_shipping_address_container vmh_checkout_form">
-    <div class="container">
-        <div class="shipping_background">
+    <div class="container" style="padding-top: 50px;">
+        <!-- <div class="shipping_background">
             <img src="<?php echo esc_url(VMH_URL . 'Assets/images/shipping_address/circle.png') ?>" alt="images">
-        </div>
+        </div> -->
 
         <div class="shipping_menu">
             <ul>
