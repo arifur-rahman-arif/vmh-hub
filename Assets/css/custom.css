@@ -82,7 +82,8 @@ body > .wp-dark-mode-switcher {
 .woocommerce-error {
     width: 790px;
     margin: 0 auto;
-    margin-top: 200px;
+    margin-top: 110px;
+    margin-bottom: 2rem;
 }
 
 .vmh_subtotal.vmh_subtotal {

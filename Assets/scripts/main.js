@@ -178,16 +178,20 @@ jQuery(document).ready(function ($) {
         let value = target.val();
 
         if (value == "no-nicotine") {
-            $("#pa_vmh_nicotine_amount .enabled").removeClass("enabled");
-            $("#pa_vmh_nicotine_amount option[value='no-nicotine']").prop("selected", true);
-            $("#pa_vmh_nicotine_amount").parents("tr").css({
-                display: "none",
-            });
+            setTimeout(() => {
+                $("#pa_vmh_nicotine_amount .enabled").removeClass("enabled");
+                $("#pa_vmh_nicotine_amount option[value='no-nicotine']").prop("selected", true);
+                $("#pa_vmh_nicotine_amount").parents("tr").css({
+                    display: "none",
+                });
+            }, 200);
         } else {
-            $("#pa_vmh_nicotine_amount option:contains('Choose')").prop("selected", true);
-            $("#pa_vmh_nicotine_amount").parents("tr").css({
-                display: "table-row",
-            });
+            setTimeout(() => {
+                $("#pa_vmh_nicotine_amount option:contains('Choose')").prop("selected", true);
+                $("#pa_vmh_nicotine_amount").parents("tr").css({
+                    display: "table-row",
+                });
+            }, 200);
         }
     }
 
@@ -821,7 +825,9 @@ jQuery(document).ready(function ($) {
 
         $.each(requiredFields, function (i, requiredField) {
             if (
-                !$(requiredField).parents(".form-row").find("input, select").val() &&
+                (!$(requiredField).parents(".form-row").find("input, select").val() ||
+                    $(requiredField).parents(".form-row").find("input[type='checkbox']").prop("checked") ==
+                        false) &&
                 target.hasClass("vmh_checkout_next_btn")
             ) {
                 swal({

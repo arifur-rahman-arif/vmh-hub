@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) {
 }
 
 if (!defined('VMH_VERSION')) {
-    define('VMH_VERSION', '1.0.2');
+    define('VMH_VERSION', '1.0.3');
     // define('VMH_VERSION', time());
 }
 
