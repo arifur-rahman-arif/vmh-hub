@@ -5,7 +5,7 @@
 **Description:** \_This is a e-commerce wordpress theme fully supported by woocommerce.
 Tags: e-commerce, woocommerce, one-column, custom-background, custom-colors, custom-logo, custom-menu, editor-style, featured-images, footer-widgets, full-width-template, rtl-language-support, sticky-post, theme-options, threaded-comments, translation-ready, block-styles, wide-blocks, accessibility-ready
 
-**Version:** 1.0.2
+**Version:** 1.0.3
 
 **Requires at least:** 5.0
 
