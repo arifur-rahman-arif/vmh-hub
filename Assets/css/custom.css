@@ -601,7 +601,6 @@ a.disabled {
     padding: 0 1.5rem;
 }
 .fee {
-    font-weight: bold;
     margin-top: 20px;
 }
 
@@ -851,4 +850,12 @@ a.disabled {
 
 #order_comments {
     padding: 1rem;
+}
+
+.shipping_method_first_left {
+    cursor: pointer;
+}
+
+.fee .woocommerce-Price-amount.amount {
+    font-weight: bold;
 }

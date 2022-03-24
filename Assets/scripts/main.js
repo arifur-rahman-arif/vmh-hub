@@ -114,6 +114,15 @@ jQuery(document).ready(function ($) {
             trigger: "manual",
         });
 
+        // $(document).on("click", ".shipping_method_first", (e) => {
+        //     $.each($(".vmh_shipping_method_input"), function (i, element) {
+        //         console.log($(element));
+        //         $(element).attr("checked", "false");
+        //     });
+        //     let target = $(e.currentTarget);
+        //     target.find("input:radio").attr("checked", "checked");
+        // });
+
         navigateUserOnSiteOpening();
     }
 

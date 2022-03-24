@@ -13,29 +13,29 @@ class HookCallbacks {
     // Load all the css files here
     public function loadStyles() {
         wp_enqueue_style('vmh-googleFont', '//fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Open+Sans:wght@300;400;600;700;800&display=swap');
-        wp_enqueue_style('vmh-font', VMH_URL . 'Assets/Fonts/font.css', [], VMH_VERSION, 'all');
-        wp_enqueue_style('vmh-normalize', VMH_URL . 'Assets/css/normalize.css', [], VMH_VERSION, 'all');
-        wp_enqueue_style('vmh-bootstrap', VMH_URL . 'Assets/css/bootstrap.min.css', [], VMH_VERSION, 'all');
+        wp_enqueue_style('vmh-font', VMH_URL.'Assets/Fonts/font.css', [], VMH_VERSION, 'all');
+        wp_enqueue_style('vmh-normalize', VMH_URL.'Assets/css/normalize.css', [], VMH_VERSION, 'all');
+        wp_enqueue_style('vmh-bootstrap', VMH_URL.'Assets/css/bootstrap.min.css', [], VMH_VERSION, 'all');
         wp_enqueue_style('vmh-fontawesome', '//pro.fontawesome.com/releases/v5.10.0/css/all.css');
-        wp_enqueue_style('vmh-slim-select', VMH_URL . 'Assets/css/slimselect.min.css', [], VMH_VERSION, 'all');
-        wp_enqueue_style('vmh-style', VMH_URL . 'Assets/css/style.css', [], VMH_VERSION, 'all');
-        wp_enqueue_style('vmh-responsive', VMH_URL . 'Assets/css/responsive.css', [], VMH_VERSION, 'all');
-        wp_enqueue_style('vmh-datepickercss', VMH_URL . 'Assets/scripts/datetimepicker/build/jquery.datetimepicker.min.css', [], VMH_VERSION, 'all');
-        wp_enqueue_style('vmh-custom', VMH_URL . 'Assets/css/custom.css', [], VMH_VERSION, 'all');
+        wp_enqueue_style('vmh-slim-select', VMH_URL.'Assets/css/slimselect.min.css', [], VMH_VERSION, 'all');
+        wp_enqueue_style('vmh-style', VMH_URL.'Assets/css/style.css', [], VMH_VERSION, 'all');
+        wp_enqueue_style('vmh-responsive', VMH_URL.'Assets/css/responsive.css', [], VMH_VERSION, 'all');
+        wp_enqueue_style('vmh-datepickercss', VMH_URL.'Assets/scripts/datetimepicker/build/jquery.datetimepicker.min.css', [], VMH_VERSION, 'all');
+        wp_enqueue_style('vmh-custom', VMH_URL.'Assets/css/custom.css', [], VMH_VERSION, 'all');
         wp_enqueue_style('vmh-themeCss', get_stylesheet_uri());
     }
 
     // Load all the javascript files here
     public function loadScripts() {
         wp_enqueue_script('jquery');
-        wp_enqueue_script('vmh-modernizr', VMH_URL . 'Assets/scripts/modernizr-3.11.2.min.js', [], VMH_VERSION, true);
-        wp_enqueue_script('vmh-slim-select', VMH_URL . 'Assets/scripts/slimselect.min.js', ['jquery'], VMH_VERSION, false);
-        wp_enqueue_script('vmh-popper', VMH_URL . 'Assets/scripts/popper.min.js', [], VMH_VERSION, true);
-        wp_enqueue_script('vmh-bootstrap', VMH_URL . 'Assets/scripts/bootstrap.min.js', [], VMH_VERSION, true);
-        wp_enqueue_script('vmh-custom', VMH_URL . 'Assets/scripts/custom.js', ['jquery'], VMH_VERSION, true);
-        wp_enqueue_script('vmh-datepicker', VMH_URL . 'Assets/scripts/datetimepicker/build/jquery.datetimepicker.full.min.js', ['jquery'], VMH_VERSION, true);
-        wp_enqueue_script('vmh-sweetalert', VMH_URL . 'Assets/scripts/sweetalert.js', [], VMH_VERSION, true);
-        wp_enqueue_script('vmh-main', VMH_URL . 'Assets/scripts/main.js', ['jquery'], VMH_VERSION, true);
+        wp_enqueue_script('vmh-modernizr', VMH_URL.'Assets/scripts/modernizr-3.11.2.min.js', [], VMH_VERSION, true);
+        wp_enqueue_script('vmh-slim-select', VMH_URL.'Assets/scripts/slimselect.min.js', ['jquery'], VMH_VERSION, false);
+        wp_enqueue_script('vmh-popper', VMH_URL.'Assets/scripts/popper.min.js', [], VMH_VERSION, true);
+        wp_enqueue_script('vmh-bootstrap', VMH_URL.'Assets/scripts/bootstrap.min.js', [], VMH_VERSION, true);
+        wp_enqueue_script('vmh-custom', VMH_URL.'Assets/scripts/custom.js', ['jquery'], VMH_VERSION, true);
+        wp_enqueue_script('vmh-datepicker', VMH_URL.'Assets/scripts/datetimepicker/build/jquery.datetimepicker.full.min.js', ['jquery'], VMH_VERSION, true);
+        wp_enqueue_script('vmh-sweetalert', VMH_URL.'Assets/scripts/sweetalert.js', [], VMH_VERSION, true);
+        wp_enqueue_script('vmh-main', VMH_URL.'Assets/scripts/main.js', ['jquery'], VMH_VERSION, true);
     }
 
     // Localize javascript files
@@ -58,8 +58,8 @@ class HookCallbacks {
     }
 
     public function loadAdminScripts() {
-        wp_enqueue_script('vmh-admin-select', VMH_URL . 'Assets/scripts/slimselect.min.js', ['jquery'], VMH_VERSION, true);
-        wp_enqueue_script('vmh-admin', VMH_URL . 'Assets/scripts/admin.js', ['jquery', 'vmh-admin-select'], VMH_VERSION, true);
+        wp_enqueue_script('vmh-admin-select', VMH_URL.'Assets/scripts/slimselect.min.js', ['jquery'], VMH_VERSION, true);
+        wp_enqueue_script('vmh-admin', VMH_URL.'Assets/scripts/admin.js', ['jquery', 'vmh-admin-select'], VMH_VERSION, true);
         wp_localize_script('vmh-admin', 'vmhLocal', [
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'siteUrl' => site_url('/')
@@ -67,8 +67,8 @@ class HookCallbacks {
     }
 
     public function loadAdminStyles() {
-        wp_enqueue_style('vmh-select', VMH_URL . 'Assets/css/slimselect.min.css', [], VMH_VERSION, 'all');
-        wp_enqueue_style('vmh-admin', VMH_URL . 'Assets/css/admin.css', [], VMH_VERSION, 'all');
+        wp_enqueue_style('vmh-select', VMH_URL.'Assets/css/slimselect.min.css', [], VMH_VERSION, 'all');
+        wp_enqueue_style('vmh-admin', VMH_URL.'Assets/css/admin.css', [], VMH_VERSION, 'all');
     }
 
     // These are the callback functions after theme initialization
@@ -149,7 +149,7 @@ class HookCallbacks {
 
     // Load admin page in the backend of this website
     public static function adminPage() {
-        load_template(VMH_PATH . 'Includes/Templates/admin-menu.php', true);
+        load_template(VMH_PATH.'Includes/Templates/admin-menu.php', true);
     }
 
     // Register settings for product options
@@ -230,7 +230,7 @@ class HookCallbacks {
 
     // Display the html of of product admin menu option page
     public function optionsFieldHTML() {
-        load_template(VMH_PATH . 'Includes/Templates/options-settings.php');
+        load_template(VMH_PATH.'Includes/Templates/options-settings.php');
     }
 
     // Set new attribute to woocommerce product attributes
@@ -308,7 +308,7 @@ class HookCallbacks {
         foreach ($splitedValues as $key => $value) {
             $response = wp_insert_term(
                 $value, // the term
-                'pa_' . $taxonomy . '', // the taxonomy
+                'pa_'.$taxonomy.'', // the taxonomy
                 [
                     'slug' => $value
                 ]
@@ -399,8 +399,8 @@ class HookCallbacks {
         $subject = 'Congratulations! You have earned a commission';
 
         $message = '
-                    Hello ' . $displayName . ' you have got ' . $productCommissionPercentage . '% a commission for <b>' . $post->post_title . '</b> <br/>
-                    <b>Commission Value:</b> ' . get_woocommerce_currency_symbol() . ' ' . $commission . '
+                    Hello '.$displayName.' you have got '.$productCommissionPercentage.'% a commission for <b>'.$post->post_title.'</b> <br/>
+                    <b>Commission Value:</b> '.get_woocommerce_currency_symbol().' '.$commission.'
                 ';
         $headers = ['Content-Type: text/html; charset=UTF-8'];
         wp_mail($to, $subject, $message, $headers);
@@ -499,7 +499,7 @@ class HookCallbacks {
                     $displayName = $user->data->display_name;
                     $subject = 'Your newly created product is approved';
                     $message = '
-                        Hello ' . $displayName . ' your product ' . $post->post_title . ' is now approved my admin. <a href="' . get_permalink($postID) . '">Click Here</a> to view your product
+                        Hello '.$displayName.' your product '.$post->post_title.' is now approved my admin. <a href="'.get_permalink($postID).'">Click Here</a> to view your product
                     ';
                     $headers = ['Content-Type: text/html; charset=UTF-8'];
                     wp_mail($to, $subject, $message, $headers);
@@ -649,7 +649,7 @@ class HookCallbacks {
                     <br/>
                 </strong>
                 <br />
-                <input type="text" name="ingredients_stock" id="ingredients_stock" value="' . $metaValue . '"/>
+                <input type="text" name="ingredients_stock" id="ingredients_stock" value="'.$metaValue.'"/>
             </div>
        ';
     }
@@ -745,7 +745,7 @@ class HookCallbacks {
                 </strong>
                 <br />
                 <select name="product_ingredients[]" multiple="multiple" style="min-width: 300px" id="product_ingredients" class="product_ingredients">
-                    ' . $this->getIngredients($metaValue) . '
+                    '.$this->getIngredients($metaValue).'
                 </select>
             </div>
        ';
@@ -765,7 +765,7 @@ class HookCallbacks {
                 <div>
                     <br />
                     <select name="ingredients_percentage_values[]" multiple="multiple" style="min-width: 300px" id="ingredients_percentage_values" class="ingredients_percentage_values">
-                        ' . $this->getIngredientsPercentage($metaValue, $post->ID) . '
+                        '.$this->getIngredientsPercentage($metaValue, $post->ID).'
                     </select>
                 </div>
            ';
@@ -791,8 +791,8 @@ class HookCallbacks {
         $options = '';
 
         foreach ($ingredients as $key => $ingredient) {
-            $options .= '<option ' . $this->echo_select($metaValues, esc_attr($ingredient->ID)) . ' value="' . esc_attr($ingredient->ID) . '" >
-                            ' . esc_html($ingredient->post_title) . ' (' . get_post_meta($ingredient->ID, 'ingredients_stock', true) . ')
+            $options .= '<option '.$this->echo_select($metaValues, esc_attr($ingredient->ID)).' value="'.esc_attr($ingredient->ID).'" >
+                            '.esc_html($ingredient->post_title).' ('.get_post_meta($ingredient->ID, 'ingredients_stock', true).')
                         </option>';
         }
 
@@ -815,8 +815,8 @@ class HookCallbacks {
         foreach ($ingredientsPercentage as $key => $ingredientPercentage) {
 
             if (isset($ingredients[$key]) && $ingredients[$key]) {
-                $options .= '<option selected value="' . $key . '_' . esc_attr($ingredientPercentage) . '" >
-                                ' . get_the_title($ingredients[$key]) . ' ' . $ingredientPercentage . '%
+                $options .= '<option selected value="'.$key.'_'.esc_attr($ingredientPercentage).'" >
+                                '.get_the_title($ingredients[$key]).' '.$ingredientPercentage.'%
                             </option>';
             }
         }
@@ -907,11 +907,11 @@ class HookCallbacks {
         echo '
             <div>
                 <strong>
-                    <label for="ingredients_price">Price/ml: (<span>' . get_woocommerce_currency_symbol() . '</span>)</label>
+                    <label for="ingredients_price">Price/ml: (<span>'.get_woocommerce_currency_symbol().'</span>)</label>
                     <br/>
                 </strong>
                 <br />
-                <input type="text" name="ingredients_price" id="ingredients_price" value="' . $metaValue . '"/>
+                <input type="text" name="ingredients_price" id="ingredients_price" value="'.$metaValue.'"/>
             </div>
        ';
     }
@@ -964,7 +964,7 @@ class HookCallbacks {
             echo '
                 <input type="hidden" name="nicotine_shot_value" id="nicotine_shot_value" />
                 <div class="price_box">
-                    <input type="hidden" id="created_recipe_id" value="' . get_the_ID() . '">
+                    <input type="hidden" id="created_recipe_id" value="'.get_the_ID().'">
                 </div>
                 ';
         }
@@ -1067,7 +1067,7 @@ class HookCallbacks {
 
         $total = $cart->total + ($freebasePrice + $nicotineSaltPrice);
 
-        $cart->add_fee(__('Total Nicotine shot price', 'vmh-hub'), $total);
+        $cart->add_fee(__('Total Nicotine shot price:', 'vmh-hub'), $total);
     }
 
     /**
@@ -1139,7 +1139,7 @@ class HookCallbacks {
 
         foreach ($shotCalculationData as $key => $value) {
             if ($value['shotValue'] > 0) {
-                $shotHtml .= '<h3 style="font-weight: bold">' . esc_html($value['name']) . ': ' . esc_html($value['shotValue'] / 10) . ' shot</h3>';
+                $shotHtml .= '<h3 style="font-weight: bold">'.esc_html($value['name']).': '.esc_html($value['shotValue'] / 10).' shot</h3>';
             }
         }
 

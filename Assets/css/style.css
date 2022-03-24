@@ -2061,11 +2061,10 @@ img {
 }
 /*Start custom input radio*/
 .custom-radio-buttons .radio-wrapper {
-    display: inline-block;
-    display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
     margin-right: 6px;
+    align-items: center;
 }
 .custom-radio-buttons .radio-wrapper input[name="custom-radio"] {
     display: none;

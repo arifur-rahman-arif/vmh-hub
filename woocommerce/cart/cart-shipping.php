@@ -32,7 +32,8 @@
         <li class="shipping_method_first">
             <?php if (count($available_methods)) {?>
 
-            <div class="shipping_method_first_left">
+            <label class="shipping_method_first_left"
+                for="shipping_method_<?php echo $index ?>_<?php echo esc_attr(sanitize_title($method->id)) ?>">
                 <div class="custom-radio-buttons">
                     <div class="radio-wrapper">
 
@@ -42,18 +43,16 @@
                             value="<?php echo esc_attr($method->id) ?>"
                             <?php echo checked($method->id, $chosen_method, false) ?> />
 
-                        <label
-                            for="shipping_method_<?php echo $index ?><?php echo esc_attr(sanitize_title($method->id)) ?>">
-                            <span class="outer">
-                                <span class="inner animated"></span>
-                            </span>
-                        </label>
+
+                        <div class="shipping_method_second_hbold">
+                            <h4><?php echo wc_cart_totals_shipping_method_label($method) ?></h4>
+                        </div>
+
                     </div>
                 </div>
-                <div class="shipping_method_second_hbold">
-                    <h4><?php echo wc_cart_totals_shipping_method_label($method) ?></h4>
-                </div>
-            </div>
+
+            </label>
+
             <!-- <div class="shipping_method_first_right">
                 <p><?php echo wc_cart_totals_shipping_method_label($method) ?></p>
             </div> -->
