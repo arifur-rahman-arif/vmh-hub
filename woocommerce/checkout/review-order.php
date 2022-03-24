@@ -104,7 +104,7 @@ if (retrieveParam == 'vmh_review_container') {
             </div>
             <br>
             <div class="order-total">
-                <span class="vmh_subtotal"><?php esc_html_e('Total', 'woocommerce');?></span>
+                <span class="vmh_subtotal"><?php esc_html_e('Total', 'woocommerce');?>:</span>
                 <td><?php wc_cart_totals_order_total_html();?></td>
             </div>
 
