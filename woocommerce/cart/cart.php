@@ -5,22 +5,22 @@
 <?php $combinedNicotineShot = getCalculatedNicotineShots($cartItems)?>
 
 <!--======================== Start Cart Page ========================-->
-<section class="login_main create_account shopping_method_main_padd">
+<section class="comon_section_area my">
     <div class="container">
         <!-- Start Background Overly -->
         <!-- <div class="shipping_background">
-            <img src="<?php echo VMH_URL . 'Assets/images/shipping_address/circle.png' ?>" alt="images" />
+            <img src="<?php echo VMH_URL.'Assets/images/shipping_address/circle.png' ?>" alt="images" />
         </div> -->
         <!-- End Background Overly -->
 
-        <div class="shipping_menu">
+        <!-- <div class="shipping_menu">
             <ul>
                 <li><a href="#" class="shipping_menu_active">Cart ></a></li>
                 <li><a href="#">Information ></a></li>
                 <li><a href="#">Shipping ></a></li>
                 <li><a href="#">payment </a></li>
             </ul>
-        </div>
+        </div> -->
 
         <div class="cart_main">
             <div class="cart_header">
@@ -36,7 +36,7 @@
                 <?php foreach ($cartItems as $key => $item) {?>
                 <?php $item['cart_key'] = $key?>
                 <input type="hidden" name="cart_key" class="cart_key" data-key="<?php echo esc_attr($key) ?>">
-                <?php load_template(VMH_PATH . 'Includes/Templates/single-cart.php', false, $item)?>
+                <?php load_template(VMH_PATH.'Includes/Templates/single-cart.php', false, $item)?>
                 <?php }?>
                 <?php }?>
             </div>

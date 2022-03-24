@@ -84,7 +84,7 @@ function getProductIngrediants($productID, $includePTage = false) {
     $ingredientsHTML = $includePTage ? '<p>' : '<ul>';
     foreach ($productContents as $key => $singleIngredient) {
         $ingredientsHTML .= '
-                                    ' . productIngredientsHTML($singleIngredient, $includePTage) . '
+                                    '.productIngredientsHTML($singleIngredient, $includePTage).'
                                 ';
     }
     return $ingredientsHTML;
@@ -121,9 +121,9 @@ function organizePercentageAndIngredients($productID) {
         if (isset($productPercentage[$key]) && $productPercentage[$key]) {
 
             if (isset($organizedValues[$productPercentage[$key]])) {
-                $organizedValues[$productPercentage[$key] + 1] = '' . get_the_title($ingredient) . ' ' . $productPercentage[$key] . '%';
+                $organizedValues[$productPercentage[$key] + 1] = ''.get_the_title($ingredient).' '.$productPercentage[$key].'%';
             } else {
-                $organizedValues[$productPercentage[$key]] = '' . get_the_title($ingredient) . ' ' . $productPercentage[$key] . '%';
+                $organizedValues[$productPercentage[$key]] = ''.get_the_title($ingredient).' '.$productPercentage[$key].'%';
             }
 
         }
@@ -143,9 +143,9 @@ function organizePercentageAndIngredients($productID) {
  */
 function productIngredientsHTML($singleIngredient, $includePTage) {
     if ($includePTage) {
-        return '<p>' . trim($singleIngredient) . '</p>';
+        return '<p>'.trim($singleIngredient).'</p>';
     } else {
-        return '<li><span>' . trim($singleIngredient) . '</span></li>';
+        return '<li><span>'.trim($singleIngredient).'</span></li>';
     }
 }
 
@@ -174,7 +174,8 @@ function getTotalCartQuantity() {
  * @return mixed
  */
 function getTotalCartPrice() {
-    return WC()->cart->total;
+    $total = ((float) WC()->cart->total - (float) WC()->cart->shipping_total);
+    return number_format($total, 2);
 }
 
 // Get the all cart items
@@ -208,8 +209,8 @@ function singleProductIngredientsHTML(int $productID) {
         // Start Single ingredient item
         $ingredientsHTML .= '
             <div class="recepes_single_ingridient_item">
-                <span>' . trim(get_the_title($singleIngredient)) . '</span>
-                ' . ingredientsPecentage($key) . '
+                <span>'.trim(get_the_title($singleIngredient)).'</span>
+                '.ingredientsPecentage($key).'
             </div>
             ';
         // End Single ingredient item
@@ -233,7 +234,7 @@ function ingredientsPecentage($key) {
         return '';
     }
 
-    return '<b>' . $ingredientsPercentage[$key] . '%</b> <input type="hidden" class="ingredient_percentage_normal" value="' . esc_attr($ingredientsPercentage[$key]) . '" />';
+    return '<b>'.$ingredientsPercentage[$key].'%</b> <input type="hidden" class="ingredient_percentage_normal" value="'.esc_attr($ingredientsPercentage[$key]).'" />';
 }
 
 // Get the use description from user database
@@ -288,7 +289,7 @@ function getUserFavoriteProducts() {
 
                 $hasFavorite = true;
 
-                load_template(VMH_PATH . 'Includes/Templates/fav-product.php', false, [
+                load_template(VMH_PATH.'Includes/Templates/fav-product.php', false, [
                     'postTitle'   => get_the_title($productID),
                     'postAuthor'  => get_the_author_meta('user_login', get_post($productID)->post_author),
                     'productID'   => $productID,
@@ -334,7 +335,7 @@ function displayPgVgOptions() {
 
         $html .= '<option value="">Choose</option>';
         foreach ($pgVgArray as $key => $value) {
-            $html .= '<option value="' . esc_html(trim($value)) . '">' . esc_html(trim($value)) . '</option>';
+            $html .= '<option value="'.esc_html(trim($value)).'">'.esc_html(trim($value)).'</option>';
         }
 
         $html .= '
@@ -364,7 +365,7 @@ function displayNicotineTypeOptions() {
 
         $html .= '<option value="">Choose</option>';
         foreach ($pgVgArray as $key => $value) {
-            $html .= '<option value="' . esc_html(trim($value)) . '">' . esc_html(trim($value)) . '</option>';
+            $html .= '<option value="'.esc_html(trim($value)).'">'.esc_html(trim($value)).'</option>';
         }
 
         $html .= '
@@ -394,7 +395,7 @@ function displayNicotineAmountOptions() {
 
         $html .= '<option value="">Choose</option>';
         foreach ($pgVgArray as $key => $value) {
-            $html .= '<option value="' . esc_html(trim($value)) . '">' . esc_html(trim($value)) . '</option>';
+            $html .= '<option value="'.esc_html(trim($value)).'">'.esc_html(trim($value)).'</option>';
         }
 
         $html .= '
@@ -424,7 +425,7 @@ function displayBottleSizeOptions() {
 
         $html .= '<option value="">Choose</option>';
         foreach ($pgVgArray as $key => $value) {
-            $html .= '<option value="' . esc_html(trim($value)) . '">' . esc_html(trim($value)) . '</option>';
+            $html .= '<option value="'.esc_html(trim($value)).'">'.esc_html(trim($value)).'</option>';
         }
 
         $html .= '
@@ -458,8 +459,8 @@ function simpleProductOptions() {
 
             $optionsHTML .= '
                 <div class="recepes_single_choose_option">
-                    <h4>' . esc_html($option) . ' :</h4>
-                    <span class="vmh_simple_option_value">' . getOrganizedAttributes($productOptions, $key, $i)[1] . '</span>
+                    <h4>'.esc_html($option).' :</h4>
+                    <span class="vmh_simple_option_value">'.getOrganizedAttributes($productOptions, $key, $i)[1].'</span>
                 </div>
                ';
 
@@ -497,12 +498,12 @@ function getOrganizedAttributes($productOptions, $key, $i) {
 function showEarningSectionHtml() {
     if (userRole('subscriber')) {
         return '
-            <h4>Earned: ' . totalEarningOfUser() . '</h4>
+            <h4>Earned: '.totalEarningOfUser().'</h4>
             <p>You will be paid by end of each calendar month</p>
         ';
     } else {
         return '
-            <p>The section is only for subscribers. Create a <a style="color: white;text-decoration: underline;" href="' . wp_login_url('/login') . '">subsriber account or login to a subscriber account</a></p>
+            <p>The section is only for subscribers. Create a <a style="color: white;text-decoration: underline;" href="'.wp_login_url('/login').'">subsriber account or login to a subscriber account</a></p>
         ';
     }
 }
@@ -538,12 +539,12 @@ function totalEarningOfUser() {
 
     if (in_array('subscriber', $user_roles)) {
         if (get_user_meta($userID, 'user_commission', true)) {
-            $earnings = get_woocommerce_currency_symbol() . ' ' . number_format(get_user_meta($userID, 'user_commission', true), 2);
+            $earnings = get_woocommerce_currency_symbol().' '.number_format(get_user_meta($userID, 'user_commission', true), 2);
         } else {
-            $earnings = get_woocommerce_currency_symbol() . " " . '0.00';
+            $earnings = get_woocommerce_currency_symbol()." ".'0.00';
         }
     } else {
-        $earnings = get_woocommerce_currency_symbol() . " " . '0.00';
+        $earnings = get_woocommerce_currency_symbol()." ".'0.00';
     }
 
     return $earnings;
@@ -562,7 +563,7 @@ function getUserCreatedRecipe() {
     if ($recipes) {
         foreach ($recipes as $key => $recipe) {
             if (wc_get_product($recipe)->get_id() != get_option('vmh_create_product_option')) {
-                load_template(VMH_PATH . 'Includes/Templates/my-recipe-product.php', false, [
+                load_template(VMH_PATH.'Includes/Templates/my-recipe-product.php', false, [
                     'postTitle'     => $recipe->post_title,
                     'postAuthorID'  => $recipe->post_author,
                     'productID'     => $recipe->ID,
@@ -575,7 +576,7 @@ function getUserCreatedRecipe() {
         echo '
         <div class="card">
             <div class="card-body">
-              Oops. You have not created any recipe. <a href="' . esc_url(get_permalink(get_option('vmh_create_product_option'))) . '">Create a recipe</a>
+              Oops. You have not created any recipe. <a href="'.esc_url(get_permalink(get_option('vmh_create_product_option'))).'">Create a recipe</a>
             </div>
         </div>';
     }
@@ -614,7 +615,7 @@ function getRecentProducts($postPerPage) {
             if ($timeDiff <= 10) {
                 if (wc_get_product($recipe)->get_id() != get_option('vmh_create_product_option')) {
 
-                    load_template(VMH_PATH . 'Includes/Templates/product.php', false, [
+                    load_template(VMH_PATH.'Includes/Templates/product.php', false, [
                         'postTitle'    => $recipe->post_title,
                         'postAuthorID' => $recipe->post_author,
                         'productID'    => $recipe->ID,
@@ -700,7 +701,7 @@ function getRecommendedProducts($postPerPage) {
 
     // }
 
-    echo do_shortcode('[DCAS_shortcode style="1" rating="0" postsperpage="' . $postPerPage . '" columns="1"]');
+    echo do_shortcode('[DCAS_shortcode style="1" rating="0" postsperpage="'.$postPerPage.'" columns="1"]');
 
 }
 
@@ -727,8 +728,8 @@ function getAllIngredients($args = []) {
         // $options .= '<option class="' . addDisableAttr($ingredient->ID) . '" ' . addDisableAttr($ingredient->ID) . ' value="' . esc_attr($ingredient->ID) . '" >
         //                 ' . esc_html($ingredient->post_title) . ' (' . ingredientInStock($ingredient->ID) . ')
         //             </option>';
-        $options .= '<option value="' . esc_attr($ingredient->ID) . '" >
-                        ' . esc_html($ingredient->post_title) . '
+        $options .= '<option value="'.esc_attr($ingredient->ID).'" >
+                        '.esc_html($ingredient->post_title).'
                     </option>';
     }
 
@@ -777,7 +778,7 @@ function getIngredientsOnProductEdit() {
         <div class="ingredients_wrapper" id="ingredients_wrapper_1">
             <select name="product_ingredients" style="width: 300px" class="product_ingredients"
                 id="product_ingredients_1">
-                ' . getAllIngredients() . '
+                '.getAllIngredients().'
             </select>
 
             <input type="number" min="0" max="30" name="ingredient_percentage" class="ingredient_percentage"
@@ -795,19 +796,19 @@ function getIngredientsOnProductEdit() {
     foreach ($productIngredients as $key => $ingredient) {
 
         $ingredientsHTML .= '
-                <div class="ingredients_wrapper create_ingredients_wrapper" id="create_ingredients_select' . $key . '">
+                <div class="ingredients_wrapper create_ingredients_wrapper" id="create_ingredients_select'.$key.'">
 
 
-                    <select data-seleted_val="' . esc_attr($ingredient) . '" name="product_ingredients" style="width: 300px" class="product_ingredients"
+                    <select data-seleted_val="'.esc_attr($ingredient).'" name="product_ingredients" style="width: 300px" class="product_ingredients"
                         <option data-placeholder="true"></option>
 
-                        ' . $ingredientOptions . '
+                        '.$ingredientOptions.'
                     </select>
 
-                    <input type="number" min="0" max="30" name="ingredient_percentage" class="ingredient_percentage" value="' . showIngredientsPercentageValues($key, $ingredientsPercentage) . '" >
+                    <input type="number" min="0" max="30" name="ingredient_percentage" class="ingredient_percentage" value="'.showIngredientsPercentageValues($key, $ingredientsPercentage).'" >
 
-                   ' . showCreateIcon($key) . '
-                   ' . showDeleteIcon($key) . '
+                   '.showCreateIcon($key).'
+                   '.showDeleteIcon($key).'
 
                 </div>
         ';
@@ -885,7 +886,7 @@ function updateOrEditTag() {
     //     return '&' . http_build_query($organizedOptions) . '&update_product=' . $updateProduct . '';
     // } else {
     // }
-    return '&update_product=' . $updateProduct . '';
+    return '&update_product='.$updateProduct.'';
 }
 
 /**
@@ -909,7 +910,7 @@ function getProductTags($productID = null) {
     $tagsHTML = '';
 
     foreach ($tags as $key => $tag) {
-        $tagsHTML .= '<span class="tag_name" data-target="tag_name_' . ($key + 1) . '">' . esc_html($tag->name) . '</span>';
+        $tagsHTML .= '<span class="tag_name" data-target="tag_name_'.($key + 1).'">'.esc_html($tag->name).'</span>';
     }
 
     return $tagsHTML;
@@ -937,16 +938,16 @@ function editProductTagsHTML() {
             foreach ($tags as $key => $tag) {
 
                 if ($key < 2) {
-                    $deafultTags .= '<span class="tag_name" data-target="tag_name_' . ($key + 1) . '">' . esc_html($tag->name) . '</span>';
+                    $deafultTags .= '<span class="tag_name" data-target="tag_name_'.($key + 1).'">'.esc_html($tag->name).'</span>';
                 } else {
-                    $dynamicTags .= '<span class="tag_name" data-target="tag_name_' . ($key + 1) . '">' . esc_html($tag->name) . '</span>';
+                    $dynamicTags .= '<span class="tag_name" data-target="tag_name_'.($key + 1).'">'.esc_html($tag->name).'</span>';
                 }
             }
 
             $deafultTags .= '</div>';
             $dynamicTags .= '</div>';
 
-            echo $deafultTags . $dynamicTags;
+            echo $deafultTags.$dynamicTags;
 
         } else {
             echo '
@@ -990,17 +991,17 @@ function editProductTagsInput() {
                 if ($key < 2) {
                     $tagsInputHTML .= '
                     <div class="tag_input">
-                        <input type="text" placeholder="Type Tag Name" data-id="' . ($key + 1) . '"
+                        <input type="text" placeholder="Type Tag Name" data-id="'.($key + 1).'"
                         class="vmh_tag_input predefied_tag_input"
-                        value="' . esc_html($tag->name) . '">
+                        value="'.esc_html($tag->name).'">
                     </div>';
                 } else {
                     $tagsInputHTML .= '
                     <div class="tag_input" style="display: flex;">
                         <i class="fas fa-times cut_tag"></i>
-                        <input type="text" placeholder="Type Tag Name" data-id="' . ($key + 1) . '"
+                        <input type="text" placeholder="Type Tag Name" data-id="'.($key + 1).'"
                         class="vmh_tag_input"
-                        value="' . esc_html($tag->name) . '">
+                        value="'.esc_html($tag->name).'">
                     </div>';
                 }
             }
@@ -1168,7 +1169,7 @@ function getUserRecipes() {
     if ($recipes) {
         foreach ($recipes as $key => $recipe) {
             if (wc_get_product($recipe)->get_id() != get_option('vmh_create_product_option')) {
-                load_template(VMH_PATH . 'Includes/Templates/my-recipe-product.php', false, [
+                load_template(VMH_PATH.'Includes/Templates/my-recipe-product.php', false, [
                     'postTitle'     => $recipe->post_title,
                     'postAuthorID'  => $recipe->post_author,
                     'productID'     => $recipe->ID,
@@ -1183,7 +1184,7 @@ function getUserRecipes() {
             echo '
             <div class="card">
                 <div class="card-body">
-                  Oops. You have not created any recipe. <a href="' . esc_url(get_permalink(get_option('vmh_create_product_option'))) . '">Create a recipe</a>
+                  Oops. You have not created any recipe. <a href="'.esc_url(get_permalink(get_option('vmh_create_product_option'))).'">Create a recipe</a>
                 </div>
             </div>';
             return;
@@ -1191,7 +1192,7 @@ function getUserRecipes() {
             echo '
             <div class="card">
                 <div class="card-body">
-                  ' . $userInfo->display_name . ' don\'t have any recipe yet.
+                  '.$userInfo->display_name.' don\'t have any recipe yet.
                 </div>
             </div>';
             return;
@@ -1253,13 +1254,13 @@ function getSearchResults($postPerPage) {
         echo "
         <div class='card'>
             <div class='card-body'>
-              Sorry, could not find any results for your <b>" . $searchText . "</b> search.
+              Sorry, could not find any results for your <b>".$searchText."</b> search.
             </div>
         </div>";
     }
 
     foreach ($recipes as $key => $recipe) {
-        load_template(VMH_PATH . 'Includes/Templates/product.php', false, [
+        load_template(VMH_PATH.'Includes/Templates/product.php', false, [
             'postTitle'    => $recipe->post_title,
             'postAuthorID' => $recipe->post_author,
             'productID'    => $recipe->ID,

@@ -778,7 +778,8 @@ img {
     margin-bottom: 93px;
 }
 .comon_section_area {
-    margin-top: 110px;
+    margin-top: 75px;
+    margin-bottom: 75px;
     min-height: 50vh;
 }
 .comon_section_area .main_recopies_area {
@@ -1263,7 +1264,6 @@ img {
 =========== START LOGIN PAGES  CSS ================
 ==================================================*/
 .login_main > div {
-    padding: 110px 0px 80px 0px;
     /* background: url(../images/personlisation-1/circle.png) no-repeat scroll 0 0 / contain; */
     position: relative;
 }
@@ -1912,9 +1912,7 @@ img {
     width: 600px;
     height: auto;
 }
-.shipping_address_box {
-    padding: 54px 147px 68px 155px;
-}
+
 .shipping_address_header h4 {
     font-family: "Baloo";
     font-size: 20px;
@@ -2376,6 +2374,7 @@ img {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+    gap: 1rem;
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
@@ -2389,11 +2388,12 @@ img {
     display: -ms-flexbox;
     display: flex;
     gap: 1.5rem;
+    justify-content: center;
 }
 .recepes_right {
     width: 876px;
     height: auto;
-    padding: 77px 100px 83px 103px;
+    padding: 40px;
 }
 .recepes_right_site_right_content h6 {
     font-size: 14px;

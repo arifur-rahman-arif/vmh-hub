@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) {
 }
 
 if (!defined('VMH_VERSION')) {
-    define('VMH_VERSION', '1.0.3');
+    define('VMH_VERSION', '1.0.4');
     // define('VMH_VERSION', time());
 }
 
@@ -21,10 +21,10 @@ if (!class_exists('WooCommerce')) {
     return;
 }
 
-require_once VMH_PATH . 'vendor/autoload.php';
-require_once VMH_PATH . 'constant.php';
-require_once VMH_PATH . 'Includes/Functions/templateFunctions.php';
-require_once VMH_PATH . 'Includes/Functions/generalFunctions.php';
+require_once VMH_PATH.'vendor/autoload.php';
+require_once VMH_PATH.'constant.php';
+require_once VMH_PATH.'Includes/Functions/templateFunctions.php';
+require_once VMH_PATH.'Includes/Functions/generalFunctions.php';
 
 new \VmhHub\Includes\Classes\Hooks();
 new \VmhHub\Includes\Classes\Filters();

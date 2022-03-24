@@ -90,7 +90,7 @@ body > .wp-dark-mode-switcher {
     font-size: 18px;
     font-weight: bolder;
     margin-right: 10px;
-    text-transform: uppercase;
+    text-transform: capitalize;
 }
 
 .vmh_single_add_to_cart,
@@ -691,8 +691,9 @@ a.disabled {
 .recepes_profile {
     display: none;
 }
-.recepes_left {
-    min-width: 200px;
+
+.empty_column {
+    width: 100% !important;
 }
 
 .cart_single_nicotine_shot_value {
@@ -817,11 +818,7 @@ a.disabled {
 }
 
 .header_main_area {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 999;
+    position: relative;
 }
 
 .cart_main {
@@ -844,14 +841,14 @@ a.disabled {
     margin: 0 !important;
 }
 
-.login_main .container {
-    padding: 150px 0px 80px 0px;
-}
-
 .banner_content_area h3 {
     max-width: 400px;
 }
 
 .single_recopies_items p {
     line-height: 1rem;
+}
+
+#order_comments {
+    padding: 1rem;
 }

@@ -4,9 +4,6 @@
     }
 }
 @media all and (max-width: 1199px) {
-    .recepes_right {
-        padding: 77px 80px 83px 30px;
-    }
     .menu_area {
         -webkit-box-flex: 0;
         -ms-flex: 0 0 42%;
@@ -323,12 +320,8 @@
     .recepes_right_mini {
         -webkit-box-orient: vertical;
         -webkit-box-direction: normal;
-        -ms-flex-direction: column-reverse;
-        flex-direction: column-reverse;
-    }
-
-    .recepes_right_site_right_content p {
-        line-height: 60%;
+        -ms-flex-direction: column;
+        flex-direction: column;
     }
 
     .recepes_right_site_right_content {
@@ -361,10 +354,6 @@
     }
 }
 @media all and (max-width: 767px) {
-    .login_main > div {
-        padding: 0px 0px 120px 0px;
-    }
-
     .single_recopies_items {
         -webkit-box-flex: 0;
         -ms-flex: 0 0 calc((100% / 2) - 30px);
@@ -422,9 +411,7 @@
     .login_social {
         margin-top: 46px;
     }
-    .login_main {
-        padding: 166px 0px 85px 0px;
-    }
+
     .person_cont_search {
         -webkit-box-align: center;
         -ms-flex-align: center;
@@ -602,8 +589,25 @@
     .save_recieved_hde {
         right: -35px;
     }
+
+    .shipping_menu ul {
+        display: none;
+    }
 }
 @media all and (max-width: 575px) {
+    .woocommerce .variations tbody tr {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .woocommerce .variations tbody tr .reset_variations {
+        position: relative;
+        top: 1rem;
+    }
+
     .comon_section_area {
         padding: 80px 10px 0 10px;
     }
@@ -742,9 +746,7 @@
     .mixxer_height {
         height: 452px;
     }
-    .login_main.create_account.shopping_method_main_padd {
-        margin-top: 40px;
-    }
+
     .shipping_method {
         width: 410px;
     }
@@ -761,9 +763,7 @@
     .recepes_right {
         padding: 40px 50px 50px 50px;
     }
-    .recepes_right_site_right {
-        margin-top: 40px;
-    }
+
     .single_recopies_items.cart_single_item {
         margin-right: 0px;
     }
@@ -888,14 +888,12 @@
     }
     /*start login singup pages css*/
     .sign_in_box {
-        width: 285px;
+        width: 100%;
     }
     .sign_in_box {
         padding: 20px 10px 40px 10px;
     }
-    .login_main {
-        padding: 166px 0px 60px 0px;
-    }
+
     .logon_input_btn2 {
         text-align: left;
     }
@@ -1012,9 +1010,7 @@
     .recepes_right_title h2 {
         font-size: 30px;
     }
-    .recepes_right_site_right_content {
-        margin-top: 30px;
-    }
+
     .recipes_order_single_tag_plus {
         -webkit-box-orient: vertical;
         -webkit-box-direction: normal;
@@ -1085,5 +1081,12 @@
         width: 250px;
         left: 0px;
         padding: 20px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .shiping_cart_area {
+        flex-direction: column;
+        gap: 1rem;
     }
 }

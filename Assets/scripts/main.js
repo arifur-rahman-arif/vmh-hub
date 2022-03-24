@@ -188,9 +188,12 @@ jQuery(document).ready(function ($) {
         } else {
             setTimeout(() => {
                 $("#pa_vmh_nicotine_amount option:contains('Choose')").prop("selected", true);
-                $("#pa_vmh_nicotine_amount").parents("tr").css({
-                    display: "table-row",
-                });
+
+                $("#pa_vmh_nicotine_amount")
+                    .parents("tr")
+                    .attr("style", function (i, style) {
+                        return style && style.replace(/display[^;]+;?/g, "");
+                    });
             }, 200);
         }
     }

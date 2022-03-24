@@ -1,32 +1,32 @@
 <?php
-/**
- * Thankyou page
- *
- * This template can be overridden by copying it to yourtheme/woocommerce/checkout/thankyou.php.
- *
- * HOWEVER, on occasion WooCommerce will need to update template files and you
- * (the theme developer) will need to copy the new files to your theme to
- * maintain compatibility. We try to do this as little as possible, but it does
- * happen. When this occurs the version of the template file will be bumped and
- * the readme will list any important changes.
- *
- * @version 3.7.0
- * @package WooCommerce\Templates
- *
- * @see https://docs.woocommerce.com/document/template-structure/
- */
+    /**
+     * Thankyou page
+     *
+     * This template can be overridden by copying it to yourtheme/woocommerce/checkout/thankyou.php.
+     *
+     * HOWEVER, on occasion WooCommerce will need to update template files and you
+     * (the theme developer) will need to copy the new files to your theme to
+     * maintain compatibility. We try to do this as little as possible, but it does
+     * happen. When this occurs the version of the template file will be bumped and
+     * the readme will list any important changes.
+     *
+     * @version 3.7.0
+     * @package WooCommerce\Templates
+     *
+     * @see https://docs.woocommerce.com/document/template-structure/
+     */
 
-defined('ABSPATH') || exit;
+    defined('ABSPATH') || exit;
 ?>
 
 
 <div class="woocommerce-order">
 
     <?php
-if ($order):
+        if ($order):
 
-    do_action('woocommerce_before_thankyou', $order->get_id());
-    ?>
+            do_action('woocommerce_before_thankyou', $order->get_id());
+        ?>
 
     <?php if ($order->has_status('failed')): ?>
 
@@ -49,7 +49,7 @@ if ($order):
         <div class="container vmh_thankyoucontainer" style="padding-top: 50px;">
 
             <!-- <div class="thank_you2_main_background_img">
-                <img src="<?php echo esc_url(VMH_URL . 'Assets/images/thank_you2/circle.png') ?>" alt="images" />
+                <img src="<?php echo esc_url(VMH_URL.'Assets/images/thank_you2/circle.png') ?>" alt="images" />
             </div> -->
 
 
@@ -61,13 +61,13 @@ if ($order):
 
                 <div class="mixxer_hide_icon thank_you2_hide_btn">
                     <a href="<?php echo site_url('/') ?>"><img
-                            src="<?php echo esc_url(VMH_URL . 'Assets/images/mixxer_earning_popup/icon.png') ?>"
+                            src="<?php echo esc_url(VMH_URL.'Assets/images/mixxer_earning_popup/icon.png') ?>"
                             alt="images" /></a>
                 </div>
 
 
                 <div class="mixxer_earning_popup_overly thank_you2_overly_background">
-                    <!-- <img src="<?php echo esc_url(VMH_URL . 'Assets/images/thank_you2/lab.png') ?>" alt="images" /> -->
+                    <!-- <img src="<?php echo esc_url(VMH_URL.'Assets/images/thank_you2/lab.png') ?>" alt="images" /> -->
                 </div>
             </div>
 
@@ -75,13 +75,13 @@ if ($order):
 
             <?php endif;?>
 
-            <?php do_action('woocommerce_thankyou_' . $order->get_payment_method(), $order->get_id());?>
+            <?php do_action('woocommerce_thankyou_'.$order->get_payment_method(), $order->get_id());?>
             <?php do_action('woocommerce_thankyou', $order->get_id());?>
 
             <?php else: ?>
 
             <p class="woocommerce-notice woocommerce-notice--success woocommerce-thankyou-order-received">
-                <?php echo apply_filters('woocommerce_thankyou_order_received_text', esc_html__('Thank you. Your order has been received.', 'woocommerce'), null); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped                        ?>
+                <?php echo apply_filters('woocommerce_thankyou_order_received_text', esc_html__('Thank you. Your order has been received.', 'woocommerce'), null); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped                         ?>
             </p>
 
             <?php endif;?>
