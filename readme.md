@@ -23,6 +23,7 @@ Tags: e-commerce, woocommerce, one-column, custom-background, custom-colors, cus
 
 -   Fixed UI issue
 -   Fixed cart total issue with shipping cost
+-   Improved shipping method selecting UX
 
 ![](https://img.shields.io/static/v1?label=Release&message=1.0.2&color=nrightgreen)
 
