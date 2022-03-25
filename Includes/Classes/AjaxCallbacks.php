@@ -10,7 +10,7 @@ trait AjaxCallbacks {
         if (sanitize_text_field($_POST['action']) !== 'vmh_login_action') {
             $output['response'] = 'invalid';
             $output['message'] = 'Action is not valid';
-            echo json_encode($output);
+            wp_send_json_error($output, 400);
             wp_die();
         }
 
@@ -20,13 +20,10 @@ trait AjaxCallbacks {
 
         $output = $this->logTheUser($sanitizedData);
 
-        echo json_encode($output);
-
-        wp_die();
     }
 
-    // Login the user into website
     /**
+     * Login the user into website
      * @param $loginCred
      */
     public function logTheUser($loginCred) {
@@ -43,33 +40,41 @@ trait AjaxCallbacks {
             $user_id = $res->data->ID;
             wp_set_current_user($user_id);
             wp_set_auth_cookie($user_id, true);
-            return [
+            $output = [
                 'response' => 'success',
-                'message'  => esc_html('Login Successfull')
+                'message'  => esc_html('Login Successful')
             ];
+            wp_send_json_success($output, 200);
+            wp_die();
         } else {
             if (array_key_exists("incorrect_password", $res->errors)) {
                 if ($res->errors['incorrect_password'][0]) {
-                    return [
+                    $output = [
                         'response' => 'error',
                         'message'  => esc_html('Username or password is incorrect. Try again')
                     ];
+                    wp_send_json_error($output, 401);
+                    wp_die();
                 }
             }
             if (array_key_exists("invalid_username", $res->errors)) {
                 if ($res->errors['invalid_username'][0]) {
-                    return [
+                    $output = [
                         'response' => 'error',
                         'message'  => esc_html('Username or password is incorrect. Try again')
                     ];
+                    wp_send_json_error($output, 401);
+                    wp_die();
                 }
             }
             if (array_key_exists("invalid_email", $res->errors)) {
                 if ($res->errors['invalid_email'][0]) {
-                    return [
+                    $output = [
                         'response' => 'error',
                         'message'  => esc_html('Username or password is incorrect. Try again')
                     ];
+                    wp_send_json_error($output, 401);
+                    wp_die();
                 }
             }
         }
@@ -179,10 +184,10 @@ trait AjaxCallbacks {
 
         if (set_transient($hashString, $userData, (60 * 60 * 24))) {
             $to = $userData['email'];
-            $displayName = ($userData['fname'] . ' ' . $userData['lname']);
+            $displayName = ($userData['fname'].' '.$userData['lname']);
             $subject = 'Verify your account';
             $message = '
-                Hello ' . $displayName . ' please verify your account by clicking here <a href="' . site_url('/verify?key=' . $hashString . '') . '">Verify Account</a>
+                Hello '.$displayName.' please verify your account by clicking here <a href="'.site_url('/verify?key='.$hashString.'').'">Verify Account</a>
             ';
             $headers = ['Content-Type: text/html; charset=UTF-8'];
 
@@ -334,7 +339,7 @@ trait AjaxCallbacks {
             $allMatch = [];
 
             foreach ($attributes as $attrKey => $attributeValue) {
-                $dataAttributeValue = $currentAttributes['attribute_pa_' . $attrKey];
+                $dataAttributeValue = $currentAttributes['attribute_pa_'.$attrKey];
                 if ($attributeValue === $dataAttributeValue) {
                     $allMatch[] = true;
                 } else {
@@ -353,7 +358,7 @@ trait AjaxCallbacks {
 
         if ($variationID) {
             $returnValue['response'] = 'success';
-            $returnValue['message'] = vmhEscapeTranslate('Varition ID is #' . $variationID . '');
+            $returnValue['message'] = vmhEscapeTranslate('Varition ID is #'.$variationID.'');
             $returnValue['variationID'] = $variationID;
             $returnValue['code'] = 200;
             return $returnValue;
@@ -634,7 +639,7 @@ trait AjaxCallbacks {
                 }
 
                 // Duplicate the template product for creating a new product
-                $duplicateProduct = new \WC_Admin_Duplicate_Product;
+                $duplicateProduct = new \WC_Admin_Duplicate_Product();
                 $newProduct = $duplicateProduct->product_duplicate($productObject);
                 $postID = $newProduct->get_id();
 
@@ -742,8 +747,8 @@ trait AjaxCallbacks {
             'product_cat',
             [
                 'description' => 'Description for category', // optional
-                'parent'      => 0, // optional
-                'slug'        => $categorySlug // optional
+                'parent' => 0, // optional
+                'slug' => $categorySlug // optional
             ]
         );
 
@@ -763,8 +768,8 @@ trait AjaxCallbacks {
                 'product_cat',
                 [
                     'description' => 'Description for category', // optional
-                    'parent'      => 0, // optional
-                    'slug'        => $categorySlug // optional
+                    'parent' => 0, // optional
+                    'slug' => $categorySlug // optional
                 ]
             );
         }
@@ -913,7 +918,7 @@ trait AjaxCallbacks {
                 }
 
                 $output['response'] = 'success';
-                $output['message'] = vmhEscapeTranslate('Total price of ingredients: ' . get_woocommerce_currency_symbol() . $ingredientsTotalPrice);
+                $output['message'] = vmhEscapeTranslate('Total price of ingredients: '.get_woocommerce_currency_symbol().$ingredientsTotalPrice);
                 $output['price'] = $ingredientsTotalPrice;
                 $output['ingredientsAvailability'] = $this->checkIngredientsAvailability([
                     'productIngredients'          => $productIngredients,
@@ -929,7 +934,7 @@ trait AjaxCallbacks {
             wp_send_json_error($output, 400);
             wp_die();
 
-        } catch (\Throwable $error) {
+        } catch (\Throwable$error) {
             $output['response'] = 'invalid';
             $output['message'] = vmhEscapeTranslate($error->getMessage());
             wp_send_json_error($output, $error->getCode());
@@ -991,20 +996,20 @@ trait AjaxCallbacks {
 
             $to = $user->user_email;
 
-            $displayName = ($currentUserData->first_name . ' ' . $currentUserData->last_name);
+            $displayName = ($currentUserData->first_name.' '.$currentUserData->last_name);
 
             $adminName = $user->display_name;
 
             $subject = 'Needs approval for new product';
 
             $message = '
-                Hello <i>' . $adminName . '</i>. <i>' . $displayName . '</i> has created new a reciepe and waiting for your approval.
+                Hello <i>'.$adminName.'</i>. <i>'.$displayName.'</i> has created new a reciepe and waiting for your approval.
                 <br/>
-                <b>Product ID:</b> ' . $productID . '
+                <b>Product ID:</b> '.$productID.'
                 <br/>
-                <b>Product name:</b> ' . get_the_title($productID) . '
+                <b>Product name:</b> '.get_the_title($productID).'
                 <br/>
-                <b>Creator email:</b> ' . $currentUserData->user_email . '
+                <b>Creator email:</b> '.$currentUserData->user_email.'
             ';
 
             $headers = ['Content-Type: text/html; charset=UTF-8'];
@@ -1013,7 +1018,7 @@ trait AjaxCallbacks {
                 if (!wp_mail($to, $subject, $message, $headers)) {
                     throw 'Error: Mail couldn\'t be sent.';
                 }
-            } catch (\Throwable $th) {
+            } catch (\Throwable$th) {
                 throw $th;
             }
 
@@ -1086,7 +1091,7 @@ trait AjaxCallbacks {
                 return [];
             }
 
-        } catch (\Throwable $th) {
+        } catch (\Throwable$th) {
             throw $th;
         }
     }
@@ -1148,7 +1153,7 @@ trait AjaxCallbacks {
 
             } else {
                 $output['response'] = 'invalid';
-                $output['message'] = vmhEscapeTranslate('' . $ingredient[0] . ' ingredient is failed to create');
+                $output['message'] = vmhEscapeTranslate(''.$ingredient[0].' ingredient is failed to create');
             }
         }
 
@@ -1330,7 +1335,7 @@ trait AjaxCallbacks {
             wp_send_json_success($output, 200);
             wp_die();
 
-        } catch (\Throwable $error) {
+        } catch (\Throwable$error) {
 
             $output['response'] = 'invalid';
             $output['message'] = vmhEscapeTranslate($error->getMessage());

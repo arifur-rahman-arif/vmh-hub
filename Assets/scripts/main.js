@@ -114,15 +114,6 @@ jQuery(document).ready(function ($) {
             trigger: "manual",
         });
 
-        // $(document).on("click", ".shipping_method_first", (e) => {
-        //     $.each($(".vmh_shipping_method_input"), function (i, element) {
-        //         console.log($(element));
-        //         $(element).attr("checked", "false");
-        //     });
-        //     let target = $(e.currentTarget);
-        //     target.find("input:radio").attr("checked", "checked");
-        // });
-
         navigateUserOnSiteOpening();
     }
 
@@ -494,22 +485,11 @@ jQuery(document).ready(function ($) {
             beforeSend: () => {
                 $("#vmh-login").addClass("disabled");
             },
-            success: (res) => {
-                if (!res) return;
+            success: (response) => {
+                if (!response) return;
 
-                let response = JSON.parse(res);
-                if (response.response == "success") {
+                if (response.data.response == "success") {
                     window.location.href = vmhLocal.siteUrl;
-                } else {
-                    swal("Are you sure you want to do this?", {
-                        buttons: ["Oh noez!", "Aww yiss!"],
-                    });
-                    swal({
-                        title: "Sorry",
-                        text: response.message,
-                        button: "OK",
-                    });
-                    return;
                 }
             },
             complete: () => {
@@ -517,8 +497,8 @@ jQuery(document).ready(function ($) {
             },
             error: (err) => {
                 swal({
-                    title: "Server Error",
-                    text: "Something went wrong. Try again or contact admin",
+                    title: "Sorry",
+                    text: err.responseJSON.data.message,
                     button: "OK",
                 });
                 return;
