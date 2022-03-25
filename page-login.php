@@ -1,10 +1,10 @@
 <?php get_header('header.php')?>
 <!--======================== Start Login Area ========================-->
-<section class="login_main">
+<section class="login_main comon_section_area">
     <div class="container">
         <!-- Start Background Overly -->
         <!-- <div class="login_background">
-            <img src="<?php echo VMH_URL . 'Assets/images/login/circle.png' ?>" alt="" />
+            <img src="<?php echo VMH_URL.'Assets/images/login/circle.png' ?>" alt="" />
         </div> -->
         <!-- End Background Overly -->
 
@@ -38,7 +38,7 @@
                 <div class="login_social_icon">
                     <a href="#">
                         <span class="login_social_icon_mini"><img
-                                src="<?php echo VMH_URL . 'Assets/Images/login/google_icon.png' ?>" alt="" /></span>
+                                src="<?php echo VMH_URL.'Assets/Images/login/google_icon.png' ?>" alt="" /></span>
                         <span class="login_social_icon_mini_text">Continue with google</span>
                     </a>
                     <a href="#">
@@ -47,7 +47,7 @@
                     </a>
                     <a href="#">
                         <span class="login_social_icon_mini"><img
-                                src="<?php echo VMH_URL . 'Assets/Images/login/apple_logo.png' ?>" alt="" /></span>
+                                src="<?php echo VMH_URL.'Assets/Images/login/apple_logo.png' ?>" alt="" /></span>
                         <span class="login_social_icon_mini_text">Continue with Apple</span>
                     </a>
                 </div>

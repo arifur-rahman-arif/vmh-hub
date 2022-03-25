@@ -273,6 +273,7 @@ img {
     -webkit-transition: 0.3s;
     transition: 0.3s;
     opacity: 0.7;
+    white-space: nowrap;
 }
 .menu ul li a:hover {
     color: #8cdad9;
@@ -1318,7 +1319,9 @@ img {
     display: flex;
     -webkit-box-pack: justify;
     -ms-flex-pack: justify;
-    justify-content: space-between;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 1.5rem;
 }
 .login_input_left {
     display: -webkit-box;

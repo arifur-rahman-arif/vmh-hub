@@ -1,10 +1,10 @@
 <?php get_header('header.php')?>
 <!--======================== Start Create Area ========================-->
-<section class="login_main create_account">
+<section class="login_main create_account comon_section_area">
     <div class="container">
         <!-- Start Background Overly -->
         <div class="create_background">
-            <img src="<?php echo VMH_URL . 'Assets/images/create-account/circle.png' ?>" alt="" />
+            <img src="<?php echo VMH_URL.'Assets/images/create-account/circle.png' ?>" alt="" />
         </div>
         <!-- End Background Overly -->
 
