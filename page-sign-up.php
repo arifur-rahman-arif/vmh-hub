@@ -3,9 +3,9 @@
 <section class="login_main create_account comon_section_area">
     <div class="container">
         <!-- Start Background Overly -->
-        <div class="create_background">
+        <!-- <div class="create_background">
             <img src="<?php echo VMH_URL.'Assets/images/create-account/circle.png' ?>" alt="" />
-        </div>
+        </div> -->
         <!-- End Background Overly -->
 
         <div class="sign_in_box" style="position: relative;">
