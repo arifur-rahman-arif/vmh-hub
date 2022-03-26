@@ -1167,4 +1167,34 @@ class HookCallbacks {
         wp_safe_redirect(wc_get_endpoint_url('edit-account'));
         exit();
     }
+
+    /**
+     * Set a minimum order amount for checkout
+     */
+    public function setMinimumOrderAmount() {
+        $minimum = 20;
+
+        if (WC()->cart->total < $minimum) {
+
+            if (is_cart()) {
+
+                wc_print_notice(
+                    sprintf('Your current order total is %s — you must have an order with a minimum of %s to place your order ',
+                        wc_price(WC()->cart->total),
+                        wc_price($minimum)
+                    ), 'error'
+                );
+
+            } else {
+
+                wc_add_notice(
+                    sprintf('Your current order total is %s — you must have an order with a minimum of %s to place your order',
+                        wc_price(WC()->cart->total),
+                        wc_price($minimum)
+                    ), 'error'
+                );
+
+            }
+        }
+    }
 }

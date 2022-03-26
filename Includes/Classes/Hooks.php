@@ -102,6 +102,9 @@ class Hooks extends HookCallbacks {
 
         add_action('woocommerce_save_account_details', [$this, 'redirectToEditAccountPage'], 90, 1);
 
+        // Set a minimum order amount for checkout
+        add_action('woocommerce_checkout_process', [$this, 'setMinimumOrderAmount']);
+        add_action('woocommerce_before_cart', [$this, 'setMinimumOrderAmount']);
     }
 
     public function sessionStart() {
